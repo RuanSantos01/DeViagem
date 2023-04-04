@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import sgMail from "@sendgrid/mail";
 
 // MODELS
 import User from "../models/User.js";
@@ -8,7 +9,6 @@ import SentCode from "../models/SentCode.js";
 // REGISTER USER
 export const register = async (req, res) => {
     try {
-
         const {
             fullName,
             email, 
@@ -32,14 +32,24 @@ export const register = async (req, res) => {
             gender,
             accessLevel: "basic",
             activities: [],
+            validation: false,
             password: passwordHash
         });
 
-        // ENVIAR CÓDIGO DE VALIDAÇÃO DE EMAIL
-
         const savedUser = await newUser.save();
 
-        res.status(201).json(savedUser);
+        const code = await generateCode();
+        await sendEmail(email, code);
+
+        const newSentCode = new SentCode({
+            email,
+            code, 
+            validation: false
+        })
+        await newSentCode.save();
+        
+
+        res.status(201).json({savedUser, msg: "Código enviado por email."})
 
     } catch (err) {
     
@@ -68,24 +78,72 @@ export const login = async(req, res) => {
 
 // CONFIRM CODE
 export const confirmAccount = async(req, res) => {
-    const {email, code} = req.body;
+    const {
+        code, 
+        email, 
+    } = req.body;
+
     const payload = await SentCode.findOne({email: email});
 
     if(payload.validation) {
         res.status(403).json({msg: "Código já validado anteriormente"})
     } else {
         if(code === payload.code) {
+
             SentCode.updateOne(
                 {email: email},
                 {$set: {validation: true}}
             ).then(() => {
-                console.log(`Dado atualizado`)
+                console.log(`Dado atualizado`);
             }).catch(err => {
-                console.log("Error ao atualizar dado no mongo -", err)
-            })
-            res.status(200).json({validation: true, msg: "Código validado com sucesso!."})
+                console.log("Error ao atualizar dado no mongo -", err);
+            });
+
+            User.updateOne(
+                {email: email},
+                {$set: {validation: true}}
+            ).then(() => {
+                console.log(`Dado atualizado`);
+            }).catch(err => {
+                console.log("Error ao atualizar dado no mongo -", err);
+            });
+
+            res.status(200).json({validation: true, msg: "Código validado com sucesso!."});
         } else {
-            res.status(403).json({validation: false, msg: "Código inválido"})
-        }
+            res.status(403).json({validation: false, msg: "Código inválido"});
+        };
     }
+}
+
+// GERADOR DE CÓDIGO
+const generateCode = () => {
+    let code = '';
+    let digits = '0123456789';
+
+    for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * digits.length);
+        code += digits[randomIndex]; 
+    }
+
+    return code;
+}
+
+// ENVIADOR DE EMAIL
+const sendEmail = (email, code) => {
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+    const msg = {
+        to: email,
+        from: "deviagem2023@gmail.com",
+        subject: "Código para validação DeViagem",
+        text: `Seu código para validação da conta é ${code}`
+    }
+
+    sgMail.send(msg)
+    .then(() => {
+        console.log("Email Enviado")
+    }).catch((error) => {
+        throw {message: error.message}
+    })
 }

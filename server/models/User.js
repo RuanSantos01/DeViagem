@@ -41,6 +41,9 @@ const UserSchema = new mongoose.Schema(
         activities: {
             type: Array
         },
+        validation: {
+            type: Boolean
+        }
     },
     {timestamps: true}
 );
