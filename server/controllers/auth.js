@@ -5,19 +5,28 @@ import User from "../models/User.js";
 // REGISTER USER
 export const register = async (req, res) => {
     try {
-        
-        // VERIFICAR DADOS DO USUÁRIO NO ERD
+
         const {
-            dadosPessoa, 
-            password
+            fullName,
+            email, 
+            password,
+            phone,
+            birthDate,
+            gender
         } = req.body;
 
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
         const newUser = new User({
-            dadosPessoa,
-            senha: passwordHash
+            fullName,
+            email, 
+            phone,
+            birthDate,
+            gender,
+            accessLevel: "basic",
+            activities: [],
+            password: passwordHash
         });
 
         const savedUser = await newUser.save();
