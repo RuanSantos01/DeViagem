@@ -4,18 +4,21 @@ import backgroundImgLogin from 'assets/background-login-cadastro.png';
 import backgroundImgRegistro from 'assets/background-cadastro.png';
 import FlexBetween from 'components/FlexBetween';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 import { useDispatch } from 'react-redux';
 import { setLogin } from 'state';
 import { useNavigate } from 'react-router-dom';
+import TextMask from 'react-text-mask';
 
 // ICONS
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // DATEPICKER
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateField } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 
 const registerSchema = yup.object().shape({
@@ -66,6 +69,8 @@ const backgroundStyleRegistro = {
   height: "100vh"
 };
 
+const phoneMask = ['(',/[1-9]/,/\d/,')',' ',/\d/,/\d/,/\d/,/\d/,/\d/,'-',/\d/,/\d/,/\d/,/\d/];
+
 const LoginPage = () => {
   const theme = useTheme();
   const blueColor = theme.palette.background.blue;
@@ -97,7 +102,11 @@ const LoginPage = () => {
     onSubmitProps.resetForm();
 
     if(savedUser) {
-      setPageType("login")
+      dispatch(
+        setLogin({
+          user: savedUser
+        })
+      )
     }
   }
 
@@ -125,6 +134,7 @@ const LoginPage = () => {
   };
 
   const handleFormSubmit = async(values, onSubmitProps) => {
+    console.log(values)
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
   }
@@ -138,16 +148,17 @@ const LoginPage = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
+        overflow: "hidden",
       }}>
 
         <FlexBetween 
         backgroundColor={blueColor}
         sx={{
-          width: "600px",
-          height: "650px",
+          width: isNonMobile ? "600px" : "370px",
+          height: "auto" ,
           borderRadius: "25px",
           flexDirection: "column",
-          p: "2rem 6%"
+          p: "2rem 6%",
         }}
         >
           
@@ -171,12 +182,12 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit}>
               <FlexBetween
               flexDirection="column"
-              width="25rem"
-              mb="35px"
-              height="30vh"
+              alignItems="center"
+              width={isNonMobile ? "400px" : "100%"}
+              height="100%"
               p="1rem"
               >
-                <Box sx={{display:"flex", gap: "1.5rem", flexDirection: "column", width: "100%"}}>
+                <Box sx={{display:"flex", gap: "1.5rem", flexDirection: "column", width: isNonMobile ? "100%" : "20rem"}}>
                   {isRegister && (
                     <>
                       <Typography alignSelf="center" fontWeight="bold" variant="h1" color="white">Cadastre-se</Typography>
@@ -191,7 +202,7 @@ const LoginPage = () => {
                       error={Boolean(touched.fullName) && Boolean(errors.fullName)}
                       variant="filled"
                       InputProps={{
-                        style: { backgroundColor: "white"}
+                        style: { backgroundColor: "white", borderRadius: "4px"}
                       }}
                       InputLabelProps={{
                         style: {color: blueColor, fontWeight: "bold", fontSize: "1rem"}
@@ -210,7 +221,7 @@ const LoginPage = () => {
                     error={Boolean(touched.email) && Boolean(errors.email)}
                     variant="filled"
                     InputProps={{
-                      style: { backgroundColor: "white"}
+                      style: { backgroundColor: "white", borderRadius: "4px"}
                     }}
                     InputLabelProps={{
                       style: {color: blueColor, fontWeight: "bold", fontSize: "1rem"}
@@ -227,7 +238,7 @@ const LoginPage = () => {
                     error={Boolean(touched.password) && Boolean(errors.password)}
                     variant="filled"
                     InputProps={{
-                      style: {backgroundColor: "white"}
+                      style: {backgroundColor: "white", borderRadius: "4px"}
                     }}
                     InputLabelProps={{
                       style: {color: blueColor, fontWeight: "bold", fontSize: "1rem"}
@@ -239,6 +250,7 @@ const LoginPage = () => {
                       <TextField
                         fullWidth
                         label="Confirmar Senha"
+                        type="password"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.confirmPassword}
@@ -246,7 +258,7 @@ const LoginPage = () => {
                         error={Boolean(touched.confirmPassword) && Boolean(errors.confirmPassword)}
                         variant="filled"
                         InputProps={{
-                          style: { backgroundColor: "white"}
+                          style: { backgroundColor: "white", borderRadius: "4px"}
                         }}
                         InputLabelProps={{
                           style: {color: blueColor, fontWeight: "bold", fontSize: "1rem"}
@@ -257,13 +269,13 @@ const LoginPage = () => {
                         <InputLabel sx={{color: blueColor, fontWeight: "bold", fontSize:"1rem"}}>Sexo</InputLabel>
                         <Select
                           fullWidth
-                          sx={{backgroundColor:"white", fontWeight: "bold", fontSize:"1rem",
+                          sx={{
                             "&:hover": {backgroundColor: "white", color: blueColor},
-                            "& .MuiSelect-select": {backgroundColor: "white", borderRadius: "4px"},
+                            "& .MuiSelect-select": {backgroundColor: "white"},
                           }}
                           value={values.gender}
                           label="Sexo"
-                          onChange={handleChange}
+                          onChange={(value) => setFieldValue("gender", value.target.value)}
                           SelectDisplayProps={{
                             style: {
                               backgroundColor: 'white',
@@ -271,15 +283,55 @@ const LoginPage = () => {
                             }
                           }}
                           >
-                            <MenuItem value={"m"}>Masculino</MenuItem>
-                            <MenuItem value={"f"}>Feminino</MenuItem>
-                            <MenuItem value={"n"}>Prefiro não dizer</MenuItem>
+                            <MenuItem value="masculino">Masculino</MenuItem>
+                            <MenuItem value="feminino">Feminino</MenuItem>
+                            <MenuItem value="prefiro nao dizer">Prefiro não dizer</MenuItem>
                         </Select>
                       </FormControl>
                     
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker/>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateField 
+                          label="Data de Nascimento"
+                          format="DD/MM/YYYY"
+                          name="birthDate"
+                          variant="filled"
+                          inputFormat="DD/MM/YYYY"
+                          value={values.birthDate}
+                          onChange={(value) => setFieldValue("birthDate", value)}
+                          maxDate={dayjs()}
+                          TextFieldComponent={TextField}
+                          sx={{
+                            backgroundColor:"white",
+                            "&:hover": {backgroundColor: "white", color: blueColor},
+                            "& .MuiInput-root": {color: blueColor, borderRadius: "4px"},
+                            "& .MuiFormLabel-root": {color: blueColor, fontWeight: "bold", fontSize: "1rem"}
+                          }}
+                        />
                       </LocalizationProvider>
+
+                      <TextField
+                        fullWidth
+                        label="Telefone"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.phone}
+                        name="phone"
+                        error={Boolean(touched.phone) && Boolean(errors.phone)}
+                        variant="filled"
+                        InputProps={{
+                          style: { backgroundColor: "white", borderRadius: "4px"},
+                          inputComponent: TextMask,
+                          inputProps: {
+                            mask: phoneMask,
+                            autoComplete: "off",
+                            autoCorrect: "off",
+                            spellCheck: "false"
+                          }
+                        }}
+                        InputLabelProps={{
+                          style: {color: blueColor, fontWeight: "bold", fontSize: "1rem"}
+                        }}
+                      />
 
                     </>
                   )}
@@ -303,7 +355,7 @@ const LoginPage = () => {
                       <Typography 
                       onClick={() => setPageType("login")}
                       sx={{
-                        color: "white", fontWeight: "bold", "&:hover": {textDecoration: "underline", cursor: "pointer"
+                        color: "white", mb: "1rem", fontWeight: "bold", "&:hover": {textDecoration: "underline", cursor: "pointer"
                       }}}>Já possui conta? Entre aqui.</Typography>
                     </Box>
                   )}
@@ -322,7 +374,7 @@ const LoginPage = () => {
                   "&:hover": { color: blueButton},
                 }}
               >
-                {isLogin ? "ENTRAR" : "REGISTER"}
+                {isLogin ? "ENTRAR" : "REGISTRAR"}
               </Button>
 
               </FlexBetween>

@@ -19,7 +19,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<ConfirmEmailPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
             <Route path="/confirmEmail" element={<ConfirmEmailPage />} />
