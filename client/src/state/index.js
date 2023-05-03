@@ -18,14 +18,17 @@ export const authSlice = createSlice({
             state.token = null;
         },
         setActivities: (state, action) => {
-            if(state.user) {
+            if (state.user) {
                 state.user.activities = action.payload.activities;
             } else {
                 console.error("Usuário não existe")
             }
+        },
+        setUser: (state, action) => {
+            state.user = action.payload.user;
         }
     }
 });
 
-export const { setLogin, setLogout, setActivities } = authSlice.actions;
+export const { setLogin, setLogout, setActivities, setUser } = authSlice.actions;
 export default authSlice.reducer;

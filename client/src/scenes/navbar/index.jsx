@@ -24,23 +24,29 @@ const Navbar = () => {
   const background = theme.palette.background.blue;
   const neutralLight = theme.palette.neutral.light;
 
+  const logout = () => {
+    dispatch(setLogout())
+    console.log(user)
+    window.location.reload();
+  }
+
   return (
-    <FlexBetween padding="1rem 6%" backgroundColor={background} >
-      <FlexBetween gap="1.75rem">
+    <FlexBetween padding="1rem 6%" backgroundColor={background} sx={{ width: '100%' }} boxShadow="0px 2px 2px rgba(0,0,0,0.3)">
+      <FlexBetween gap="1.75rem" >
         <Typography
-        onClick={() => navigate("/home")}
-        fontWeight="bold"
-        fontSize="clamp(1rem, 2rem, 2.5rem)"
-        color="white"
+          onClick={() => navigate("/home")}
+          fontWeight="bold"
+          fontSize="clamp(1rem, 2rem, 2.5rem)"
+          color="white"
         >
           DeViagem
         </Typography>
 
         {isNonMobileScreens && (
-            <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
-              <InputBase placeholder="Procurar..." />
-              <IconButton><Search /></IconButton>
-            </FlexBetween>
+          <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
+            <InputBase placeholder="Código aqui.." />
+            <IconButton><Search /></IconButton>
+          </FlexBetween>
         )}
       </FlexBetween>
 
@@ -51,7 +57,7 @@ const Navbar = () => {
             width: "150px",
             borderRadius: "0.25rem",
             p: "0.25rem 1rem",
-            "& .MuiSvgIcon-root" : {
+            "& .MuiSvgIcon-root": {
               pr: "0.25rem",
               width: "3rem"
             },
@@ -59,35 +65,35 @@ const Navbar = () => {
               backgroundColor: neutralLight
             }
           }}
-          input={<InputBase />}
+            input={<InputBase />}
           >
             <MenuItem value={userName}>
               <Typography>{userName}</Typography>
             </MenuItem>
-            <MenuItem onClick={() => dispatch(() => setLogout())}>Sair</MenuItem>
+            <MenuItem onClick={() => logout()}>Sair</MenuItem>
           </Select>
         </FormControl>
       ) : (
         <FlexBetween
-        onClick={() => navigate("/")}
-        gap="0.25rem"
-        sx={{
-          backgroundColor:"#f0f0f0",
-          boxShadow: "0px 10px 14px -7px #276873",
-          borderRadius:"8px",
-          cursor:"pointer",
-          color:"#2b4c7e",
-          padding:"10px 10px",
-          "&:hover": {
-            backgroundColor:"#2b4c7e",
-            color: neutralLight
-          }
-        }}
+          onClick={() => navigate("/login")}
+          gap="0.25rem"
+          sx={{
+            backgroundColor: "#f0f0f0",
+            boxShadow: "0px 10px 14px -7px #276873",
+            borderRadius: "8px",
+            cursor: "pointer",
+            color: "#2b4c7e",
+            padding: "10px 10px",
+            "&:hover": {
+              backgroundColor: "#2b4c7e",
+              color: neutralLight
+            }
+          }}
         >
-          <AccountCircleIcon sx={{fontSize:"20px"}}/>
+          <AccountCircleIcon sx={{ fontSize: "20px" }} />
           <Typography sx={{
-            fontSize:"15px",
-            fontWeight:"bold",
+            fontSize: "15px",
+            fontWeight: "bold",
           }}>Entrar</Typography>
         </FlexBetween>
       )}

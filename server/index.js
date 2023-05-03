@@ -13,11 +13,14 @@ import { verifyToken } from "./middleware/auth.js";
 
 // ROUTES
 import authRoutes from "./routes/auth.js";
+import accommodationRoutes from "./routes/accommodation.js";
 
 // TESTE
 import User from "./models/User.js";
 import SentCode from "./models/SentCode.js";
 import { users, code } from "./data/index.js";
+import { accommodations } from "./data/accommodationData.js";
+import Accommodation from "./models/Accommodation.js";
 
 // CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -26,19 +29,19 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(bodyParser.json({limit: "30mb", extended: true}));
-app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 // FILE STORAGE 
 const storage = multer.diskStorage({
-    destination: function(req, res, cb) {
+    destination: function (req, res, cb) {
         cb(null, "public/assets")
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, file.originalname)
     }
 });
@@ -52,6 +55,7 @@ const upload = multer({ storage });
 
 // ROUTES
 app.use("/auth", authRoutes);
+app.use("/accommodations", accommodationRoutes);
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;
@@ -60,6 +64,8 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true
 }).then(() => {
     app.listen(PORT, () => console.log(`Server on port: ${PORT}`))
+
+    // Accommodation.insertMany(accommodations);
 }).catch((err) => {
     console.log(err)
 })
