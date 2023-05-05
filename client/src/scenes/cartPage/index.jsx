@@ -7,24 +7,51 @@ import BedIcon from '@mui/icons-material/Bed';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setCart } from "state";
 
 const CartPage = () => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const [adults, setAdults] = useState(1);
-
-    const { state } = useLocation();
+    const { quarto, startDate, endDate } = useSelector((state) => state.cart);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
-    const handleDiaries = (a) => {
-        setAdults(a);
+    const monthNames = [
+        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ];
+
+    const startDate1 = new Date(startDate);
+    const dayStartDate = startDate1.getDate();
+    const monthIndexStartDate = startDate1.getMonth();
+    const monthNameStartDate = monthNames[monthIndexStartDate];
+    const formattedStartDate = `${dayStartDate} de ${monthNameStartDate}`;
+
+    const endDate1 = new Date(endDate);
+    const dayEndDate = endDate1.getDate();
+    const monthIndexEndDate = endDate1.getMonth();
+    const monthNameEndDate = monthNames[monthIndexEndDate];
+    const formattedEndDate = `${dayEndDate} de ${monthNameEndDate}`;
+
+    const timeDiff = Math.abs(startDate1.getTime() - endDate1.getTime());
+    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    const [st, setSt] = useState({ ...quarto, diarias: diffDays, valorTotal: quarto.valor * diffDays, startDate: formattedStartDate, endDate: formattedEndDate, diffDays });
+
+    const handleDays = (a) => {
+        setSt({ ...st, diarias: a, valorTotal: quarto.valor * a })
+        dispatch(setCart({ cart: st }))
+        navigate('/cart/checkout')
     }
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', height: '100vh', justifyContent: 'space-between' }}>
+
             <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                 <Navbar />
                 <Box sx={{ width: '80%', padding: '30px 0px' }}>
@@ -38,19 +65,19 @@ const CartPage = () => {
                     <Typography sx={{ fontSize: '40px', fontWeight: 'bold', color: blueColor, marginTop: '40px' }}>Resumo da sua reserva</Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
-                            <CardCart adults={adults} onHandleAdults={handleDiaries} />
+                            <CardCart formattedStartDate={formattedStartDate} formattedEndDate={formattedEndDate} />
                         </Box>
 
                         <Box sx={{ width: '23%', height: 'auto', backgroundColor: '#DCE0E6', borderRadius: '20px', boxShadow: '1px 2px 4px 0 rgba(0, 0, 0, 0.5)', padding: '20px', display: 'flex', flexDirection: 'column' }}>
 
                             <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>Resumo da compra</Typography>
                             <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '17px' }}><PersonIcon />2 Adultos</Typography>
-                            <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '17px' }}><CalendarMonthIcon />{adults} Dias</Typography>
+                            <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '17px' }}><CalendarMonthIcon />{diffDays} Dia(s)</Typography>
                             <hr style={{ width: '100%' }} />
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '15px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><BedIcon />Hotel</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>R$ {state.quarto.valor},0</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>R$ {st.valor},0</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '15px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>Taxas e impostos</Typography>
@@ -60,12 +87,12 @@ const CartPage = () => {
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '15px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>Valor Total</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>R$ {state.quarto.valor * adults},00</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>R$ {st.valor * diffDays},00</Typography>
                             </Box>
 
-                            <Link to="/cart/checkout" state={state}>
-                                <Button sx={{ backgroundColor: blueColor, color: 'white', width: '100%', padding: '10px', fontWeight: 'bold', fontSize: '15px', marginTop: '15px' }}>IR PARA O PAGAMENTO</Button>
-                            </Link>
+
+                            <Button onClick={handleDays} sx={{ backgroundColor: blueColor, color: 'white', width: '100%', padding: '10px', fontWeight: 'bold', fontSize: '15px', marginTop: '15px' }}>IR PARA O PAGAMENTO</Button>
+
                         </Box>
 
                     </Box>

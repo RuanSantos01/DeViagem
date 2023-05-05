@@ -13,6 +13,7 @@ import LoginPage from "scenes/loginPage";
 import ReserveAccommodation from "scenes/accommodationPage/reserveAccommodation";
 import CartPage from "scenes/cartPage";
 import PaymentPage from "scenes/paymentPage";
+import FinalPage from "scenes/accommodationPage/finalPage";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/cart/checkout" element={<PaymentPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/accommodation" element={<AccommodationPage />} />
+            <Route path="/accommodation/reservation" element={<FinalPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/reserveAccommodation" element={<ReserveAccommodation />} />

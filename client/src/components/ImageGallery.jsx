@@ -1,21 +1,8 @@
 import ReactImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
-const ImageGallery = () => {
-    const images = [
-        {
-            original: 'https://picsum.photos/id/1018/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1018/250/150/',
-        },
-        {
-            original: 'https://picsum.photos/id/1015/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1015/250/150/',
-        },
-        {
-            original: 'https://picsum.photos/id/1019/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1019/250/150/',
-        },
-    ];
+const ImageGallery = (props) => {
+    const { images } = props;
 
     return (
 
@@ -32,7 +19,7 @@ const ImageGallery = () => {
             showNav={true}
             renderItem={(item) => (
                 <div className="image-gallery-custom">
-                    <img src={item.original} alt={item.originalAlt} />
+                    <img src={`http://localhost:3001/assets/${item}`} alt={`http://localhost:3001/assets/${item}`} />
                     {item.description && (
                         <div className="image-gallery-description">{item.description}</div>
                     )}

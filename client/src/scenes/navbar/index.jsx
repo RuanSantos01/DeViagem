@@ -26,7 +26,6 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch(setLogout())
-    console.log(user)
     window.location.reload();
   }
 

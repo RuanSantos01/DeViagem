@@ -7,8 +7,10 @@ import 'react-date-range/dist/theme/default.css'
 import { Box, TextField, useTheme } from '@mui/material'
 
 import ptBR from 'date-fns/locale/pt-BR'
+import { useFormik } from 'formik'
 
-const CalendarComp = () => {
+const CalendarComp = (props) => {
+    const { handleDataNascimento } = props;
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
 
@@ -37,36 +39,49 @@ const CalendarComp = () => {
 
     const handleSelect = (date) => {
         setCalendar(format(date, 'dd/MM/yyyy'))
+        formik.setFieldValue('dataNascimento', calendar)
+        formik.handleSubmit();
     }
+
+    const formik = useFormik({
+        initialValues: {
+            dataNascimento: ''
+        },
+        onSubmit: values => {
+            handleDataNascimento(values.dataNascimento)
+        }
+    })
 
     return (
         <Box className="calendarWrap" sx={{ width: '47%' }}>
 
-            <TextField
-                sx={{ width: '100%' }}
-                value={calendar ? calendar : ''}
-                label='Data de nascimento*'
-                className="inputBox"
-                readOnly
-                name="dataNascimento"
-                onClick={() => setOpen(open => !open)}
-                InputProps={{
-                    style: { backgroundColor: "white", borderRadius: "4px" },
-                }}
-                InputLabelProps={{
-                    style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
-                }}
-            />
+            <form onSubmit={formik.handleSubmit}>
+                <TextField
+                    sx={{ width: '100%' }}
+                    onBlur={formik.handleBlur}
+                    label='Data de nascimento*'
+                    className="inputBox"
+                    readOnly
+                    name="dataNascimento"
+                    onClick={() => setOpen(open => !open)}
+                    InputProps={{
+                        style: { backgroundColor: "white", borderRadius: "4px" },
+                    }}
+                    InputLabelProps={{
+                        style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
+                    }}
+                />
 
-            <div ref={refOne}>
-                {open &&
-                    <Calendar
-                        locale={ptBR}
-                        onChange={handleSelect}
-                        className="calendarElement"
-                    />
-                }
-            </div>
+                <div ref={refOne} type='submit'>
+                    {open &&
+                        <Calendar
+                            locale={ptBR}
+                            onChange={(e) => handleSelect(e)}
+                            className="calendarElement"
+                        />
+                    }
+                </div>
+            </form>
 
         </Box>
     )

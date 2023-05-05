@@ -12,7 +12,8 @@ const ReserveAccommodation = () => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
     const card = state.card;
-    const url = 'https://www.google.com/maps?q=-22.945484071846927,-43.182963332855714'
+    const { geoLocalizacao, images } = state.card;
+    const url = `https://www.google.com/maps?q=${geoLocalizacao[0]},${geoLocalizacao[1]}`
 
     return (
 
@@ -41,13 +42,13 @@ const ReserveAccommodation = () => {
                         <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: '20px' }}>{card.localizacaoCompleta}</Typography>
                     </Box>
                     <a href={url} target="_blank" rel="noopener noreferrer">
-                        <MyMap latitude={'-22.945484071846927'} longitude={'-43.182963332855714'} nome={card.nomeLocal} />
+                        <MyMap latitude={geoLocalizacao[0]} longitude={geoLocalizacao[1]} nome={card.nomeLocal} />
                     </a>
                 </Box>
 
                 <Box sx={{ backgroundColor: 'white', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '15px' }}>
                     <Box sx={{ width: '80%', marginBottom: '20px' }}>
-                        <ImageGallery />
+                        <ImageGallery images={images} />
                     </Box>
                     <Typography sx={{ width: '80%', color: blueColor, fontSize: '20px', textAlign: 'justify', marginBottom: '20px' }}>{card.descricao}</Typography>
 

@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     user: null,
-    token: null
+    token: null,
+    cart: null,
+    paymentInformations: null
 };
 
 export const authSlice = createSlice({
@@ -26,9 +28,15 @@ export const authSlice = createSlice({
         },
         setUser: (state, action) => {
             state.user = action.payload.user;
+        },
+        setCart: (state, action) => {
+            state.cart = action.payload.cart;
+        },
+        setPaymentInformation: (state, action) => {
+            state.paymentInformations = action.payload.paymentInformations;
         }
     }
 });
 
-export const { setLogin, setLogout, setActivities, setUser } = authSlice.actions;
+export const { setLogin, setLogout, setActivities, setUser, setCart, setPaymentInformation } = authSlice.actions;
 export default authSlice.reducer;
