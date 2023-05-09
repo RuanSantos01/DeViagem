@@ -7,10 +7,7 @@ import ClassPick from 'components/ClassPick';
 
 // IMAGENS
 import bannerHome from 'assets/banner.png';
-import bannerAlguelCarro from 'assets/background-alguel-carros.png';
-import bannerHoteis from 'assets/background-hoteis.png';
 import bannerPlanejamento from 'assets/background-planejamento.png';
-import bannerPassagens from 'assets/background-passagens.png';
 import bannerRoteiros from 'assets/background-roteiros.png';
 
 // import { autocomplete } from 'air-port-codes-node';
@@ -24,55 +21,20 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 import WorkIcon from '@mui/icons-material/Work';
-import BedIcon from '@mui/icons-material/Bed';
 
 // AIRPORT
 import { autocomplete } from 'air-port-codes-node';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSearch } from 'state';
+import { useNavigate } from 'react-router-dom';
 
 const imagemStyle = {
   backgroundImage: `url(${bannerHome})`,
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
   width: "100%",
   height: "21vh"
-};
-const imagemAluguelCarro = {
-  backgroundImage: `url(${bannerAlguelCarro})`,
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  width: '365px',
-  height: '300px',
-  borderRadius: '40px'
-};
-const imagemHoteis = {
-  backgroundImage: `url(${bannerHoteis})`,
-  backgroundRepeat: 'no-repeat',
-  width: '365px',
-  height: '300px',
-  borderRadius: '40px'
-};
-const imagemPlanejamento = {
-  backgroundImage: `url(${bannerPlanejamento})`,
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  width: '365px',
-  height: '300px',
-  borderRadius: '40px'
-};
-const imagemPassagens = {
-  backgroundImage: `url(${bannerPassagens})`,
-  backgroundRepeat: 'no-repeat',
-  width: '570px',
-  height: '300px',
-  borderRadius: '40px'
-};
-const imagemRoteiros = {
-  backgroundImage: `url(${bannerRoteiros})`,
-  backgroundRepeat: 'no-repeat',
-  width: '570px',
-  height: '300px',
-  borderRadius: '40px'
 };
 
 const initialValues = {
@@ -95,6 +57,29 @@ const HomePage = () => {
   const blueColor = theme.palette.background.blue;
   const isNonMobile = useMediaQuery("(min-width:650px)");
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const imagemPlanejamento = {
+    backgroundImage: `url(${bannerPlanejamento})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    width: isNonMobile ? '45%' : '90%',
+    height: '300px',
+    borderRadius: '40px'
+  };
+
+  const imagemRoteiros = {
+    backgroundImage: `url(${bannerRoteiros})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: isNonMobile ? 'left' : '-35px 0px',
+    backgroundSize: 'cover',
+    width: isNonMobile ? '45%' : '90%',
+    height: '300px',
+    borderRadius: '40px'
+  };
+
   // TO
   const [termSelectedTo, setTermSelectedTo] = useState("");
   const [suggestionsTo, setSuggestionsTo] = useState([]);
@@ -112,8 +97,6 @@ const HomePage = () => {
   const [endDate, setEndDate] = useState('')
 
   // CLASSPICK
-  const [classPick, setClassPick] = useState(null)
-
   const refOne = useRef(null);
   const apca = autocomplete({
     key: '04af77382e',
@@ -130,7 +113,16 @@ const HomePage = () => {
       classe: {}
     },
     onSubmit: values => {
-      console.log(values);
+      if (
+        formik.values.de === '' |
+        formik.values.para === '' |
+        formik.values.ida === '' |
+        formik.values.volta === '' |
+        Object.keys(formik.values.classe).length === 0) {
+        alert('Preencha todos os campos')
+      } else {
+        dispatch(setSearch({ search: values }))
+      }
     }
   });
 
@@ -202,11 +194,9 @@ const HomePage = () => {
     formik.setFieldValue('volta', endDate)
   }
 
-  const handleClassPick = (classpick) => {
-    setClassPick(classpick)
-    formik.setFieldValue('classe', classPick)
+  const handleSubmitClass = (values) => {
+    formik.setFieldValue('classe', values)
   }
-
 
   useEffect(() => {
     document.addEventListener("click", hideOnClickOutsideTo, true)
@@ -273,6 +263,7 @@ const HomePage = () => {
                       }}
                     />
 
+
                     {searchTermFrom.length >= 3 && openFrom && (
                       <Box sx={{
                         position: 'absolute',
@@ -316,6 +307,7 @@ const HomePage = () => {
                     color: 'black',
                     fontSize: '1rem',
                   }}>
+
                     <TextField
                       label={isNonMobile ? 'Para' : ''}
                       value={termSelectedTo ? termSelectedTo : searchTermTo}
@@ -337,6 +329,7 @@ const HomePage = () => {
                         style: { color: blueColor, fontWeight: "bold", fontSize: "1rem", marginLeft: '30px' }
                       }}
                     />
+
                     {searchTermTo.length >= 3 && openTo && (
                       <Box sx={{
                         position: 'absolute',
@@ -371,9 +364,9 @@ const HomePage = () => {
 
                   </Box>
 
-                  <DateRangeCalendar startDate={handleStartDate} endDate={handleEndDate} />
+                  <DateRangeCalendar startDate={handleStartDate} endDate={handleEndDate} filter={true} />
 
-                  <ClassPick classPick={handleClassPick} />
+                  <ClassPick onApply={handleSubmitClass} />
 
                   <Button
                     type="submit"
@@ -533,7 +526,7 @@ const HomePage = () => {
 
                   <DateRangeCalendar startDate={handleStartDate} endDate={handleEndDate} filter={true} />
 
-                  <ClassPick classPick={handleClassPick} />
+                  <ClassPick onApply={handleSubmitClass} />
 
                   <Button
                     type="submit"
@@ -556,36 +549,26 @@ const HomePage = () => {
           )}
         </Formik>
 
+
         {isNonMobile ? (
           <Box sx={{
             backgroundColor: 'white',
-            width: 'auto',
+            width: '80%',
             height: 'auto',
             marginBottom: '100px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             padding: '50px',
             borderRadius: '40px'
           }}>
+            <Typography></Typography>
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemAluguelCarro}></Button>
-                <Link to="/accommodation">
-                  <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemHoteis}></Button>
-                </Link>
-                <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemPlanejamento}></Button>
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '2rem' }}>
-                <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemPassagens}></Button>
-                <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemRoteiros}></Button>
-              </Box>
-
+              <Button onClick={() => navigate('/packages')} sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemPlanejamento}></Button>
+              <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemRoteiros}></Button>
             </Box>
 
           </Box>
         ) : (
+
           <Box sx={{
             backgroundColor: 'white',
             width: '100%',
@@ -598,12 +581,8 @@ const HomePage = () => {
             padding: '50px',
             gap: '1rem'
           }}>
-            <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemAluguelCarro}></Button>
-            <Link to="/accommodation">
-              <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemHoteis}></Button>
-            </Link>
+
             <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemPlanejamento}></Button>
-            <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemPassagens}></Button>
             <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemRoteiros}></Button>
           </Box>
         )}
@@ -613,7 +592,7 @@ const HomePage = () => {
           <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: isNonMobile ? 'row' : 'column', width: isNonMobile ? '80rem' : '100%', color: 'white', gap: '0.5rem' }}>
             {isNonMobile ? (
               <Box sx={{ width: '40%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <Typography sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '0.6rem', fontSize: '20px' }}><WorkIcon />Pacotes</Typography>
+                <Typography sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '0.6rem', fontSize: '20px' }}><WorkIcon />Pacotes populares</Typography>
                 <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>
                   Aqui estão algumas opções de pacotes de viagem que podem tornar suas próximas férias ainda mais incríveis.
                 </Typography>
@@ -631,9 +610,9 @@ const HomePage = () => {
 
             {isNonMobile ? (
               <Box sx={{ width: '40%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1.5rem' }}>
-                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '20px' }}><LocalAirportIcon />Passagens aéreas</Typography>
+                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '20px' }}><LocalAirportIcon />Roteiros famosos</Typography>
                 <Typography sx={{ fontWeight: 'bold', fontSize: '30px', textAlign: 'right' }}>
-                  Confira agora nossas incríveis ofertas de voos! Temos preços arrasadores para os melhores destinos nacionais e internacionais. Não perca mais tempo e reserve sua viagem hoje mesmo!
+                  Confira agora nossas incríveis ofertas! Temos preços arrasadores para os melhores destinos nacionais e internacionais. Não perca mais tempo e reserve sua viagem hoje mesmo!
                 </Typography>
               </Box>
             ) : (
@@ -643,21 +622,6 @@ const HomePage = () => {
 
           </Box>
 
-
-          <Box sx={{ display: 'flex', flexDirection: isNonMobile ? 'row' : 'column', justifyContent: 'space-between', width: isNonMobile ? '80rem' : '100%', color: 'white', gap: '0.5rem' }}>
-            {isNonMobile ? (
-              <Box sx={{ width: '40%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <Typography sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '0.6rem', fontSize: '20px' }}><BedIcon />Hospedagens</Typography>
-                <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>
-                  Oferecemos acomodações incríveis com preços competitivos para todas as necessidades, desde hotéis luxuosos até opções econômicas. Encontre a hospedagem perfeita para sua próxima aventura conosco.
-                </Typography>
-              </Box>
-            ) : (
-              <Typography sx={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '0.6rem', fontSize: '25px' }}><BedIcon />Hospedagens</Typography>
-            )}
-
-            <Carousel />
-          </Box>
         </Box>
 
       </Box>

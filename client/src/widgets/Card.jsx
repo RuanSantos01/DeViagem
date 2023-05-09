@@ -1,12 +1,22 @@
 import { Box, Typography, useTheme } from '@mui/material'
+import moment from 'moment/moment';
+import 'moment/locale/pt-br';
 import React from 'react'
 
 const Card = (props) => {
+
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
+    const { destino, dataIda, dataVolta, imagem, valor } = props;
+
+    const dataIdaPre = new Date(dataIda);
+    const dataVoltaPre = new Date(dataVolta);
+    moment.locale('pt-br');
+    const dataIdaFormatada = moment(dataIdaPre).format('DD [de] MMMM');
+    const dataVoltaFormatada = moment(dataVoltaPre).format('DD [de] MMMM');
 
     const imagemStyle = {
-        backgroundImage: `url(${props.imagem})`,
+        backgroundImage: `url(http://localhost:3001/assets/${imagem})`,
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         width: "200px",
@@ -35,15 +45,15 @@ const Card = (props) => {
                 <Box style={imagemStyle}></Box>
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '80%' }}>
-                    <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: '20px' }}>{props.titulo}</Typography>
-                    <Typography sx={{ color: blueColor }}>{props.descricao}</Typography>
+                    <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: '20px' }}>{destino}</Typography>
+                    <Typography sx={{ color: blueColor }}>{dataIdaFormatada} - {dataVoltaFormatada}</Typography>
                 </Box>
             </Box>
 
             <Box sx={{ width: '80%', paddingBottom: '10px' }}>
-                <Typography sx={{ color: blueColor }}>Pacoter apartir de</Typography>
+                <Typography sx={{ color: blueColor }}>Pacotes apartir de</Typography>
                 <Box sx={{ color: blueColor, fontWeight: 'bold', display: 'flex', gap: '1rem' }}>
-                    <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}> R$ {props.valor}</Typography>
+                    <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}> R$ {valor}</Typography>
                 </Box>
             </Box>
         </Box>

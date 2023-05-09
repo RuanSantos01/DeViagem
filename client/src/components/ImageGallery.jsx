@@ -18,11 +18,8 @@ const ImageGallery = (props) => {
             showFullscreenButton={false}
             showNav={true}
             renderItem={(item) => (
-                <div className="image-gallery-custom">
+                <div>
                     <img src={`http://localhost:3001/assets/${item}`} alt={`http://localhost:3001/assets/${item}`} />
-                    {item.description && (
-                        <div className="image-gallery-description">{item.description}</div>
-                    )}
                 </div>
             )}
         />

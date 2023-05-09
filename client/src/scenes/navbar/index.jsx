@@ -37,6 +37,7 @@ const Navbar = () => {
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.5rem)"
           color="white"
+          sx={{ '&:hover': { cursor: 'pointer' } }}
         >
           DeViagem
         </Typography>

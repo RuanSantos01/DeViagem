@@ -4,7 +4,9 @@ const initialState = {
     user: null,
     token: null,
     cart: null,
-    paymentInformations: null
+    paymentInformations: null,
+    search: null,
+    package: null
 };
 
 export const authSlice = createSlice({
@@ -34,9 +36,15 @@ export const authSlice = createSlice({
         },
         setPaymentInformation: (state, action) => {
             state.paymentInformations = action.payload.paymentInformations;
+        },
+        setSearch: (state, action) => {
+            state.search = action.payload.search
+        },
+        setPackage: (state, action) => {
+            state.package = action.payload.package;
         }
     }
 });
 
-export const { setLogin, setLogout, setActivities, setUser, setCart, setPaymentInformation } = authSlice.actions;
+export const { setLogin, setLogout, setActivities, setUser, setCart, setPaymentInformation, setSearch, setPackage } = authSlice.actions;
 export default authSlice.reducer;

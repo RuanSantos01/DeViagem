@@ -14,6 +14,8 @@ import ReserveAccommodation from "scenes/accommodationPage/reserveAccommodation"
 import CartPage from "scenes/cartPage";
 import PaymentPage from "scenes/paymentPage";
 import FinalPage from "scenes/accommodationPage/finalPage";
+import PackagePage from "scenes/packagePage";
+import PackageCartPage from "scenes/cartPage/packageCartPage";
 
 function App() {
 
@@ -25,13 +27,15 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route path="/" element={<CartPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/packages" element={<PackagePage />} />
+            <Route path="/packages/cart" element={<PackageCartPage />} />
             <Route path="/cart/checkout" element={<PaymentPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/accommodation" element={<AccommodationPage />} />
             <Route path="/accommodation/reservation" element={<FinalPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/home" element={<HomePage />} />
             <Route path="/reserveAccommodation" element={<ReserveAccommodation />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
             <Route path="/confirmEmail" element={<ConfirmEmailPage />} />

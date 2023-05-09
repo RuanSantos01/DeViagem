@@ -1,8 +1,8 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
-import CardAccommodationValues from "components/CardAccommodationValues";
 import ImageGallery from "components/ImageGallery";
 import MyMap from "components/Map";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import StarRating from "widgets/StarRating";
@@ -11,9 +11,13 @@ const ReserveAccommodation = () => {
     const { state } = useLocation();
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const card = state.card;
-    const { geoLocalizacao, images } = state.card;
+    const card = state.hospedagem;
+    const { geoLocalizacao, images } = card;
     const url = `https://www.google.com/maps?q=${geoLocalizacao[0]},${geoLocalizacao[1]}`
+
+    useEffect(() => {
+        console.log(state)
+    })
 
     return (
 
@@ -64,23 +68,6 @@ const ReserveAccommodation = () => {
                 </Box>
 
 
-            </Box>
-
-            <Box sx={{
-                width: "100%",
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: "column",
-                gap: '1rem',
-                height: 'auto',
-                marginBottom: '20px'
-            }}>
-                <Box sx={{ width: '80%', height: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '1rem' }}>
-                    {card.quartos.map((quarto) => (
-                        <CardAccommodationValues quarto={quarto} />
-                    ))}
-                </Box>
             </Box>
 
             <Box sx={{

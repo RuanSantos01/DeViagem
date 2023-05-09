@@ -1,5 +1,5 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
-import React, { useRef, useState } from 'react'
+import { Box, Button, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react'
 
 // ICONS
 import AddIcon from '@mui/icons-material/Add';
@@ -12,17 +12,123 @@ const ClassPick = (props) => {
     const isNonMobile2 = useMediaQuery("(min-width:900px)");
     const refOne = useRef(null);
     const [open, setOpen] = useState('');
-    const [val, setVal] = useState(false);
-    const [classPick, setClassPick] = useState({
-        adults: 0,
-        children: 0,
-        class: ''
-    });
+
+    const [numRooms, setNumRooms] = useState(1);
+    const [numAdults, setNumAdults] = useState([1]);
+    const [numChildren, setNumChildren] = useState([0]);
+
+    const handleNumRoomsChange = (valor) => {
+        const newNumRooms = valor;
+        setNumRooms(newNumRooms);
+        setNumAdults(Array(parseInt(newNumRooms)).fill(1));
+        setNumChildren(Array(parseInt(newNumRooms)).fill(0));
+    };
+
+    const handleNumAdultsChange = (index, value) => {
+        const newNumAdults = [...numAdults];
+        newNumAdults[index] = Number(value);
+        setNumAdults(newNumAdults);
+    };
+
+    const handleNumChildrenChange = (index, value) => {
+        const newNumChildren = [...numChildren];
+        newNumChildren[index] = Number(value);
+        setNumChildren(newNumChildren);
+    };
 
     const handleClassPick = () => {
-        props.classPick(classPick);
+        const objFinal = {
+            numRooms,
+            numAdults,
+            numChildren
+        }
+        props.onApply(objFinal)
         setOpen(false);
-        setVal(true);
+    }
+
+    useEffect(() => {
+        document.addEventListener("keydown", hideOnEscape, true)
+        document.addEventListener("click", hideOnClickOutside, true)
+    }, [])
+
+    const hideOnEscape = (e) => {
+        if (e.key === "Escape") {
+            setOpen(false)
+        }
+    }
+
+    const hideOnClickOutside = (e) => {
+        if (refOne.current && !refOne.current.contains(e.target)) {
+            setOpen(false)
+        }
+    }
+
+    const somaAdultos = numAdults.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    const somaCriancas = numChildren.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    const renderRooms = () => {
+        const inputsAdicionais = []
+        for (let i = 0; i < numRooms; i++) {
+            inputsAdicionais.push(
+                <Box key={i} sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}>
+                    <hr style={{ width: '100%', margin: 0 }} />
+                    <Typography sx={{ fontWeight: 'bold', marginBottom: '10px', marginTop: '20px' }}>Quarto {i + 1}</Typography>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box sc={{ display: 'flex', flexDirection: 'column' }}>
+                            <Typography sx={{ fontWeight: 'bold' }}>Adultos</Typography>
+                            <Typography>16 anos ou mais</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
+                            <Button disabled={numAdults[i] <= 1} onClick={(e) => handleNumAdultsChange(i, numAdults[i])}>
+                                <RemoveIcon sx={{ color: blueColor }} />
+                            </Button>
+                            <input
+                                type="number"
+                                style={{ width: '30px', border: 0, padding: 0, marginLeft: '10px', textAlign: 'center', fontWeight: 'bold' }}
+                                readOnly
+                                min="1"
+                                max="5"
+                                value={numAdults[i]}
+                            />
+                            <Button disabled={numAdults[i] >= 5} onClick={() => handleNumAdultsChange(i, Number(numAdults[i] + 1))}>
+                                <AddIcon sx={{ color: blueColor }} />
+                            </Button>
+
+                        </Box>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box sc={{ display: 'flex', flexDirection: 'column' }}>
+                            <Typography sx={{ fontWeight: 'bold' }}>Crianças</Typography>
+                            <Typography>Até 15 anos</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
+
+                            <Button disabled={numChildren[i] <= 1} onClick={() => handleNumChildrenChange(i, numChildren[i] - 1)} >
+                                <RemoveIcon sx={{ color: blueColor }} />
+                            </Button>
+                            <input
+                                type="number"
+                                style={{ width: '30px', border: 0, padding: 0, marginLeft: '10px', textAlign: 'center', fontWeight: 'bold' }}
+                                readOnly
+                                min="1"
+                                max="5"
+                                value={numChildren[i]}
+                            />
+                            <Button disabled={numChildren[i] >= 3} onClick={() => handleNumChildrenChange(i, numChildren[i] + 1)}>
+                                <AddIcon sx={{ color: blueColor }} />
+                            </Button>
+
+
+                        </Box>
+                    </Box>
+                </Box>
+            )
+        }
+        return inputsAdicionais;
     }
 
     return (
@@ -38,7 +144,7 @@ const ClassPick = (props) => {
             <TextField
                 fullWidth
                 label="Viajantes e classe de voo"
-                value={val ? `${classPick.adults} adultos, ${classPick.children} crianças - ${classPick.class}` : ''}
+                value={`${numRooms} quartos - ${somaAdultos} adultos, ${somaCriancas} crianças`}
                 name="classe"
                 variant="filled"
                 onClick={() => setOpen(open => !open)}
@@ -57,7 +163,7 @@ const ClassPick = (props) => {
                     left: isNonMobile2 && isNonMobile ? '50%' : '50%',
                     transform: 'translateX(-50%)',
                     top: '55px',
-                    zIndex: '999',
+                    zIndex: '999'
                 }}
                 ref={refOne}>
                 {open && (
@@ -73,45 +179,30 @@ const ClassPick = (props) => {
                             boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)"
                         }}
                     >
-                        <FormControl variant='filled'>
-                            <InputLabel sx={{ color: blueColor, fontWeight: "bold", fontSize: "1rem" }}>Classe da cabine</InputLabel>
-                            <Select
-                                label='Classe da cabine'
-                                value={classPick.class ? classPick.class : ''}
-                                onChange={(value) => setClassPick({ ...classPick, class: value.target.value })}
-                                sx={{
-                                    width: '100%',
-                                    color: 'black'
-                                }}>
-                                <MenuItem value="Econônica">Econômica</MenuItem>
-                                <MenuItem value="Primeira Classe">Primeira Classe</MenuItem>
-                            </Select>
-                        </FormControl>
-
+                        <Typography sx={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold' }}>{`${numRooms} quartos - ${somaAdultos} adultos, ${somaCriancas} crianças`}</Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Box sc={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography sx={{ fontWeight: 'bold' }}>Adultos</Typography>
-                                <Typography>16 anos ou mais</Typography>
+                                <Typography sx={{ fontWeight: 'bold' }}>Quartos</Typography>
                             </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-                                <Button onClick={() => setClassPick({ ...classPick, adults: classPick.adults - 1 })}><RemoveIcon sx={{ color: blueColor }} /></Button>
-                                <Typography sx={{ fontWeight: 'bold' }}>{classPick.adults}</Typography>
-                                <Button onClick={() => setClassPick({ ...classPick, adults: classPick.adults + 1 })}><AddIcon sx={{ color: blueColor }} /></Button>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Button disabled={numRooms <= 1} onClick={() => handleNumRoomsChange(numRooms - 1)}>
+                                    <RemoveIcon sx={{ color: blueColor }} />
+                                </Button>
+                                <input
+                                    type="number"
+                                    style={{ width: '30px', border: 0, padding: 0, marginLeft: '10px', textAlign: 'center', fontWeight: 'bold' }}
+                                    readOnly
+                                    min="1"
+                                    max="5"
+                                    value={numRooms}
+                                />
+                                <Button disabled={numRooms >= 5} onClick={() => handleNumRoomsChange(numRooms + 1)}>
+                                    <AddIcon sx={{ color: blueColor }} />
+                                </Button>
                             </Box>
                         </Box>
 
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Box sc={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography sx={{ fontWeight: 'bold' }}>Crianças</Typography>
-                                <Typography>Até 15 anos</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-                                <Button onClick={() => setClassPick({ ...classPick, children: classPick.children - 1 })}><RemoveIcon sx={{ color: blueColor }} /></Button>
-                                <Typography sx={{ fontWeight: 'bold' }}>{classPick.children}</Typography>
-                                <Button onClick={() => setClassPick({ ...classPick, children: classPick.children + 1 })}><AddIcon sx={{ color: blueColor }} /></Button>
-                            </Box>
-                        </Box>
-                        <Box>{`${classPick.adults} adultos, ${classPick.children} crianças - ${classPick.class}`}</Box>
+                        {renderRooms()}
 
                         <Button onClick={handleClassPick} sx={{ backgroundColor: blueColor, color: 'white', '&:hover': { color: blueColor, border: `1px solid ${blueColor}` } }}>Aplicar</Button>
                     </Box>
@@ -122,3 +213,4 @@ const ClassPick = (props) => {
 }
 
 export default ClassPick
+

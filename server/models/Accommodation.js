@@ -12,6 +12,9 @@ const AccommodationSchema = new mongoose.Schema(
         image: {
             type: String,
         },
+        images: {
+            type: Array,
+        },
         localizacao: {
             type: String
         },
