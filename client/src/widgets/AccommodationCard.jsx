@@ -11,7 +11,6 @@ const AccommodationCard = (props) => {
     const blueColor = theme.palette.background.blue;
 
     const handleButtonClick = () => {
-        console.log(isSelected)
         if (!isSelected) {
             handleSelection(props)
         }
@@ -26,7 +25,7 @@ const AccommodationCard = (props) => {
     }
 
     return (
-        <Box sx={{ width: '100%', height: '300px', border: `1px solid ${'#BFD3F1'}`, backgroundColor: 'white', borderRadius: '15px', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItens: 'center' }}>
+        <Box sx={{ width: '100%', height: '250px', border: `1px solid ${'#BFD3F1'}`, backgroundColor: 'white', borderRadius: '15px', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItens: 'center', boxShadow: '1px 1px 4px rgba(0,0,0,0.3)' }}>
             <Box style={backgroundAccommodation}></Box>
             <Box sx={{ width: '52%', display: "flex", flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -48,11 +47,15 @@ const AccommodationCard = (props) => {
                 <Box sx={{ display: ' flex', textAlign: 'end', flexDirection: 'column', gap: '1rem' }}>
                     <Box>
                         <Typography sx={{ fontSize: '18px' }}>{tempoCapacidade}</Typography>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>R$ {valor * diffDays}</Typography>
+                        {diffDays && (
+                            <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>R$ {valor * diffDays}</Typography>
+                        )}
                     </Box>
 
-                    <Button onClick={handleButtonClick} disabled={isSelected} sx={{ backgroundColor: isSelected ? "#BFD3F1" : blueColor, color: 'white', height: '40px', '&:hover': { color: blueColor, border: `1px solid ${blueColor}` } }}>{isSelected ? "Escolhido" : "Escolho esse!"}</Button>
-
+                    <Button onClick={handleButtonClick} disabled={!diffDays} sx={{ backgroundColor: isSelected ? "#BFD3F1" : blueColor, color: 'white', height: '40px', '&:hover': { color: blueColor, border: `1px solid ${blueColor}` } }}>{isSelected ? "Escolhido" : "Escolho esse!"}</Button>
+                    {!diffDays && (
+                        <Typography sx={{ color: 'red' }}>Selecione a origem e a data</Typography>
+                    )}
                 </Box>
             </Box>
         </Box >

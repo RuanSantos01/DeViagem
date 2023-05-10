@@ -6,14 +6,6 @@ const PackagesSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        dataIda: {
-            type: String,
-            required: true
-        },
-        dataVolta: {
-            type: String,
-            required: true
-        },
         valorPassagem: {
             type: Number,
             required: true
@@ -30,13 +22,9 @@ const PackagesSchema = new mongoose.Schema(
         },
         vagas: {
             type: Number,
-            required: true
         },
-        horaIda: {
-            type: String
-        },
-        horaVolta: {
-            type: String
+        pessoas: {
+            type: Number
         }
     },
     { timestamps: true }

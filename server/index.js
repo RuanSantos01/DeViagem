@@ -15,17 +15,20 @@ import { verifyToken } from "./middleware/auth.js";
 import authRoutes from "./routes/auth.js";
 import accommodationRoutes from "./routes/accommodation.js";
 import packagesRoutes from "./routes/packages.js";
+import stateRoutes from "./routes/states.js";
 
 // MODELS
 import Accommodation from "./models/Accommodation.js";
 import Packages from "./models/Packages.js";
 import User from "./models/User.js";
 import SentCode from "./models/SentCode.js";
+import States from "./models/States.js";
 
 // TESTE
 import { users, code } from "./data/index.js";
 import { riodejaneiroAccommodations } from "./data/accommodationData.js";
 import { packagesData } from "./data/packagesData.js";
+import { estados } from "./data/state.js";
 
 
 // CONFIGURATIONS
@@ -63,6 +66,7 @@ const upload = multer({ storage });
 app.use("/auth", authRoutes);
 app.use("/accommodations", accommodationRoutes);
 app.use("/packages", packagesRoutes);
+app.use("/states", stateRoutes);
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;
@@ -73,6 +77,7 @@ mongoose.connect(process.env.MONGO_URL, {
     app.listen(PORT, () => console.log(`Server on port: ${PORT}`))
 
     // Accommodation.insertMany(accommodations);
+    // States.insertMany(estados)
     // Packages.insertMany(packagesData);
 }).catch((err) => {
     console.log(err)
