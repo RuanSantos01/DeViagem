@@ -46,7 +46,7 @@ export const riodejaneiroAccommodations = [
         informacaoGeral: 'A 100 metros da praia',
         tipoQuarto: 'Apartamento Completo',
         quartos: [{
-            image: "novotel/background-hotel-novotel.png",
+            image: "hotel/novotel/background-hotel-novotel.png",
             imageQuarto: "novotel/quarto.png",
             nomeLocal: 'Novotel RJ Botafogo',
             localizacao: 'Botafogo, Rio de Janeiro',
@@ -56,7 +56,7 @@ export const riodejaneiroAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "novotel/background-hotel-novotel.png",
+            image: "hotel/novotel/background-hotel-novotel.png",
             imageQuarto: "novotel/quarto.png",
             nomeLocal: 'Novotel RJ Botafogo',
             localizacao: 'Botafogo, Rio de Janeiro',
@@ -79,7 +79,3 @@ export const riodejaneiroAccommodations = [
         geoLocalizacao: ['-22.945363660153305', '-43.18297473199225']
     }
 ]
-
-export const londresAccommodations = []
-export const parisAccommodations = []
-export const barcelonaAccommodations = []
