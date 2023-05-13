@@ -1,6 +1,6 @@
 export const riodejaneiroAccommodations = [
     {
-        image: "windson/background-hotel-windson.png",
+        image: "hotel/rio-janeiro/windson/background-hotel-windson.png",
         images: ["windson/background-hotel-windson.png", "windson/alimentos.png", "windson/area.png", "windson/piscina.png", "windson/quarto.png"],
         nomeLocal: 'Windson Plaza Copacabana',
         localizacao: 'Copacabana, Rio de Janeiro',
@@ -8,7 +8,7 @@ export const riodejaneiroAccommodations = [
         informacaoGeral: 'A 350 metros da praia',
         tipoQuarto: 'Quarto Duplo Superior',
         quartos: [{
-            image: "windson/background-hotel-windson.png",
+            image: "hotel/rio-janeiro/windson/background-hotel-windson.png",
             imageQuarto: "windson/quarto.png",
             nomeLocal: 'Windson Plaza Copacabana',
             localizacao: 'Copacabana, Rio de Janeiro',
@@ -18,7 +18,7 @@ export const riodejaneiroAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "windson/background-hotel-windson.png",
+            image: "hotel/rio-janeiro/windson/background-hotel-windson.png",
             nomeLocal: 'Windson Plaza Copacabana',
             imageQuarto: "windson/quarto.png",
             localizacao: 'Copacabana, Rio de Janeiro',
@@ -38,15 +38,15 @@ export const riodejaneiroAccommodations = [
         geoLocalizacao: ['-22.970046413614764', '-43.18423807246657']
     },
     {
-        image: "novotel/background-hotel-novotel.png",
-        images: ["novotel/background-hotel-novotel.png", "novotel/alimentos.png", "novotel/lobby-bar.png", "novotel/piscina.png", "novotel/quarto.png"],
+        image: "hotel/rio-janeiro/novotel/background-hotel-novotel.png",
+        images: ["hotel/rio-janeiro/novotel/background-hotel-novotel.png", "novotel/alimentos.png", "novotel/lobby-bar.png", "novotel/piscina.png", "novotel/quarto.png"],
         nomeLocal: 'Novotel RJ Botafogo',
         localizacao: 'Botafogo, Rio de Janeiro',
         localizacaoCompleta: 'Praia De Botafogo 330 Botafogo, Botafogo, Rio de Janeiro, CEP 22250040, Brasil',
         informacaoGeral: 'A 100 metros da praia',
         tipoQuarto: 'Apartamento Completo',
         quartos: [{
-            image: "hotel/novotel/background-hotel-novotel.png",
+            image: "hotel/rio-janeiro/novotel/background-hotel-novotel.png",
             imageQuarto: "novotel/quarto.png",
             nomeLocal: 'Novotel RJ Botafogo',
             localizacao: 'Botafogo, Rio de Janeiro',
@@ -56,8 +56,8 @@ export const riodejaneiroAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "hotel/novotel/background-hotel-novotel.png",
-            imageQuarto: "novotel/quarto.png",
+            image: "hotel/rio-janeiro/novotel/background-hotel-novotel.png",
+            imageQuarto: "hotel/rio-janeiro/novotel/quarto.png",
             nomeLocal: 'Novotel RJ Botafogo',
             localizacao: 'Botafogo, Rio de Janeiro',
             tipoQuarto: 'King',
