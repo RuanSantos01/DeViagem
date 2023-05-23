@@ -11,22 +11,22 @@ export const register = async (req, res) => {
     try {
         const {
             fullName,
-            email, 
+            email,
             password,
             phone,
             birthDate,
             gender
         } = req.body;
 
-        const user = await User.findOne({email: email})
-        if(user) return res.status(403).json({msg: "Usuário já cadastrado."})
+        const user = await User.findOne({ email: email })
+        if (user) return res.status(403).json({ msg: "Usuário já cadastrado." })
 
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
         const newUser = new User({
             fullName,
-            email, 
+            email,
             phone,
             birthDate,
             gender,
@@ -38,61 +38,61 @@ export const register = async (req, res) => {
 
         const savedUser = await newUser.save();
 
-        const code = await generateCode();
-        await sendEmail(email, code);
+        const code = generateCode();
+        sendEmail(email, code);
 
         const newSentCode = new SentCode({
             email,
-            code, 
+            code,
             validation: false
         })
         await newSentCode.save();
-        
 
-        res.status(201).json({savedUser, msg: "Código enviado por email."})
+
+        res.status(201).json({ savedUser, msg: "Código enviado por email." })
 
     } catch (err) {
-    
-        res.status(500).json({error: err.message});
+
+        res.status(500).json({ error: err.message });
 
     }
 }
 
 // LOGGING USER
-export const login = async(req, res) => {
+export const login = async (req, res) => {
     try {
-        const {email, password} = req.body;
-        const user = await User.findOne({email: email});
-        if(!user) return res.status(400).json({msg: "Usuário não está cadastrado"});
-    
+        const { email, password } = req.body;
+        const user = await User.findOne({ email: email });
+        if (!user) return res.status(400).json({ msg: "Usuário não está cadastrado" });
+
         const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch) return res.status(400).json({msg: "Credenciais inválidas"});
-    
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+        if (!isMatch) return res.status(400).json({ msg: "Credenciais inválidas" });
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         delete user.password;
-        res.status(200).json({token, user});
-    } catch(err) {
-        res.status(500).json({error: err.message})
+        res.status(200).json({ token, user });
+    } catch (err) {
+        res.status(500).json({ error: err.message })
     }
 }
 
 // CONFIRM CODE
-export const confirmAccount = async(req, res) => {
+export const confirmAccount = async (req, res) => {
     const {
-        code, 
-        email, 
+        code,
+        email,
     } = req.body;
 
-    const payload = await SentCode.findOne({email: email});
+    const payload = await SentCode.findOne({ email: email });
 
-    if(payload.validation) {
-        res.status(403).json({msg: "Código já validado anteriormente"})
+    if (payload.validation) {
+        res.status(403).json({ msg: "Código já validado anteriormente" })
     } else {
-        if(code === payload.code) {
+        if (code === payload.code) {
 
             SentCode.updateOne(
-                {email: email},
-                {$set: {validation: true}}
+                { email: email },
+                { $set: { validation: true } }
             ).then(() => {
                 console.log(`Dado atualizado`);
             }).catch(err => {
@@ -100,19 +100,85 @@ export const confirmAccount = async(req, res) => {
             });
 
             User.updateOne(
-                {email: email},
-                {$set: {validation: true}}
+                { email: email },
+                { $set: { validation: true } }
             ).then(() => {
                 console.log(`Dado atualizado`);
             }).catch(err => {
                 console.log("Error ao atualizar dado no mongo -", err);
             });
 
-            res.status(200).json({validation: true, msg: "Código validado com sucesso!."});
+            res.status(200).json({ validation: true, msg: "Código validado com sucesso!." });
         } else {
-            res.status(403).json({validation: false, msg: "Código inválido"});
+            res.status(403).json({ validation: false, msg: "Código inválido" });
         };
     }
+}
+
+// UPDATE USER DATA
+export const updateUserData = async (req, res) => {
+    try {
+        const {
+            fullName,
+            email,
+            phone,
+            _id
+        } = req.body;
+
+        const filter = { _id }
+
+        const update = {
+            $set: {
+                fullName,
+                email,
+                phone
+            }
+        }
+
+        await User.updateOne(filter, update)
+
+        res.status(200).json({ msg: 'Dados do usuário atualizados com sucesso.' })
+    } catch (err) {
+        res.status(500).json({ msg: err })
+    }
+
+}
+
+// UPDATE PASSWORD
+export const updateUserPassword = async (req, res) => {
+    try {
+        const {
+            password,
+            newPassword,
+            _id
+        } = req.body
+
+        const salt = await bcrypt.genSalt();
+
+        const user = await User.findById(_id);
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (isMatch) {
+            const newPasswordHash = await bcrypt.hash(newPassword, salt);
+            const update = {
+                $set: {
+                    password: newPasswordHash
+                }
+            }
+
+            const filter = { _id }
+            User.updateOne(filter, update)
+
+            res.status(200).json({ msg: 'Senha alterada com sucesso' })
+        } else {
+            res.status(505).json({ msg: 'Senha original informada não é válida' })
+        }
+
+    } catch (err) {
+        res.status(500).json({ msg: err })
+    }
+
+
 }
 
 // GERADOR DE CÓDIGO
@@ -122,7 +188,7 @@ const generateCode = () => {
 
     for (let i = 0; i < 5; i++) {
         const randomIndex = Math.floor(Math.random() * digits.length);
-        code += digits[randomIndex]; 
+        code += digits[randomIndex];
     }
 
     return code;
@@ -141,9 +207,9 @@ const sendEmail = (email, code) => {
     }
 
     sgMail.send(msg)
-    .then(() => {
-        console.log("Email Enviado")
-    }).catch((error) => {
-        throw {message: error.message}
-    })
+        .then(() => {
+            console.log("Email Enviado")
+        }).catch((error) => {
+            throw { message: error.message }
+        })
 }

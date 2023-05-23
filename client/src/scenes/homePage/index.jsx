@@ -582,7 +582,7 @@ const HomePage = () => {
             gap: '1rem'
           }}>
 
-            <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemPlanejamento}></Button>
+            <Button onClick={() => navigate('/packages')} sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemPlanejamento}></Button>
             <Button sx={{ '&:hover': { boxShadow: "4px 4px 2px rgba(0, 0, 0, 0.3)" } }} style={imagemRoteiros}></Button>
           </Box>
         )}

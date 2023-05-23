@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography, useTheme } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ImageGalleryElastic from 'components/ImageGalleryElastic';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { setCart, setPaymentInformation } from 'state';
 
 const PackageCartPage = () => {
-
+    const isNonMobile = useMediaQuery("(min-width:650px)");
     const packages = useSelector((state) => state.package);
 
     const theme = useTheme();
@@ -115,7 +115,9 @@ const PackageCartPage = () => {
                 packages,
                 estado,
                 selectedDate,
-                selectedCard
+                selectedCard,
+                valorPassagem,
+                valorFinal
             }
         }));
         navigate('/packages/cart/checkout')
@@ -124,22 +126,23 @@ const PackageCartPage = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#E6ECF5' }}>
             <Navbar />
+            <Box sx={{ width: '80%' }}>
+                <ImageGalleryElastic images={packages.imagens} />
+            </Box>
+            <Box sx={{ width: isNonMobile ? '80%' : '100%', marginTop: '30px', marginBottom: '30px', display: 'flex', height: '100%', minHeight: '90vh', justifyContent: 'space-between', flexDirection: isNonMobile ? 'row' : 'column' }}>
 
-            <ImageGalleryElastic images={packages.imagens} />
-            <Box sx={{ width: '80%', marginTop: '30px', marginBottom: '30px', display: 'flex', height: '100%', minHeight: '90vh', justifyContent: 'space-between' }}>
-
-                <Box sx={{ width: '70%', marginTop: '15px', backgroundColor: 'white', borderRadius: '20px', padding: '20px', boxShadow: '2px 2px 2px rgba(0,0,0,0.5)', color: blueColor, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <Typography sx={{ fontWeight: 'bold', fontSize: '35px' }}>Pacote para {packages.destino}</Typography>
+                <Box sx={{ width: isNonMobile ? '70%' : '100%', marginTop: '15px', backgroundColor: 'white', borderRadius: isNonMobile ? '20px' : '4px', padding: '20px', boxShadow: isNonMobile ? '2px 2px 2px rgba(0,0,0,0.5)' : '0px 0px 6px rgba(0,0,0,0.5)', color: blueColor, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: isNonMobile ? '35px' : '27px' }}>Pacote para {packages.destino}</Typography>
 
                     <Box sx={{ display: 'flex', gap: '0.5rem', border: `1px solid ${blueColor}`, width: '100%', borderRadius: '10px', padding: '10px' }}>
                         {estado && (
-                            <Typography sx={{ fontSize: '18px', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><CalendarMonthIcon />{estado.dias[selectedDate].dataIda} - {estado.dias[selectedDate].dataVolta}</Typography>
+                            <Typography sx={{ fontSize: isNonMobile ? '18px' : '13px', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><CalendarMonthIcon />{estado.dias[selectedDate].dataIda} - {estado.dias[selectedDate].dataVolta}</Typography>
                         )}
-                        <Typography sx={{ fontSize: '18px', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><PersonIcon />Viagem para 2 pessoas</Typography>
+                        <Typography sx={{ fontSize: isNonMobile ? '18px' : '13px', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><PersonIcon />Viagem para 2 pessoas</Typography>
                     </Box>
 
 
-                    <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 'bold', fontSize: '20px' }}><DoneIcon />Personalize seu pacote</Typography>
+                    <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 'bold', fontSize: isNonMobile ? '20px' : '17px' }}><DoneIcon />Personalize seu pacote</Typography>
 
                     <Box sx={{ display: 'flex', gap: '2rem' }}>
                         <FormControl fullWidth variant="filled">
@@ -191,16 +194,16 @@ const PackageCartPage = () => {
 
                 </Box>
 
-                <Box sx={{ width: '28%', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <Box sx={{ height: 'auto', marginTop: '15px', backgroundColor: 'white', borderRadius: '20px', padding: '20px', boxShadow: '2px 2px 2px rgba(0,0,0,0.5)', color: blueColor, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <Box sx={{ width: isNonMobile ? '28%' : '100%', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <Box sx={{ height: 'auto', marginTop: '15px', backgroundColor: 'white', borderRadius: isNonMobile ? '20px' : '4px', padding: '20px', boxShadow: isNonMobile ? '2px 2px 2px rgba(0,0,0,0.5)' : '0px 0px 6px rgba(0,0,0,0.5)', color: blueColor, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
 
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '35px' }}>Informações sobre o pacote..</Typography>
+                        <Typography sx={{ fontWeight: 'bold', fontSize: isNonMobile ? '35px' : '25px' }}>Informações sobre o pacote...</Typography>
 
                         {estado ? (
                             <Box sx={{ display: 'flex', gap: '0.5rem', width: '100%', borderRadius: '10px', padding: '15px', flexDirection: 'column', border: `1px solid ${blueColor}` }}>
-                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '18px' }}><AirplaneTicketIcon /> <strong>Voo</strong> - operado por<strong>aviadora interna</strong></Typography>
-                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '18px' }}> <strong>Ida</strong> {estado.dias[selectedDate].dataIda} às {estado.dias[selectedDate].horaIda}</Typography>
-                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '18px' }}> <strong>Volta</strong> {estado.dias[selectedDate].dataVolta} às {estado.dias[selectedDate].horaVolta}</Typography>
+                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: isNonMobile ? '18px' : '13px' }}><AirplaneTicketIcon /> <strong>Voo</strong> operado por<strong>aviadora interna</strong></Typography>
+                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: isNonMobile ? '18px' : '17px' }}> <strong>Ida</strong>{estado.dias[selectedDate].dataIda} às {estado.dias[selectedDate].horaIda}</Typography>
+                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: isNonMobile ? '18px' : '17px' }}> <strong>Volta</strong> {estado.dias[selectedDate].dataVolta} às {estado.dias[selectedDate].horaVolta}</Typography>
                             </Box>
                         ) : (
                             <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '18px' }}>Selecione de onde partirá para informações do Vôo</Typography>
@@ -208,16 +211,16 @@ const PackageCartPage = () => {
 
                         {selectedCard && (
                             <Box sx={{ display: 'flex', gap: '0.5rem', width: '100%', borderRadius: '10px', padding: '15px', flexDirection: 'column', border: `1px solid ${blueColor}` }}>
-                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '18px' }}><HotelIcon /> <strong>Hospedagem</strong></Typography>
-                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '18px' }}> <strong>Check-in</strong> até {moment(estado.dias[selectedDate].dataIda + ' ' + estado.dias[selectedDate].horaIda, 'DD [de] MMMM [às] HH:mm').add(6, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
-                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '18px' }}> <strong>Check-out</strong> até {moment(estado.dias[selectedDate].dataVolta + ' ' + estado.dias[selectedDate].horaVolta, 'DD [de] MMMM [às] HH:mm').subtract(1, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
+                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: isNonMobile ? '18px' : '13px' }}><HotelIcon /> <strong>Hospedagem</strong></Typography>
+                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: isNonMobile ? '18px' : '17px' }}> <strong>Check-in</strong> até {moment(estado.dias[selectedDate].dataIda + ' ' + estado.dias[selectedDate].horaIda, 'DD [de] MMMM [às] HH:mm').add(6, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
+                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: isNonMobile ? '18px' : '17px' }}> <strong>Check-out</strong> até {moment(estado.dias[selectedDate].dataVolta + ' ' + estado.dias[selectedDate].horaVolta, 'DD [de] MMMM [às] HH:mm').subtract(1, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
                             </Box>
                         )}
 
                     </Box>
 
                     {estado && (
-                        <Box sx={{ height: 'auto', marginTop: '15px', backgroundColor: 'white', borderRadius: '20px', padding: '20px', boxShadow: '2px 2px 2px rgba(0,0,0,0.5)', color: blueColor, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <Box sx={{ height: 'auto', marginTop: '15px', backgroundColor: 'white', borderRadius: isNonMobile ? '20px' : '4px', padding: '20px', boxShadow: isNonMobile ? '2px 2px 2px rgba(0,0,0,0.5)' : '0px 0px 6px rgba(0,0,0,0.5)', color: blueColor, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                             <Typography sx={{ fontWeight: 'bold', fontSize: '35px' }}>Valores</Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <Typography sx={{ textDecoration: 'line-through', fontStyle: 'italic', fontSize: '17px', fontWeight: 'bold', color: 'grey' }}>R$ {(valorFinal * 1.1).toFixed(2)}</Typography>

@@ -6,7 +6,7 @@ import FlexBetween from 'components/FlexBetween';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLogin, setUser } from 'state';
 import { useNavigate } from 'react-router-dom';
 import TextMask from 'react-text-mask';
@@ -80,8 +80,6 @@ const LoginPage = () => {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
 
-  const [isErrorRegister, setIsErrorRegister] = useState(false);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -95,6 +93,8 @@ const LoginPage = () => {
     const dataFormatada = `${dia}-${mes}-${ano}`;
     return dataFormatada;
   }
+
+  const faseFlow = useSelector((state) => state.faseFlow);
 
   const register = async (values, onSubmitProps) => {
     let requestBody = {};
@@ -114,7 +114,7 @@ const LoginPage = () => {
     );
 
     if (savedUserResponse.status !== 201) {
-      setIsErrorRegister(true);
+      alert('Erro ao cadastrar, tente novamente mais tarde.')
     } else {
       const savedUser = await savedUserResponse.json();
 
@@ -128,6 +128,7 @@ const LoginPage = () => {
   };
 
   const login = async (values, onSubmitProps) => {
+    console.log(faseFlow === 1)
     const loggedInResponse = await fetch(
       "http://localhost:3001/auth/login", {
       method: "POST",
@@ -135,6 +136,11 @@ const LoginPage = () => {
       body: JSON.stringify(values)
     }
     );
+
+    if (loggedInResponse.status === 400) {
+      alert('Usuário não cadastrado')
+      return
+    }
 
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
@@ -146,7 +152,14 @@ const LoginPage = () => {
           token: loggedIn.token
         })
       );
-      navigate("/home")
+
+      if (faseFlow === 1) {
+        navigate("/packages/cart/checkout")
+      } else {
+        navigate("/home")
+      }
+    } else {
+      alert('Não foi possível logar no momento, tente novamente mais tarde.')
     }
   };
 

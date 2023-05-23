@@ -75,12 +75,14 @@ const PackagePage = () => {
 
             <Box sx={{ width: '100%', backgroundColor: blueColor, height: '200px', margin: '20px 0px', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0px 3px 2px rgba(0,0,0,0.3)' }}>
                 <Box sx={{ width: '70%' }}>
-                    <Typography sx={{ fontWeight: 'bold', fontSize: '40px' }}>Pacotes para facilitar sua viagem!</Typography>
-                    <Typography sx={{ fontSize: '17px' }}>Planeje sua próxima aventura, escolha seu destino e se prepare para aproveitar tudo o que temos a oferecer. Com a nossa ampla variedade de opções, você pode encontrar o lugar perfeito para desfrutar de paisagens deslumbrantes, culturas incríveis e experiências inesquecíveis. Não espere mais, comece a planejar sua viagem agora e deixe-nos ajudá-lo a tornar seus sonhos realidade!</Typography>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: isNonMobile ? '40px' : '35px', }}>Pacotes para facilitar sua viagem!</Typography>
+                    {isNonMobile && (
+                        <Typography sx={{ fontSize: '17px', textAlign: 'justify' }}>Planeje sua próxima aventura, escolha seu destino e se prepare para aproveitar tudo o que temos a oferecer. Com a nossa ampla variedade de opções, você pode encontrar o lugar perfeito para desfrutar de paisagens deslumbrantes, culturas incríveis e experiências inesquecíveis. Não espere mais, comece a planejar sua viagem agora e deixe-nos ajudá-lo a tornar seus sonhos realidade!</Typography>
+                    )}
                 </Box>
             </Box>
 
-            <form style={{ width: '70%', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+            <form style={{ width: '70%', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', gap: '10px', flexDirection: isNonMobile ? 'row' : 'column' }}>
                 <TextField
                     sx={{ width: '100%' }}
                     label='Destino'
@@ -99,7 +101,7 @@ const PackagePage = () => {
                         </InputAdornment>
                     }}
                     InputLabelProps={{
-                        style: { color: blueColor, fontWeight: "bold", fontSize: "1rem", marginLeft: isNonMobile ? '30px' : '' }
+                        style: { color: blueColor, fontWeight: "bold", fontSize: "1rem", marginLeft: '30px' }
                     }}
                 />
 
@@ -124,9 +126,9 @@ const PackagePage = () => {
 
             <Box sx={{ display: 'flex', width: '70%', marginBottom: '20px' }}>
 
-                <Grid container spacing={2}>
+                <Grid container spacing={2} >
                     {packages && packages.map((pack, index) => (
-                        <Grid item xs={12} sm={6} md={3} key={index}>
+                        <Grid item xs={12} sm={6} md={3} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
                             <CardPackage package={pack} />
                         </Grid>
                     ))}

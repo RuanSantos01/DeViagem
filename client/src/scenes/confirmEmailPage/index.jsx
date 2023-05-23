@@ -37,6 +37,8 @@ const ConfirmEmailPage = () => {
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  const faseFlow = useSelector((state) => state.faseFlow);
+
   const login = async () => {
     const loggedInResponse = await fetch(
       "http://localhost:3001/auth/login", {
@@ -55,6 +57,9 @@ const ConfirmEmailPage = () => {
           token: loggedIn.token
         })
       );
+      if (faseFlow === 1) {
+        navigate("/packages/cart/checkout")
+      }
       navigate("/home")
     }
   };

@@ -1,6 +1,5 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
 
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import BedIcon from '@mui/icons-material/Bed';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import { useDispatch } from 'react-redux';
@@ -8,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setPackage } from 'state';
 
 const CardPackage = (props) => {
-    const { imagem, destino, valorPassagem, dataIda, dataVolta, hospedagem } = props.package;
+    const { imagem, destino, valorPassagem, hospedagem } = props.package;
 
     const imageBanner = {
         backgroundImage: `url(http://localhost:3001/assets/${imagem})`,
@@ -20,25 +19,9 @@ const CardPackage = (props) => {
         borderRadius: '10px'
     };
 
-    const monthNames = [
-        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
-        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
-    ];
-
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
 
-    const startDate1 = new Date(dataIda);
-    const dayStartDate = startDate1.getDate();
-    const monthIndexStartDate = startDate1.getMonth();
-    const monthNameStartDate = monthNames[monthIndexStartDate];
-    const formattedStartDate = `${dayStartDate} de ${monthNameStartDate}`;
-
-    const endDate1 = new Date(dataVolta);
-    const dayEndDate = endDate1.getDate();
-    const monthIndexEndDate = endDate1.getMonth();
-    const monthNameEndDate = monthNames[monthIndexEndDate];
-    const formattedEndDate = `${dayEndDate} de ${monthNameEndDate}`;
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -65,7 +48,6 @@ const CardPackage = (props) => {
                 <Typography sx={{ fontSize: '25px', fontWeight: 'bold', color: '#FF4500' }}>R${valorPassagem},00</Typography>
             </Box>
             <hr style={{ width: '100%' }} />
-            <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><CalendarMonthIcon />{formattedStartDate} - {formattedEndDate}</Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><BedIcon />Hospedagem - {hospedagem.nomeLocal}</Typography>
             <Link to="/reserveAccommodation" state={{ hospedagem }}>
                 <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>Mais informações sobre a hospedagem</Typography>

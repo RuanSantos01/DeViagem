@@ -1,19 +1,17 @@
 import { Box, Typography, useTheme } from '@mui/material'
-import moment from 'moment/moment';
 import 'moment/locale/pt-br';
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setPackage } from 'state';
 
 const Card = (props) => {
-
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const { destino, dataIda, dataVolta, imagem, valor } = props;
+    const { destino, item, imagem, valor } = props;
 
-    const dataIdaPre = new Date(dataIda);
-    const dataVoltaPre = new Date(dataVolta);
-    moment.locale('pt-br');
-    const dataIdaFormatada = moment(dataIdaPre).format('DD [de] MMMM');
-    const dataVoltaFormatada = moment(dataVoltaPre).format('DD [de] MMMM');
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const imagemStyle = {
         backgroundImage: `url(http://localhost:3001/assets/${imagem})`,
@@ -24,6 +22,11 @@ const Card = (props) => {
         borderTopRightRadius: '10px',
         height: "200px"
     };
+
+    const handleClick = () => {
+        dispatch(setPackage({ package: item }))
+        navigate('/packages/cart')
+    }
 
     return (
         <Box sx={{
@@ -40,13 +43,15 @@ const Card = (props) => {
             '&:hover': {
                 backgroundColor: '#DCDCDC'
             }
-        }}>
+        }}
+            onClick={() => handleClick()}
+        >
             <Box sx={{ display: 'flex', gap: '1.5rem', flexDirection: 'column', alignItems: 'center' }}>
                 <Box style={imagemStyle}></Box>
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '80%' }}>
                     <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: '20px' }}>{destino}</Typography>
-                    <Typography sx={{ color: blueColor }}>{dataIdaFormatada} - {dataVoltaFormatada}</Typography>
+                    <Typography sx={{ color: blueColor }}>Operado por <strong>aviadora interna</strong></Typography>
                 </Box>
             </Box>
 

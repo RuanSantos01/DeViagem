@@ -6,7 +6,8 @@ const initialState = {
     cart: null,
     paymentInformations: null,
     search: null,
-    package: null
+    package: null,
+    faseFlow: null
 };
 
 export const authSlice = createSlice({
@@ -42,9 +43,12 @@ export const authSlice = createSlice({
         },
         setPackage: (state, action) => {
             state.package = action.payload.package;
+        },
+        setFaseFlow: (state, action) => {
+            state.faseFlow = action.payload.faseFlow;
         }
     }
 });
 
-export const { setLogin, setLogout, setActivities, setUser, setCart, setPaymentInformation, setSearch, setPackage } = authSlice.actions;
+export const { setLogin, setLogout, setActivities, setUser, setCart, setPaymentInformation, setSearch, setPackage, setFaseFlow } = authSlice.actions;
 export default authSlice.reducer;

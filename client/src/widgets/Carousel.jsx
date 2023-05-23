@@ -15,6 +15,7 @@ export default function Carousel() {
         setCurrentIndex(currentIndex === 0 ? packages.length - 1 : currentIndex - 1);
     };
 
+
     useEffect(() => {
         async function fetchData() {
             const response = await fetch('http://localhost:3001/packages', {
@@ -39,15 +40,15 @@ export default function Carousel() {
 
             {isNonMobile ? (
                 <>
-                    {packages.slice(currentIndex, currentIndex + 3).map((item) => (
-                        <Card destino={item.destino} dataIda={item.dataIda} dataVolta={item.dataVolta} imagem={item.imagem} valor={item.valorPassagem}></Card>
+                    {packages.slice(currentIndex, currentIndex + 3).map((item, index) => (
+                        <Card key={index} destino={item.destino} item={item} imagem={item.imagem} valor={item.valorPassagem}></Card>
                     ))}
                 </>
 
             ) : (
                 <>
-                    {packages.slice(currentIndex, currentIndex + 1).map((item) => (
-                        <Card destino={item.destino} dataIda={item.dataIda} dataVolta={item.dataVolta} imagem={item.imagem} valor={item.valorPassagem}></Card>
+                    {packages.slice(currentIndex, currentIndex + 1).map((item, index) => (
+                        <Card key={index} destino={item.destino} item={item} imagem={item.imagem} valor={item.valorPassagem}></Card>
                     ))}
                 </>
             )}

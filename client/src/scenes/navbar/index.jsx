@@ -5,9 +5,10 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
-import { setLogout } from 'state';
+import { setCart, setFaseFlow, setLogout } from 'state';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useState } from 'react';
 
 const Navbar = () => {
 
@@ -26,7 +27,41 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch(setLogout())
-    window.location.reload();
+  }
+
+  const handleClickEntrar = () => {
+    const rotaAtual = window.location.pathname;
+    if (rotaAtual === "/packages/cart/checkout") {
+      dispatch(setFaseFlow({ faseFlow: 1 }))
+    } else {
+      dispatch(setFaseFlow({ faseFlow: 0 }))
+    }
+    navigate('/login')
+  }
+
+  const [codigo, setCode] = useState('');
+  const handleSearchCode = async () => {
+    const response = await fetch(
+      'http://localhost:3001/packages/paidPackages',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ codigo })
+      }
+    )
+
+    if (response.ok && response.body !== null) {
+      const redemptionCode = await response.json();
+      dispatch(setCart({ cart: redemptionCode }))
+      navigate('/packages/cart/checkout/completePayment')
+    } else {
+      setCode('')
+      alert('Código não encontrado')
+    }
+  }
+
+  const handleButtonAcitivities = () => {
+    navigate('/profile')
   }
 
   return (
@@ -44,8 +79,11 @@ const Navbar = () => {
 
         {isNonMobileScreens && (
           <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
-            <InputBase placeholder="Código aqui.." />
-            <IconButton><Search /></IconButton>
+            <InputBase
+              value={codigo}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="Código aqui.." />
+            <IconButton onClick={() => handleSearchCode()}><Search /></IconButton>
           </FlexBetween>
         )}
       </FlexBetween>
@@ -70,12 +108,13 @@ const Navbar = () => {
             <MenuItem value={userName}>
               <Typography>{userName}</Typography>
             </MenuItem>
+            <MenuItem onClick={() => handleButtonAcitivities()}>Minha conta</MenuItem>
             <MenuItem onClick={() => logout()}>Sair</MenuItem>
           </Select>
         </FormControl>
       ) : (
         <FlexBetween
-          onClick={() => navigate("/login")}
+          onClick={() => handleClickEntrar()}
           gap="0.25rem"
           sx={{
             backgroundColor: "#f0f0f0",

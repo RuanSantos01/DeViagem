@@ -1,8 +1,9 @@
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react'
 import StarRating from './StarRating';
 
 const AccommodationCard = (props) => {
+    const isNonMobile = useMediaQuery("(min-width:650px)");
     const { image, nomeLocal, localizacao, tipoQuarto, capacidade, tempoCapacidade, valor, adicional } = props.cards;
     const diffDays = props.diffDays;
     const handleSelection = props.handleSelection;
@@ -20,29 +21,30 @@ const AccommodationCard = (props) => {
         backgroundImage: `url(http://localhost:3001/assets/${image})`,
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        width: "25%",
+        width: isNonMobile ? "25%" : '100%',
+        height: isNonMobile ? "auto" : "200px",
         borderRadius: '15px'
     }
 
     return (
-        <Box sx={{ width: '100%', height: '250px', border: `1px solid ${'#BFD3F1'}`, backgroundColor: 'white', borderRadius: '15px', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItens: 'center', boxShadow: '1px 1px 4px rgba(0,0,0,0.3)' }}>
+        <Box sx={{ width: '100%', flexDirection: isNonMobile ? 'row' : 'column', height: isNonMobile ? '250px' : '500px', border: `1px solid ${'#BFD3F1'}`, backgroundColor: 'white', borderRadius: '15px', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItens: 'center', boxShadow: '1px 1px 4px rgba(0,0,0,0.3)' }}>
             <Box style={backgroundAccommodation}></Box>
-            <Box sx={{ width: '52%', display: "flex", flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box sx={{ width: isNonMobile ? '52%' : '100%', display: "flex", flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ color: '#567EBB', fontSize: '36px', fontWeight: 'bold' }}>{nomeLocal}</Typography>
-                    <Typography sx={{ color: '#567EBB', fontSize: '20px' }}>{localizacao}</Typography>
+                    <Typography sx={{ color: '#567EBB', fontSize: isNonMobile ? '36px' : '20px', fontWeight: 'bold' }}>{nomeLocal}</Typography>
+                    <Typography sx={{ color: '#567EBB', fontSize: isNonMobile ? '20px' : '15px' }}>{localizacao}</Typography>
                 </Box>
                 <Box sx={{ color: "#567EBB" }}>
-                    <Typography sx={{ fontSize: '20px' }}>{adicional}</Typography>
+                    <Typography sx={{ fontSize: isNonMobile ? '20px' : '15px' }}>{adicional}</Typography>
                     <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>{tipoQuarto}</Typography>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}> - </Typography>
-                        <Typography sx={{ fontSize: '20px' }}>{capacidade}</Typography>
+                        <Typography sx={{ fontWeight: 'bold', fontSize: isNonMobile ? '20px' : '15px' }}>{tipoQuarto}</Typography>
+                        <Typography sx={{ fontWeight: 'bold', fontSize: isNonMobile ? '20px' : '15px' }}> - </Typography>
+                        <Typography sx={{ fontSize: isNonMobile ? '20px' : '15px' }}>{capacidade}</Typography>
                     </Box>
                 </Box>
             </Box >
 
-            <Box sx={{ width: '20%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box sx={{ width: isNonMobile ? '20%' : '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Box sx={{ height: '56px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', alignSelf: 'end' }}><StarRating rating={4} /></Box>
                 <Box sx={{ display: ' flex', textAlign: 'end', flexDirection: 'column', gap: '1rem' }}>
                     <Box>

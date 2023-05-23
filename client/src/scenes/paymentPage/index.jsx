@@ -1,14 +1,21 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
-import CalendarComp from "components/CalendarComp";
 import { useFormik } from "formik";
 import { useState } from "react";
 import Navbar from "scenes/navbar";
 import TextMask from 'react-text-mask';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+
+// ICONS
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PeopleIcon from '@mui/icons-material/People';
+import BedIcon from '@mui/icons-material/Bed';
+import TripOriginIcon from '@mui/icons-material/TripOrigin';
+import { setFaseFlow, setPaymentInformation } from "state";
 
 const PaymentPage = () => {
     const theme = useTheme();
@@ -19,76 +26,259 @@ const PaymentPage = () => {
     const cartInformations = useSelector((state) => state.cart);
     const user = useSelector((state) => state.user);
 
-    useEffect(() => {
-        console.log(cartInformations)
-    }, [])
+    const qtdPessoas = cartInformations.packages.pessoas;
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const cart = useSelector((state) => state.cart);
-
-    const inf = {
-        adultos: 2
+    const [viajantes, setViajantes] = useState();
+    const fillFormikValues = () => {
+        let listaFillFormik = [];
+        for (let i = 0; i < qtdPessoas; i++) {
+            listaFillFormik.push(i);
+        }
+        setViajantes(listaFillFormik);
     }
 
-    // BIRTHDAY DATE
-    const [b1, setB1] = useState();
-    const handleDataNascimento1 = (e) => {
-        setB1(e)
-        formik.setFieldValue('dataNascimentoViajante1', e)
+    const gerarCodigo = () => {
+        let codigo = '#';
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+        for (let i = 0; i < 10; i++) {
+            const randomIndex = Math.floor(Math.random() * caracteres.length);
+            codigo += caracteres[randomIndex];
+        }
+
+        return codigo;
     }
 
-    const [b2, setB2] = useState();
-    const handleDataNascimento2 = (e) => {
-        setB2(e)
-        formik.setFieldValue('dataNascimentoViajante2', e)
+    const insertPaidPackage = async (obj) => {
+        const response = await fetch(
+            'http://localhost:3001/packages/insertPaidPackage',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(obj)
+            }
+        );
+
+        if (response.status !== 201) {
+            return false;
+        } else {
+            await response.json();
+            return true;
+        }
     }
 
-    const validationSchema = Yup.object().shape({
-        nomeViajante1: Yup.string().required('Campo obrigatório'),
-        sobrenomeViajante1: Yup.string().required('Campo obrigatório'),
-        dataNascimentoViajante1: Yup.string().required('Campo obrigatório'),
-        sexoViajante1: Yup.string().required('Campo obrigatório'),
-        nomeViajante2: Yup.string(),
-        sobrenomeViajante2: Yup.string(),
-        dataNascimentoViajante2: Yup.string(),
-        sexoViajante2: Yup.string(),
-        qtdPagantes: Yup.string().required('Campo obrigatório'),
-        nomeTitular: Yup.string().required('Campo obrigatório'),
-        cpfTitular: Yup.string().required('Campo obrigatório'),
-        celularTitular: Yup.string().required('Campo obrigatório'),
-        sexoTitular: Yup.string().required('Campo obrigatório'),
-        emailTitular: Yup.string().required('Campo obrigatório'),
-        cpfSegundoPagante: pagantes > 1 ? Yup.string().required('Campo obrigatório') : Yup.string()
-    })
-
+    const [isFormValidated, setIsFormValidate] = useState(false);
     const formik = useFormik({
         initialValues: {
-            nomeViajante1: '',
-            sobrenomeViajante1: '',
-            dataNascimentoViajante1: '',
-            sexoViajante1: '',
-            nomeViajante2: '',
-            sobrenomeViajante2: '',
-            dataNascimentoViajante2: '',
-            sexoViajante2: '',
+            ...Array.from({ length: qtdPessoas }, (_, i) => ({
+                [`nomeViajante${i + 1}`]: '',
+                [`sobrenomeViajante${i + 1}`]: '',
+                [`cpfViajante${i + 1}`]: '',
+                [`sexoViajante${i + 1}`]: '',
+                [`cpfPagante${i + 1}`]: '',
+            })).reduce((acc, cur) => ({ ...acc, ...cur }), {}),
             qtdPagantes: 1,
             nomeTitular: '',
             cpfTitular: '',
             celularTitular: '',
             sexoTitular: '',
             emailTitular: '',
-            cpfSegundoPagante: '',
             cartaoMask: ''
         },
-        // validationSchema: validationSchema,
+        validate: values => {
+            const errors = [];
+            for (let i = 0; i < qtdPessoas; i++) {
+                const nome = values[`nomeViajante${i + 1}`];
+                const sobrenome = values[`sobrenomeViajante${i + 1}`];
+                const cpf = values[`cpfViajante${i + 1}`];
+                const sexo = values[`sexoViajante${i + 1}`];
+                if (!nome || !sobrenome || !cpf || !sexo) {
+                    errors.push([`nomeViajante${i + 1}`])
+                }
+            }
+            const qtdPagantes = values.qtdPagantes;
+            const nomeTitular = values.nomeTitular;
+            const cpfTitular = values.cpfTitular;
+            const celularTitular = values.cpfTitular;
+            const sexoTitular = values.sexoTitular;
+            const emailTitular = values.emailTitular
+            if (!qtdPagantes || !nomeTitular || !cpfTitular || !celularTitular || !sexoTitular || !emailTitular) {
+                errors.push(nomeTitular)
+            }
+
+            if (errors.length > 0) {
+                setIsFormValidate(false)
+            } else {
+                setIsFormValidate(true)
+            }
+        },
         onSubmit: values => {
-            console.log(values)
-            // dispatch(setPaymentInformation({ paymentInformations: values }))
-            // navigate('/accommodation/reservation')
+            if (isFormValidated) {
+                let objFinal = {
+                    formValues: values,
+                    cartInformations,
+                    codigo: gerarCodigo(),
+                    listaCpfPago: [values.cpfTitular],
+                    listaCpfPendente: [],
+                    valorTotal: cartInformations.valorFinal,
+                    valorPago: parseFloat(cartInformations.valorFinal / pagantes).toFixed(2)
+                }
+
+                for (let i = 0; i < values.qtdPagantes - 1; i++) {
+                    const pagante = { cpf: values[`cpfPagante${i + 1}`], nome: values[`nomePagante${i + 1}`] }
+                    objFinal.listaCpfPendente.push(pagante);
+                }
+
+                const req = insertPaidPackage(objFinal);
+                if (req) {
+                    dispatch(setPaymentInformation({ paymentInformations: objFinal }))
+                    navigate('/packages/cart/checkout/success')
+                } else {
+                    alert('Não foi possível finalizar seu pedido.')
+                }
+            } else if (!user) {
+                alert('Você deve estar logado no sistema para prosseguir')
+            } else {
+                alert('Por favor, preencha todos os campos corretamente.')
+            }
         }
     })
+
+    const renderFormViajantes = () => {
+        return <Box>
+            {viajantes && viajantes.map((viajante) => (
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '24px', color: blueColor }}>Viajante {viajante + 1} - Adulto</Typography>
+
+                    <Box>
+                        <TextField
+                            sx={{ width: '100%' }}
+                            label='Primeiro nome*'
+                            onChange={(e) => formik.setFieldValue(`nomeViajante${viajante + 1}`, e.target.value)}
+                            name="primeiroNome"
+                            InputProps={{
+                                style: { backgroundColor: "white", borderRadius: "4px" },
+                            }}
+                            InputLabelProps={{
+                                style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
+                            }}
+                        />
+                        {formik.touched[`nomeViajante${viajante + 1}`] && !formik.values[`nomeViajante${viajante + 1}`] && (
+                            <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
+                        )}
+                    </Box>
+
+                    <Box>
+                        <TextField
+                            sx={{ width: '100%' }}
+                            label='Ultimo sobrenome*'
+                            name="ultimoSobrenome"
+                            onChange={(e) => formik.setFieldValue(`sobrenomeViajante${viajante + 1}`, e.target.value)}
+                            InputProps={{
+                                style: { backgroundColor: "white", borderRadius: "4px" },
+                            }}
+                            InputLabelProps={{
+                                style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
+                            }}
+                        />
+                        {formik.touched[`sobrenomeViajante${viajante + 1}`] && !formik.values[`sobrenomeViajante${viajante + 1}`] && (
+                            <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
+                        )}
+                    </Box>
+
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '2rem' }}>
+                        <Box sx={{ width: '47%' }}>
+                            <TextField
+                                sx={{ width: '100%' }}
+                                label='CPF*'
+                                name="cpf"
+                                onChange={(e) => formik.setFieldValue(`cpfViajante${viajante + 1}`, e.target.value)}
+                                InputProps={{
+                                    style: { backgroundColor: "white", borderRadius: "4px" },
+                                    inputComponent: TextMask,
+                                    inputProps: {
+                                        mask: cpfMask,
+                                        autoComplete: "off",
+                                        autoCorrect: "off",
+                                        spellCheck: "false"
+                                    }
+                                }}
+                                InputLabelProps={{
+                                    style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
+                                }}
+                            />
+                            {
+                                formik.touched[`cpfViajante${viajante + 1}`] && !formik.values[`cpfViajante${viajante + 1}`] && (
+                                    <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
+                                )
+                            }
+                        </Box>
+
+                        <FormControl sx={{ width: '47%' }}>
+                            <InputLabel sx={{ color: blueColor, fontWeight: "200", fontSize: "1rem" }}>Sexo</InputLabel>
+                            <Select
+                                value={formik.values[`sexoViajante${viajante + 1}`]}
+                                label="Age"
+                                onChange={(e) => formik.setFieldValue(`sexoViajante${viajante + 1}`, e.target.value)}
+                            >
+                                <MenuItem value='masculino' name='masculino'>Masculino</MenuItem>
+                                <MenuItem value='feminino' name='feminino'>Feminino</MenuItem>
+                            </Select>
+                            {formik.touched[`sexoViajante${viajante + 1}`] && !formik.values[`sexoViajante${viajante + 1}`] && (
+                                <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
+                            )}
+                        </FormControl>
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+    }
+
+    const renderFormCpfPagantes = (qtdViajantes) => {
+        let listaViajantes = []
+        for (let i = 0; i < qtdViajantes - 1; i++) {
+            listaViajantes.push(i)
+        }
+
+        return <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {listaViajantes.map((viajante) => (
+                <Box>
+                    <TextField
+                        sx={{ width: '100%' }}
+                        label={`Cpf do pagante Nº ${viajante + 2}`}
+                        name="cpf"
+                        onChange={(e) => formik.setFieldValue(`cpfPagante${viajante + 1}`, e.target.value)}
+                        InputProps={{
+                            style: { backgroundColor: "white", borderRadius: "4px" },
+                            inputComponent: TextMask,
+                            inputProps: {
+                                mask: cpfMask,
+                                autoComplete: "off",
+                                autoCorrect: "off",
+                                spellCheck: "false"
+                            }
+                        }}
+                        InputLabelProps={{
+                            style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
+                        }}
+                    />
+                    {
+                        formik.touched[`cpfPagante${viajante + 1}`] && !formik.values[`cpfPagante${viajante + 1}`] && (
+                            <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
+                        )
+                    }
+                </Box>
+            ))}
+        </Box>
+    }
+
+    useEffect(() => {
+        fillFormikValues()
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // CARD
     const [cardType, setCardType] = useState('');
@@ -141,6 +331,10 @@ const PaymentPage = () => {
             event.preventDefault();
         }
         setCardNumber(newCardNumber);
+        if (newCardNumber.length === 19) {
+            const mascara = 'X'.repeat(newCardNumber.length - 4) + newCardNumber.substring(newCardNumber.length - 4);
+            formik.setFieldValue('cartaoMask', mascara)
+        }
         isValidCreditCardNumber(newCardNumber)
     }
     function handleKeyPress(event) {
@@ -168,27 +362,8 @@ const PaymentPage = () => {
     // CPF
     const cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
 
-    // GENDER
-    const [gender1, setGender1] = useState("");
-    const handleGender = (e) => {
-        setGender1(e.target.value)
-        formik.setFieldValue('sexoViajante1', e.target.value)
-    }
-
-    const [gender2, setGender2] = useState("");
-    const handleGender2 = (e) => {
-        setGender2(e.target.value)
-        formik.setFieldValue('sexoViajante2', e.target.value)
-    }
-
-    const [genderTitular, setGenderTitular] = useState("");
-    const handleGenderTitular = (e) => {
-        setGenderTitular(e.target.value)
-        formik.setFieldValue('sexoTitular', e.target.value)
-    }
-
     const imagemStyle = {
-        backgroundImage: `url(http://localhost:3001/assets/${cart.imageQuarto})`,
+        backgroundImage: `url(http://localhost:3001/assets/${cartInformations.selectedCard.cards.imageQuarto})`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
@@ -197,13 +372,18 @@ const PaymentPage = () => {
         height: "21vh"
     };
 
+    const handleClickLogin = () => {
+        dispatch(setFaseFlow({ faseFlow: 1 }))
+        navigate('/login')
+    }
+
     return (
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "center", backgroundColor: '#DCE0E6' }}>
             <Navbar />
 
-            <Box sx={{ width: '65%', padding: '20px 0', backgroundColor: '#DCE0E6', display: 'flex', gap: isNonMobile ? '0px' : '1.5rem', flexDirection: isNonMobile ? 'row' : 'column', justifyContent: 'space-between', height: 'auto', margin: '10px' }}>
+            <Box sx={{ width: isNonMobile ? '65%' : '100%', padding: '20px 0', backgroundColor: '#DCE0E6', display: 'flex', gap: isNonMobile ? '0px' : '1.5rem', flexDirection: isNonMobile ? 'row' : 'column', justifyContent: 'space-between', height: 'auto', margin: '10px' }}>
 
-                <Box sx={{ width: isNonMobile ? '52%' : '100%', backgroundColor: 'white', height: 'auto', borderRadius: '20px', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', padding: '30px' }}>
+                <Box sx={{ width: isNonMobile ? '52%' : '100%', backgroundColor: 'white', height: 'auto', borderRadius: isNonMobile ? '20px' : '4px', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', padding: '30px' }}>
                     <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <Typography sx={{ border: `2px solid ${blueColor}`, borderRadius: '50%', width: '30px', height: '30px', color: blueColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '20px' }}>1</Typography>
                         <Typography sx={{ fontWeight: 'bold', fontSize: '30px', color: blueColor }}>Viajantes</Typography>
@@ -211,126 +391,8 @@ const PaymentPage = () => {
                     <hr style={{ width: '100%', color: blueColor }} />
 
                     <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '24px', color: blueColor }}>Viajante 1 - Adulto</Typography>
-
-                        <Box>
-                            <TextField
-                                sx={{ width: '100%' }}
-                                label='Primeiro nome*'
-                                onChange={(e) => formik.setFieldValue('nomeViajante1', e.target.value)}
-                                name="primeiroNome"
-                                InputProps={{
-                                    style: { backgroundColor: "white", borderRadius: "4px" },
-                                }}
-                                InputLabelProps={{
-                                    style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
-                                }}
-                            />
-                            {formik.touched.nomeViajante1 && !formik.values.nomeViajante1 && (
-                                <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
-                            )}
-                        </Box>
-
-                        <Box>
-                            <TextField
-                                sx={{ width: '100%' }}
-                                label='Ultimo sobrenome*'
-                                name="ultimoSobrenome"
-                                onChange={(e) => formik.setFieldValue('sobrenomeViajante1', e.target.value)}
-                                InputProps={{
-                                    style: { backgroundColor: "white", borderRadius: "4px" },
-                                }}
-                                InputLabelProps={{
-                                    style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
-                                }}
-                            />
-                            {formik.touched.sobrenomeViajante1 && !formik.values.sobrenomeViajante1 && (
-                                <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
-                            )}
-                        </Box>
-
-
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                            <CalendarComp onSelect={handleDataNascimento1} />
-                            <FormControl sx={{ width: '47%' }}>
-                                <InputLabel sx={{ color: blueColor, fontWeight: "200", fontSize: "1rem" }}>Sexo</InputLabel>
-                                <Select
-                                    value={gender1}
-                                    label="Age"
-                                    onChange={handleGender}
-                                >
-                                    <MenuItem value='masculino' name='masculino'>Masculino</MenuItem>
-                                    <MenuItem value='feminino' name='feminino'>Feminino</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
-                        {formik.touched.gender1 && !formik.values.gender1 && (
-                            <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
-                        )}
-
-                        {inf.adultos === 2 && (
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
-                                <Typography sx={{ fontWeight: 'bold', fontSize: '24px', color: blueColor }}>Viajante 2 - Adulto</Typography>
-                                <Box>
-                                    <TextField
-                                        sx={{ width: '100%' }}
-                                        label='Primeiro nome*'
-                                        name="primeiroNome"
-                                        onChange={(e) => formik.setFieldValue('nomeViajante2', e.target.value)}
-                                        InputProps={{
-                                            style: { backgroundColor: "white", borderRadius: "4px" },
-                                        }}
-                                        InputLabelProps={{
-                                            style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
-                                        }}
-                                    />
-                                    {formik.touched.nomeViajante2 && !formik.values.nomeViajante2 && (
-                                        <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
-                                    )}
-                                </Box>
-
-                                <Box>
-                                    <TextField
-                                        sx={{ width: '100%' }}
-                                        label='Ultimo sobrenome*'
-                                        onChange={(e) => formik.setFieldValue('sobrenomeViajante2', e.target.value)}
-                                        name="ultimoSobrenome"
-                                        InputProps={{
-                                            style: { backgroundColor: "white", borderRadius: "4px" },
-                                        }}
-                                        InputLabelProps={{
-                                            style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
-                                        }}
-                                    />
-                                    {formik.touched.sobrenomeViajante2 && !formik.values.sobrenomeViajante2 && (
-                                        <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
-                                    )}
-                                </Box>
-
-
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                                    <CalendarComp onSelect={handleDataNascimento2} />
-                                    <FormControl sx={{ width: '47%' }}>
-                                        <InputLabel id="demo-simple-select-label" sx={{ color: blueColor, fontWeight: "200", fontSize: "1rem" }}>Sexo</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={gender2}
-                                            label="Age"
-                                            onChange={handleGender2}
-                                        >
-                                            <MenuItem value='masculino' name='masculino'>Masculino</MenuItem>
-                                            <MenuItem value='feminino' name='feminino'>Feminino</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Box>
-                                {formik.touched.gender2 && !formik.values.gender2 && (
-                                    <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
-                                )}
-                            </Box>
-
-                        )}
-
+                        {renderFormViajantes()}
+                        <Typography sx={{ marginTop: '-50px', textAlign: 'justify' }}>Os viajantes devem apresentar documento com foto no aeroporto e no check-in da hospedagem</Typography>
                         <Box>
                             <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                 <Typography sx={{ border: `2px solid ${blueColor}`, borderRadius: '50%', width: '30px', height: '30px', color: blueColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '20px' }}>2</Typography>
@@ -346,38 +408,15 @@ const PaymentPage = () => {
                                 label="Quantos Pagantes ?"
                                 onChange={(e) => { setPagantes(e.target.value); formik.setFieldValue('qtdPagantes', e.target.value) }}
                             >
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
+                                {viajantes && viajantes.map((viajante, index) => (
+                                    <MenuItem key={index} value={viajante + 1}>{viajante + 1}</MenuItem>
+                                ))}
                             </Select>
                             <Typography sx={{ textAlign: 'justify' }}>Se a quantidade de pagantes for mais que uma pessoa, será gerado um código ao finalizar sua compra, com esse código a(s) outra(s) pessoa(s) pode(em) finalizar o pagamento.</Typography>
                         </FormControl>
 
                         {pagantes > 1 && (
-                            <>
-                                <TextField
-                                    sx={{ width: '100%' }}
-                                    label='CPF do segundo pagante*'
-                                    name="cpf"
-                                    onChange={(e) => formik.setFieldValue('cpfSegundoPagante', e.target.value)}
-                                    InputProps={{
-                                        style: { backgroundColor: "white", borderRadius: "4px" },
-                                        inputComponent: TextMask,
-                                        inputProps: {
-                                            mask: cpfMask,
-                                            autoComplete: "off",
-                                            autoCorrect: "off",
-                                            spellCheck: "false"
-                                        }
-                                    }}
-                                    InputLabelProps={{
-                                        style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
-                                    }}
-                                />
-                                {formik.touched.cpfSegundoPagante && !formik.values.cpfSegundoPagante && (
-                                    <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
-                                )}
-                            </>
-
+                            renderFormCpfPagantes(pagantes)
                         )}
 
                         <Typography sx={{ fontWeight: 'bold', fontSize: '24px', color: blueColor }}>Cartão de crédito</Typography>
@@ -543,9 +582,9 @@ const PaymentPage = () => {
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
-                                    value={genderTitular}
+                                    value={formik.values.sexoTitular}
                                     label="Age"
-                                    onChange={handleGenderTitular}
+                                    onChange={(e) => formik.setFieldValue('sexoTitular', e.target.value)}
                                 >
                                     <MenuItem value='masculino' name='masculino'>Masculino</MenuItem>
                                     <MenuItem value='feminino' name='feminino'>Feminino</MenuItem>
@@ -575,67 +614,105 @@ const PaymentPage = () => {
                             <Typography sx={{ textAlign: 'justify' }}>Será enviado as informações da viagem para este email</Typography>
                         </Box>
 
-                        <Button type="submit" sx={{ border: `1px solid ${blueColor}`, width: '100%', textAlign: 'center', padding: '20px', backgroundColor: blueColor, color: 'white', borderRadius: '20px', '&:hover': { border: `1px solid ${blueColor}`, color: blueColor } }}>Reservar</Button>
+                        {!user && (
+                            <Box>
+                                <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                    <Typography sx={{ border: `2px solid ${blueColor}`, borderRadius: '50%', width: '30px', height: '30px', color: blueColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '20px' }}>3</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', fontSize: '30px', color: blueColor }}>Cadastre-se no nosso sistema</Typography>
+                                </Box>
+                                <hr style={{ width: '100%', color: blueColor }} />
 
+                                <Typography sx={{ fontSize: '17px', textAlign: 'justify' }}>Percebemos que você ainda não está logado no nosso sistema, faça o cadastro ou entre com sua conta para prosseguir.</Typography>
+                                <Box sx={{ display: 'flex', gap: '1rem', height: '50px', marginTop: '20px' }}>
+                                    <Button onClick={() => handleClickLogin()} fullWidth sx={{ fontWeight: 'bold', backgroundColor: blueColor, border: `1px solid ${blueColor}`, color: 'white', '&:hover': { backgroundColor: 'white', color: blueColor } }}>Entrar</Button>
+                                </Box>
+                            </Box>
+                        )}
 
                     </form>
 
                 </Box>
 
                 <Box sx={{ width: isNonMobile ? '42%' : '100%', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                    <Box sx={{ width: '100%', backgroundColor: 'white', height: 'auto', borderRadius: '20px', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', padding: '30px', color: blueColor }}>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>{cart.nomeLocal}</Typography>
+                    <Box sx={{ width: '100%', backgroundColor: 'white', height: 'auto', borderRadius: isNonMobile ? '20px' : '4px', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', padding: '30px', color: blueColor }}>
+                        <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>{cartInformations.selectedCard.cards.nomeLocal}</Typography>
                         <hr style={{ color: 'white', width: '100%' }} />
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '0.2rem' }}> <LocationOnIcon sx={{ color: blueColor }} />{cart.localizacao}</Typography>
+                        <Typography sx={{ fontWeight: 'bold', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '0.2rem' }}> <LocationOnIcon sx={{ color: blueColor }} />{cartInformations.packages.destino}</Typography>
                         <hr style={{ color: 'white', width: '100%' }} />
 
                         <Box sx={{ display: 'flex', marginTop: '14px' }}>
                             <Box sx={{ width: '50%' }}>
-                                <Typography sx={{ fontSize: '20px' }}>Check-in</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Janeiro</Typography>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><LoginIcon />Check-in</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataIda}</Typography>
                             </Box>
                             <Box sx={{ width: '50%' }}>
-                                <Typography sx={{ fontSize: '20px' }}>Check-out</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Fevereiro</Typography>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><LogoutIcon />Check-out</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataVolta}</Typography>
                             </Box>
                         </Box>
 
                         <Box sx={{ display: 'flex', marginTop: '14px' }}>
                             <Box sx={{ width: '50%' }}>
-                                <Typography sx={{ fontSize: '20px' }}>Hóspedes</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cart.capacidade}</Typography>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><PeopleIcon />Hóspedes</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.packages.pessoas} Pessoa(s)</Typography>
                             </Box>
                             <Box sx={{ width: '50%' }}>
-                                <Typography sx={{ fontSize: '20px' }}>Estadia</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cart.diarias} diárias</Typography>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><BedIcon />Estadia</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].diffdays} diárias</Typography>
                             </Box>
                         </Box>
-
-                        <Typography sx={{ marginTop: '14px', fontSize: '20px' }}> <strong>Quartos:</strong> 1x {cart.tipoQuarto}</Typography>
 
                         <hr style={{ width: '100%' }} />
 
                         <Box style={imagemStyle}></Box>
                     </Box>
 
-                    <Box sx={{ width: '100%', backgroundColor: 'white', height: 'auto', borderRadius: '20px', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', padding: '30px', color: blueColor }}>
+                    <Box sx={{ width: '100%', backgroundColor: 'white', height: 'auto', borderRadius: isNonMobile ? '20px' : '4px', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', padding: '30px', color: blueColor }}>
+                        <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Vôo</Typography>
+                        <hr style={{ color: 'white', width: '100%' }} />
+                        <Typography sx={{ fontWeight: 'bold', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '0.2rem' }}> <TripOriginIcon />Partindo de {cartInformations.estado.nome} - Operado por Aviadora Interna</Typography>
+                        <hr style={{ color: 'white', width: '100%' }} />
+
+                        <Box sx={{ display: 'flex', marginTop: '14px' }}>
+                            <Box sx={{ width: '50%' }}>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><CalendarMonthIcon />Data de ida</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataIda}</Typography>
+                            </Box>
+                            <Box sx={{ width: '50%' }}>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><CalendarMonthIcon />Data de volta</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataVolta}</Typography>
+                            </Box>
+                        </Box>
+                    </Box>
+
+                    <Box sx={{ width: '100%', backgroundColor: 'white', height: 'auto', borderRadius: isNonMobile ? '20px' : '4px', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', padding: '30px', color: blueColor }}>
                         <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Detalhes do pagamento</Typography>
                         <hr style={{ width: '100%' }} />
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '20px' }}>Hotél</Typography>
-                                <Typography sx={{ fontSize: '20px' }}>R$ {cart.valor},00</Typography>
-                            </Box>
-
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography sx={{ fontSize: '20px' }}>Texas e impostos</Typography>
-                                <Typography sx={{ fontSize: '20px' }}>R$0,00</Typography>
+                                <Typography sx={{ fontSize: '20px' }}>R$ {cartInformations.selectedCard.cards.valor}</Typography>
                             </Box>
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '20px' }}>Diaria</Typography>
-                                <Typography sx={{ fontSize: '20px' }}>{cart.diarias}</Typography>
+                                <Typography sx={{ fontSize: '20px' }}>{cartInformations.selectedCard.diffDays} dias</Typography>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography sx={{ fontSize: '20px' }}>Total Hotel</Typography>
+                                <Typography sx={{ fontSize: '20px' }}>R$ {cartInformations.selectedCard.diffDays * cartInformations.selectedCard.cards.valor}</Typography>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography sx={{ fontSize: '20px' }}>Vôo</Typography>
+                                <Typography sx={{ fontSize: '20px' }}>R$ {cartInformations.valorPassagem}</Typography>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography sx={{ fontSize: '20px' }}>Taxas e impostos</Typography>
+                                <Typography sx={{ fontSize: '20px' }}>R$0,00</Typography>
                             </Box>
 
                             {pagantes > 1 && (
@@ -653,33 +730,34 @@ const PaymentPage = () => {
                             <>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>Sua parte</Typography>
-                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${cart.valorTotal / pagantes},00</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${(cartInformations.valorFinal / pagantes).toFixed(2)}</Typography>
                                 </Box>
 
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>O restante</Typography>
-                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${cart.valorTotal - (cart.valorTotal / pagantes)},00</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${(cartInformations.valorFinal - (cartInformations.valorFinal / pagantes)).toFixed(2)}</Typography>
                                 </Box>
 
                                 <hr style={{ width: '100%' }} />
 
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>Total</Typography>
-                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${cart.valorTotal},00</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${(cartInformations.valorFinal).toFixed(2)}</Typography>
                                 </Box>
                             </>
                         ) : (
                             <>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>Total</Typography>
-                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${cart.valorTotal},00</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>R${(cartInformations.valorFinal).toFixed(2)}</Typography>
                                 </Box>
                             </>
                         )}
 
+                        <Typography sx={{ textAlign: 'justify', margin: '10px 0px' }}>As tarifas cotadas em reais são baseadas nas taxas de câmbio atuais e podem variar até o momento da viagem.</Typography>
 
+                        <Button onClick={() => formik.handleSubmit()} sx={{ fontWeight: 'bold', border: `1px solid ${blueColor}`, width: '100%', textAlign: 'center', padding: '20px', backgroundColor: blueColor, color: 'white', '&:hover': { border: `1px solid ${blueColor}`, color: blueColor } }}>Reservar</Button>
 
-                        <Typography sx={{ textAlign: 'justify', marginTop: '10px' }}>As tarifas cotadas em reais são baseadas nas taxas de câmbio atuais e podem variar até o momento da viagem.</Typography>
                     </Box>
                 </Box>
 
