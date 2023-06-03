@@ -1,4 +1,4 @@
-// RIO DE JANEIRO 1
+// RIO DE JANEIRO 
 export const riodejaneiroAccommodations = [
     {
         image: "assets/hotel/alagoas/hotel-costamar/background-hotel-windson.png",
