@@ -28,7 +28,7 @@ const sao_pauloId2 = new mongoose.Types.ObjectId;
 const sergipeId = new mongoose.Types.ObjectId;
 const sergipeId2 = new mongoose.Types.ObjectId;
 
-
+// packeges
 
 export const packagesData = [
     // Rio de janeiro
