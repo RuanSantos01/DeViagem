@@ -1,7 +1,7 @@
 import {riodejaneiroAccommodations,
     alagoasAccommodations,
     bahiaAccommodations,
-    minasAccommodations,
+    minasgeraisAccommodations,
     paranaAccommodations,
     pernambucoAccommodations,
     rondoniaAccommodations,
@@ -102,7 +102,7 @@ export const packagesData = [
         pessoas: 1,
         imagem: 'assets/packages/minas-gerais/monte-verde/3.png',
         imagens: ['assets/packages/minas-gerais/monte-verde/1.png', 'assets/packages/minas-gerais/monte-verde/2.png', 'assets/packages/minas-gerais/monte-verde/3.png', 'assets/packages/minas-gerais/monte-verde/4.png', 'assets/packages/minas-gerais/monte-verde/5.png'],
-        hospedagem: minasAccommodations[0],
+        hospedagem: minasgeraisAccommodations[0],
         vagas: 30,
     },
     {
@@ -112,7 +112,7 @@ export const packagesData = [
         pessoas: 1,
         imagem: 'assets/packages/minas-gerais/ouro-preto/3.png',
         imagens: ['assets/packages/minas-gerais/ouro-preto/1.png', 'assets/packages/minas-gerais/ouro-preto/2.png', 'assets/packages/minas-gerais/ouro-preto/3.png', 'assets/packages/minas-gerais/ouro-preto/4.png', 'assets/packages/minas-gerais/ouro-preto/5.png'],
-        hospedagem: minasAccommodations[1],
+        hospedagem: minasgeraisAccommodations[1],
         vagas: 30,
     },
       //parana
