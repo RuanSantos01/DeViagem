@@ -1,8 +1,8 @@
 // RIO DE JANEIRO 
 export const riodejaneiroAccommodations = [
     {
-        image: "public/assets/hotel/rio-janiero/windson/background-hotel-windson.png",
-        images: ["public/assets/hotel/rio-janeiro/windson/background-hotel-windson.png", "public/assets/hotel/rio-janeiro/windson/alimentos.png", "public/assets/hotel/rio-janeiro/windson/area.png", "public/assets/hotel/alagoas/hotel-costamar/piscina.png", "public/assets/hotel/rio-janeiro/windson/quarto.png"],
+        image: "hotel/rio-janiero/windson/background-hotel-windson.png",
+        images: ["hotel/rio-janeiro/windson/background-hotel-windson.png", "hotel/rio-janeiro/windson/alimentos.png", "hotel/rio-janeiro/windson/area.png", "hotel/alagoas/hotel-costamar/piscina.png", "hotel/rio-janeiro/windson/quarto.png"],
         nomeLocal: 'Windson Plaza Copacabana',
         destino: 'Rio de Janeiro',
         localizacao: 'Copacabana, Rio de Janeiro',
@@ -10,8 +10,8 @@ export const riodejaneiroAccommodations = [
         informacaoGeral: 'A 350 metros da praia',
         tipoQuarto: 'Quarto Duplo Superior',
         quartos: [{
-            image: "public/assets/hotel/rio-janeiro/windson/background-hotel-windson.png",
-            imageQuarto: "public/assets/hotel/rio-janeiro/windson/quarto.png",
+            image: "hotel/rio-janeiro/windson/background-hotel-windson.png",
+            imageQuarto: "hotel/rio-janeiro/windson/quarto.png",
             nomeLocal: 'Windson Plaza Copacabana',
             localizacao: 'Copacabana, Rio de Janeiro',
             tipoQuarto: 'Standard',
@@ -20,9 +20,9 @@ export const riodejaneiroAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/rio-janeiro/windson/background-hotel-windson.png",
+            image: "hotel/rio-janeiro/windson/background-hotel-windson.png",
             nomeLocal: 'Windson Plaza Copacabana',
-            imageQuarto: "public/assets/hotel/rio-janeiro/windson/quarto.png",
+            imageQuarto: "hotel/rio-janeiro/windson/quarto.png",
             localizacao: 'Copacabana, Rio de Janeiro',
             tipoQuarto: 'King',
             capacidade: '2 Adultos',
@@ -37,25 +37,20 @@ export const riodejaneiroAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 402,
         identificador: 1,
-        geoLocalizacao: ['-22.961837144717727, -43.175058']
+        geoLocalizacao: ['-22.961837144717727', '-43.175058']
     },
     {
-<<<<<<< HEAD
         image: "novotel/background-hotel-novotel.png",
         images: ["novotel/background-hotel-novotel.png", "novotel/alimentos.png", "novotel/lobby-bar.png", "novotel/piscina.png", "novotel/quarto.png"],
         destino: 'Rio de Janeiro',
-=======
-        image: "public/assets/hotel/alagoas/maceio_atlantic/fachada.png",
-        images: ["public/assets/hotel/alagoas/maceio_atlantic/fachada.png", "public/assets/hotel/rio-janeiro/novotel/alimentos.png", "public/assets/hotel/rio-janeiro/novotel/lobby-bar.png", "public/assets/hotel/rio-janeiro/novotel/piscina.png", "public/assets/hotel/rio-janeiro/novotel/quarto.png"],
->>>>>>> update-packages
         nomeLocal: 'Novotel RJ Botafogo',
         localizacao: 'Botafogo, Rio de Janeiro',
         localizacaoCompleta: 'Praia De Botafogo 330 Botafogo, Botafogo, Rio de Janeiro, CEP 22250040, Brasil',
         informacaoGeral: 'A 100 metros da praia',
         tipoQuarto: 'Apartamento Completo',
         quartos: [{
-            image: "public/assets/hotel/alagoas/maceio_atlantic/fachada.png",
-            imageQuarto: "public/assets/hotel/rio-janeiro/novotel/quarto.png",
+            image: "hotel/alagoas/maceio_atlantic/fachada.png",
+            imageQuarto: "hotel/rio-janeiro/novotel/quarto.png",
             nomeLocal: 'Novotel RJ Botafogo',
             localizacao: 'Botafogo, Rio de Janeiro',
             tipoQuarto: 'Standard',
@@ -64,8 +59,8 @@ export const riodejaneiroAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/alagoas/maceio_atlantic/fachada.png",
-            imageQuarto: "public/assets/hotel/rio-janeiro/novotel/quarto.png",
+            image: "hotel/alagoas/maceio_atlantic/fachada.png",
+            imageQuarto: "hotel/rio-janeiro/novotel/quarto.png",
             nomeLocal: 'Novotel RJ Botafogo',
             localizacao: 'Botafogo, Rio de Janeiro',
             tipoQuarto: 'King',
@@ -87,18 +82,20 @@ export const riodejaneiroAccommodations = [
         geoLocalizacao: ['-22.945363660153305', '-43.18297473199225']
     }
 ]
+
+// MINAS GERAIS
 export const minasgeraisAccommodations = [
     {
-        image: "public/assets/hotel/minas-gerais/normandy-hotel/normandy-fachada.png",
-        images: ["public/assets/hotel/minas-gerais/normandy-hotel/normandy-academia.png", "public/assets/hotel/minas-gerais/normandy-hotel/normandy-cafe.png", "public/assets/hotel/minas-gerais/normandy-hotel/piscina.png", "public/assets/hotel/minas-gerais/normandy-hotel/normandy-quarto.png", "public/assets/hotel/minas-gerais/normandy-hotel/fachada.png"],
+        image: "hotel/minas-gerais/normandy-hotel/normandy-fachada.png",
+        images: ["hotel/minas-gerais/normandy-hotel/normandy-academia.png", "hotel/minas-gerais/normandy-hotel/normandy-cafe.png", "hotel/minas-gerais/normandy-hotel/piscina.png", "hotel/minas-gerais/normandy-hotel/normandy-quarto.png", "hotel/minas-gerais/normandy-hotel/fachada.png"],
         nomeLocal: 'Normandy hotel',
         localizacao: 'Centro, Belo Horizonte',
         localizacaoCompleta: 'Rua dos Tamoios, 212 , Centro de Belo Horizonte, Belo Horizonte, CEP 30120-050, Brasil',
         informacaoGeral: 'Otima localização',
         tipoQuarto: 'Quarto Duplo Standart',
         quartos: [{
-            image: "public/assets/hotel/minas-gerais/normany-hotel/normandy-fachada.png",
-            imageQuarto: "public/assets/hotel/minas-gerais/normandy-hotel/normandy-quarto.png",
+            image: "hotel/minas-gerais/normany-hotel/normandy-fachada.png",
+            imageQuarto: "hotel/minas-gerais/normandy-hotel/normandy-quarto.png",
             nomeLocal: 'Normandy hotel',
             localizacao: 'Centro,  Belo Horizonte',
             tipoQuarto: 'Standard',
@@ -107,9 +104,9 @@ export const minasgeraisAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/minas-gerais/normandy-hotel/normandy-fachada.png",
+            image: "hotel/minas-gerais/normandy-hotel/normandy-fachada.png",
             nomeLocal: 'Normandy hotel',
-            imageQuarto: "public/assets/hotel/minas-gerais/normandy-hotel/normandy-quarto.png",
+            imageQuarto: "hotel/minas-gerais/normandy-hotel/normandy-quarto.png",
             localizacao: 'Centro, Belo Horizonte',
             tipoQuarto: 'King',
             capacidade: '2 Adultos e 1 criança',
@@ -124,19 +121,19 @@ export const minasgeraisAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 350,
         identificador: 1,
-        geoLocalizacao: ['-19.919400302415653, -43.93854796137455']
+        geoLocalizacao: ['-19.919400302415653', '-43.93854796137455']
     },
     {
-        image: "public/assets/hotel/minas-gerais/savassi-hotel/savassi-frente.png",
-        images: ["public/assets/hotel/minas-gerais/savassi-hotel/savassi-frente.png", "public/assets/hotel/minas-gerais/savassi-hotel/savassi-banheiro.png", "public/assets/hotel/minas-gerais/savassi-hotel/savassi-cafe.png", "public/assets/hotel/minas-gerais/savassi-hotel/quarto.png", "public/assets/hotel/minas-gerais/savassi-hotel/savassi-restaurante.png"],
+        image: "hotel/minas-gerais/savassi-hotel/savassi-frente.png",
+        images: ["hotel/minas-gerais/savassi-hotel/savassi-frente.png", "hotel/minas-gerais/savassi-hotel/savassi-banheiro.png", "hotel/minas-gerais/savassi-hotel/savassi-cafe.png", "hotel/minas-gerais/savassi-hotel/savassi-quarto.png", "hotel/minas-gerais/savassi-hotel/savassi-restaurante.png"],
         nomeLocal: 'Savassi Hotel',
         localizacao: 'Savassi, Belo Horizonte',
         localizacaoCompleta: 'Rua Sergipe, 939 , Savassi, Belo Horizonte, CEP 30130-171, Brasil',
         informacaoGeral: 'Otima lovalização',
         tipoQuarto: 'Quarto simples',
         quartos: [{
-            image: "public/assets/hotel/minas-gerais/savassi-hotel/savassi-frente.png",
-            imageQuarto: "public/assets/hotel/minas-gerais/savassi-hotel/savassi-quarto.png",
+            image: "hotel/minas-gerais/savassi-hotel/savassi-frente.png",
+            imageQuarto: "hotel/minas-gerais/savassi-hotel/savassi-quarto.png",
             nomeLocal: 'Savassi Hotel',
             localizacao: 'Savassi, Belo Horizonte',
             tipoQuarto: 'Standard casal',
@@ -145,8 +142,8 @@ export const minasgeraisAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/minas-gerais/savassi-hotel/savassi-frente.png",
-            imageQuarto: "public/assets/hotel/minas-gerais/savassi-hotel/savassi-quarto.png",
+            image: "hotel/minas-gerais/savassi-hotel/savassi-frente.png",
+            imageQuarto: "hotel/minas-gerais/savassi-hotel/savassi-quarto.png",
             nomeLocal: 'Savassi Hotel',
             localizacao: 'Savassi, Belo Horizonte',
             tipoQuarto: 'camas separadas',
@@ -155,32 +152,30 @@ export const minasgeraisAccommodations = [
             adicional: 'Meia Pensão',
             id: 2
         }],
-        descricao: 'A apenas 4 minutos do centro da cidade de Belo Horizonte, este hotel fica na badalada área de Savassi. A acomodação dispõe de uma piscina na cobertura e um restaurante regional. O Wi-Fi e o estacionamento são gratuitos.' ,
+        descricao: 'A apenas 4 minutos do centro da cidade de Belo Horizonte, este hotel fica na badalada área de Savassi. A acomodação dispõe de uma piscina na cobertura e um restaurante regional. O Wi-Fi e o estacionamento são gratuitos.',
         camas: '1 cama de casal',
         avaliacao: '7,0',
         tempoCapacidade: '1 noite, 2 adultos',
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 209,
         identificador: 2,
-        geoLocalizacao: ['-19.93395361957372, -43.937319546030906']
+        geoLocalizacao: ['-19.93395361957372', '-43.937319546030906']
     }
 ]
 
-
 // Alagoas
-
 export const alagoasAccommodations = [
     {
-        image: "public/assets/hotel/alagoas/hotel-costamar/fachada.png",
-        images: ["public/assets/hotel/alagoas/hotel-costamar/fachada.png", "public/assets/hotel/alagoas/hotel-costamar/cafe.png", "public/assets/hotel/alagoas/hotel-costamar/piscina.png", "public/assets/hotel/alagoas/hotel-costamar/quarto.png", "public/assets/hotel/alagoas/hotel-costamar/recepcao.png"],
+        image: "hotel/alagoas/hotel-costamar/fachada.png",
+        images: ["hotel/alagoas/hotel-costamar/fachada.png", "hotel/alagoas/hotel-costamar/cafe.png", "hotel/alagoas/hotel-costamar/piscina.png", "hotel/alagoas/hotel-costamar/quarto.png", "hotel/alagoas/hotel-costamar/recepcao.png"],
         nomeLocal: 'Hotel Costamar',
         localizacao: 'Maceio, Alagoas',
         localizacaoCompleta: 'R. Machado Lemos, 433 - Ponta Verde,Alagoas, CEP 57035-030, Brasil',
         informacaoGeral: ' 5 minutos a pé da Praia de Ponta Verde',
         tipoQuarto: 'Quarto Duplo Master',
         quartos: [{
-            image: "public/assets/hotel/alagoas/hotel-costamar/fachada.png",
-            imageQuarto: "public/assets/hotel/alagoas/hotel-costamar/quarto.png",
+            image: "hotel/alagoas/hotel-costamar/fachada.png",
+            imageQuarto: "hotel/alagoas/hotel-costamar/quarto.png",
             nomeLocal: 'Hotel Costamar',
             localizacao: 'Maceio, Alagoas',
             tipoQuarto: 'Master',
@@ -189,9 +184,9 @@ export const alagoasAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/alagoas/hotel-costamar/fachada.png",
+            image: "hotel/alagoas/hotel-costamar/fachada.png",
             nomeLocal: 'Hotel Costamar',
-            imageQuarto: "public/assets/hotel/alagoas/hotel-costamar/quarto.png",
+            imageQuarto: "hotel/alagoas/hotel-costamar/quarto.png",
             localizacao: 'Maceio, Alagoas',
             tipoQuarto: 'King',
             capacidade: '2 Adultos',
@@ -203,22 +198,22 @@ export const alagoasAccommodations = [
         camas: '1 cama de casal',
         avaliacao: '9,9',
         tempoCapacidade: '1 noite, 2 adultos',
-        informacoesAdicionais: [ 'Acesso Wi-Fi gratuito','Não aceita animais de estimação', 'Estacionamento', 'Recepção disponível 24 horas', 'Piscina externa', 'Cofre', 'Sala para Bagagem'],
+        informacoesAdicionais: ['Acesso Wi-Fi gratuito', 'Não aceita animais de estimação', 'Estacionamento', 'Recepção disponível 24 horas', 'Piscina externa', 'Cofre', 'Sala para Bagagem'],
         valor: 702,
         identificador: 1,
-        geoLocalizacao: ['-9.661913358987263, -35.70258969494954']
+        geoLocalizacao: ['-9.661913358987263', '-35.70258969494954']
     },
     {
-        image: "public/assets/hotel/alagoas/maceio_atlantic/fachada.png",
-        images: ["public/assets/hotel/alagoas/maceio_atlantic/fachada.png", "public/assets/hotel/alagoas/maceio_atlantic/comida.png", "public/assets/hotel/alagoas/maceio_atlantic/recepcao.png", "public/assets/hotel/alagoas/maceio_atlantic/piscina.png", "public/assets/hotel/alagoas/maceio_atlantic/quarto.png"],
+        image: "hotel/alagoas/maceio_atlantic/fachada.png",
+        images: ["hotel/alagoas/maceio_atlantic/fachada.png", "hotel/alagoas/maceio_atlantic/comida.png", "hotel/alagoas/maceio_atlantic/recepcao.png", "hotel/alagoas/maceio_atlantic/piscina.png", "hotel/alagoas/maceio_atlantic/quarto.png"],
         nomeLocal: 'Maceió Atlantic Suites',
         localizacao: 'Ponta Verde, Maceió',
         localizacaoCompleta: 'Ponta Verde, Maceió, ponta verde, Maceió, CEP 57036-850, Brasil',
         informacaoGeral: 'Enfrente á Praia de Jatiúca',
         tipoQuarto: 'Apartamento Completo',
         quartos: [{
-            image: "public/assets/hotel/alagoas/maceio_atlantic/fachada.png",
-            imageQuarto: "public/assets/hotel/alagoas/quarto.png",
+            image: "hotel/alagoas/maceio_atlantic/fachada.png",
+            imageQuarto: "hotel/alagoas/quarto.png",
             nomeLocal: 'Maceió Atlantic Suites',
             localizacao: 'Ponta Verde, Maceió',
             tipoQuarto: 'Standard',
@@ -227,8 +222,8 @@ export const alagoasAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/alagoas/maceio_atlantic/fachada.png",
-            imageQuarto: "public/assets/hotel/alagoas/quarto.png",
+            image: "hotel/alagoas/maceio_atlantic/fachada.png",
+            imageQuarto: "hotel/alagoas/quarto.png",
             nomeLocal: 'Maceió Atlantic Suites',
             localizacao: 'Ponta Verde, Maceió',
             tipoQuarto: 'King',
@@ -247,25 +242,23 @@ export const alagoasAccommodations = [
         informacoesAdicionais: ['Não aceita animais de estimação', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Spa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Sauna', 'Sala para Bagagem', 'Sala de jogos'],
         valor: 800,
         identificador: 2,
-        geoLocalizacao: ['-9.64876871975474, -35.700902496308345']
+        geoLocalizacao: ['-9.64876871975474', '-35.700902496308345']
     }
 ]
 
-
 // bahia
-
 export const bahiaAccommodations = [
     {
-        image: "public/assets/hotel/bahia/cana_brava_resort/fachada.png",
-        images: ["public/assets/hotel/bahia/cana_brava_resort/fachada.png", "public/assets/hotel/bahia/cana_brava_resort/cafe.png", "public/assets/hotel/bahia/cana_brava_resort/piscina.png", "public/assets/hotel/bahia/cana_brava_resort/quarto.png"],
+        image: "hotel/bahia/cana_brava_resort/fachada.png",
+        images: ["hotel/bahia/cana_brava_resort/fachada.png", "hotel/bahia/cana_brava_resort/cafe.png", "hotel/bahia/cana_brava_resort/piscina.png", "hotel/bahia/cana_brava_resort/quarto.png"],
         nomeLocal: 'Cana Brava All Inclusive Resort',
         localizacao: 'Bahia, Ilhéus ',
         localizacaoCompleta: 's/n Águas de Olivença, Ilhéus ,Bahia',
         informacaoGeral: ' beira da praia',
         tipoQuarto: 'Quarto Duplo Master',
         quartos: [{
-            image: "public/assets/hotel/bahia/cana_brava_resort/fachada.png",
-            imageQuarto: "public/assets/hotel/bahia/cana_brava_resort/quarto.png",
+            image: "hotel/bahia/cana_brava_resort/fachada.png",
+            imageQuarto: "hotel/bahia/cana_brava_resort/quarto.png",
             nomeLocal: 'Cana Brava All Inclusive Resort',
             localizacao: 'Bahia, Ilhéus',
             tipoQuarto: 'Master',
@@ -274,8 +267,8 @@ export const bahiaAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/bahia/cana_brava_resort/fachada.png",
-            imageQuarto: "public/assets/hotel/bahia/cana_brava_resort/quarto.png",
+            image: "hotel/bahia/cana_brava_resort/fachada.png",
+            imageQuarto: "hotel/bahia/cana_brava_resort/quarto.png",
             nomeLocal: 'Cana Brava All Inclusive Resort',
             localizacao: 'Bahia, Ilhéus',
             tipoQuarto: 'king',
@@ -288,23 +281,23 @@ export const bahiaAccommodations = [
         camas: '1 cama de casal',
         avaliacao: '5,9',
         tempoCapacidade: '9 noite, 2 adultos',
-        informacoesAdicionais: [ 'Acesso Wi-Fi gratuito', 'Wi-Fi em áreas públicas','Não aceita animais de estimação', 'Estacionamento', 'Tênis','Recepção disponível 24 horas', 'Piscina externa', 'Cofre', 'Sala para Bagagem'],
+        informacoesAdicionais: ['Acesso Wi-Fi gratuito', 'Wi-Fi em áreas públicas', 'Não aceita animais de estimação', 'Estacionamento', 'Tênis', 'Recepção disponível 24 horas', 'Piscina externa', 'Cofre', 'Sala para Bagagem'],
         valor: 2000,
         identificador: 1,
-        geoLocalizacao: ['-14.993499569779631, -39.00004440369165']
+        geoLocalizacao: ['-14.993499569779631', '-39.00004440369165']
     },
     // ------------- 2 hotel
     {
-        image: "public/assets/hotel/bahia/porto_resort/fachada.png",
-        images: ["public/assets/hotel/bahia/porto_resort/fachada.png", "public/assets/hotel/bahia/porto_resort/alimentos.png", "public/assets/hotel/bahia/porto_resort/lazer.png", "public/assets/hotel/bahia/porto_resort/piscina.png", "public/assets/hotel/bahia/porto_resort/quarto.png" ,"public/assets/hotel/bahia/porto_resort/salao.png"],
+        image: "hotel/bahia/porto_resort/fachada.png",
+        images: ["hotel/bahia/porto_resort/fachada.png", "hotel/bahia/porto_resort/alimentos.png", "hotel/bahia/porto_resort/lazer.png", "hotel/bahia/porto_resort/piscina.png", "hotel/bahia/porto_resort/quarto.png", "hotel/bahia/porto_resort/salao.png"],
         nomeLocal: 'Porto Seguro Praia Resort',
         localizacao: 'Porto Seguro, Bahia',
         localizacaoCompleta: 'Praia de Curuipe, Porto Seguro, Bahia, CEP 45810-000, Brasil',
         informacaoGeral: 'Localizado em frente à praia, este resort all-inclusive descontraído cercado de jardins tropicais',
         tipoQuarto: 'Apartamento Completo',
         quartos: [{
-            image: "public/assets/hotel/bahia/porto_resort/fachada.png",
-            imageQuarto: "public/assets/hotel/bahia/porto_resort/quarto.png",
+            image: "hotel/bahia/porto_resort/fachada.png",
+            imageQuarto: "hotel/bahia/porto_resort/quarto.png",
             nomeLocal: 'Porto Seguro Praia Resort',
             localizacao: 'Porto Seguro, Bahia',
             tipoQuarto: 'Standard',
@@ -313,8 +306,8 @@ export const bahiaAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/bahia/porto_resort/fachada.png",
-            imageQuarto: "public/assets/hotel/bahia/porto_resort/quarto.png",
+            image: "hotel/bahia/porto_resort/fachada.png",
+            imageQuarto: "hotel/bahia/porto_resort/quarto.png",
             nomeLocal: 'Porto Seguro Praia Resort',
             localizacao: 'Porto Seguro, Bahia',
             tipoQuarto: 'Master',
@@ -333,23 +326,23 @@ export const bahiaAccommodations = [
         informacoesAdicionais: ['Não aceita animais de estimação', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Spa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Sauna', 'Sala para Bagagem', 'Sala de jogos'],
         valor: 1800,
         identificador: 2,
-        geoLocalizacao: ['-16.418889617675173, -39.05486250324068']
+        geoLocalizacao: ['-16.418889617675173', '-39.05486250324068']
     }
 ]
 
 // Parana
 export const paranaAccommodations = [
     {
-        image: "public/assets/hotel/parana/hotel_colonial/fachada.png",
-        images: ["public/assets/hotel/parana/hotel_colonial/fachada.png", "public/assets/hotel/parana/hotel_colonial/alimentos.png", "public/assets/hotel/parana/hotel_colonial/piscina.png", "public/assets/hotel/parana/hotel_colonial/quarto.png"],
+        image: "hotel/parana/hotel_colonial/fachada.png",
+        images: ["hotel/parana/hotel_colonial/fachada.png", "hotel/parana/hotel_colonial/alimentos.png", "hotel/parana/hotel_colonial/piscina.png", "hotel/parana/hotel_colonial/quarto.png"],
         nomeLocal: 'Hotel Colonial Iguaçu',
         localizacao: 'Parana, Foz do Iguaçu ',
         localizacaoCompleta: 'Rodovia das Cataratas Km 20, 11237 - Parque Nacional do Iguaçu, Parana, Foz do Iguaçu',
         informacaoGeral: ' 1 km do Parque Nacional do Iguaçu',
         tipoQuarto: 'Quarto Duplo Master',
         quartos: [{
-            image: "public/assets/hotel/parana/hotel_colonial/fachada.png",
-            imageQuarto: "public/assets/hotel/parana/hotel_colonial/quarto.png",
+            image: "hotel/parana/hotel_colonial/fachada.png",
+            imageQuarto: "hotel/parana/hotel_colonial/quarto.png",
             nomeLocal: 'Hotel Colonial Iguaçu',
             localizacao: 'Parana, Foz do Iguaçu',
             tipoQuarto: 'Suite',
@@ -358,8 +351,8 @@ export const paranaAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/parana/hotel_colonial/fachada.png",
-            imageQuarto: "public/assets/hotel/parana/hotel_colonial/quarto.png",
+            image: "hotel/parana/hotel_colonial/fachada.png",
+            imageQuarto: "hotel/parana/hotel_colonial/quarto.png",
             nomeLocal: 'Hotel Colonial Iguaçu',
             localizacao: 'Parana, Foz do Iguaçu',
             tipoQuarto: 'king',
@@ -372,23 +365,23 @@ export const paranaAccommodations = [
         camas: '1 cama de casal',
         avaliacao: '7,9',
         tempoCapacidade: '2 noite, 2 adultos',
-        informacoesAdicionais: [ 'Acesso Wi-Fi gratuito','Não aceita animais de estimação', ' frigobar', 'Estacionamento','Recepção disponível 24 horas', 'Piscina', 'Cofre', 'Sala para Bagagem'],
+        informacoesAdicionais: ['Acesso Wi-Fi gratuito', 'Não aceita animais de estimação', ' frigobar', 'Estacionamento', 'Recepção disponível 24 horas', 'Piscina', 'Cofre', 'Sala para Bagagem'],
         valor: 200,
         identificador: 1,
-        geoLocalizacao: ['-25.60649294516169, -54.491134353975795']
+        geoLocalizacao: ['-25.60649294516169', '-54.491134353975795']
     },
     // ------------- 2 hotel
     {
-        image: "public/assets/hotel/bahia/rafain_palace/fachada.png",
-        images: ["public/assets/hotel/bahia/rafain_palace/fachada.png", "public/assets/hotel/bahia/rafain_palace/lobby-bar.png", "public/assets/hotel/bahia/rafain_palace/recepcao.png", "public/assets/hotel/bahia/rafain_palace/piscina.png", "public/assets/hotel/bahia/rafain_palace/quarto.png"],
+        image: "hotel/parana/rafain_palace/fachada.png",
+        images: ["hotel/parana/rafain_palace/fachada.png", "hotel/parana/rafain_palace/lobby-bar.png", "hotel/parana/rafain_palace/recepcao.png", "hotel/parana/rafain_palace/piscina.png", "hotel/parana/rafain_palace/quarto.png"],
         nomeLocal: 'Rafain Palace Hotel & Convention',
         localizacao: 'Parque Imperatriz, Foz do Iguaçu',
         localizacaoCompleta: 'Av. Olímpio Rafagnin, 2357 - Parque Imperatriz, Foz do Iguaçu, CEP 85862-210, Brasil',
         informacaoGeral: 'Localizado fica 20 km das Cataratas do Iguaçu',
         tipoQuarto: 'Apartamento Completo',
         quartos: [{
-            image: "public/assets/hotel/bahia/rafain_palace/fachada.png",
-            imageQuarto: "public/assets/hotel/bahia/rafain_palace/quarto.png",
+            image: "hotel/parana/rafain_palace/fachada.png",
+            imageQuarto: "hotel/parana/rafain_palace/quarto.png",
             nomeLocal: 'Rafain Palace Hotel & Convention',
             localizacao: 'Parque Imperatriz, Foz do Iguaçu',
             tipoQuarto: 'Standard',
@@ -397,8 +390,8 @@ export const paranaAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/bahia/rafain_palace/fachada.png",
-            imageQuarto: "public/assets/hotel/bahia/rafain_palace/quarto.png",
+            image: "hotel/parana/rafain_palace/fachada.png",
+            imageQuarto: "hotel/parana/rafain_palace/quarto.png",
             nomeLocal: 'Rafain Palace Hotel & Convention',
             localizacao: 'Parque Imperatriz, Foz do Iguaçu',
             tipoQuarto: 'Suite',
@@ -414,26 +407,26 @@ export const paranaAccommodations = [
         camas: '1 cama de casal',
         avaliacao: '5,6',
         tempoCapacidade: '3 noite, 2 adultos',
-        informacoesAdicionais: ['Não aceita animais de estimação', 'É proibido fumar na propriedade', 'Acesso Wi-Fi gratuito', 'Loja de conveniência','Ar Condicionado', 'Spa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Sauna', 'Sala para Bagagem', 'Sala de jogos'],
+        informacoesAdicionais: ['Não aceita animais de estimação', 'É proibido fumar na propriedade', 'Acesso Wi-Fi gratuito', 'Loja de conveniência', 'Ar Condicionado', 'Spa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Sauna', 'Sala para Bagagem', 'Sala de jogos'],
         valor: 1300,
         identificador: 2,
-        geoLocalizacao: ['-25.500449540055918, -54.538465007951615']
+        geoLocalizacao: ['-25.500449540055918', '-54.538465007951615']
     }
 ]
 
 // são paulo 
 export const saoPauloAccommodations = [
     {
-        image: "public/assets/hotel/sao_paulo/bouerbon/fachada.png",
-        images: ["public/assets/hotel/sao_paulo/bouerbon/fachada.png", "public/assets/hotel/sao_paulo/bouerbon/lobby-bar.png", "public/assets/hotel/sao_paulo/bouerbon/piscina.png", "public/assets/hotel/sao_paulo/bouerbon/quarto.png", "public/assets/hotel/sao_paulo/bouerbon/recepcao.png"],
+        image: "hotel/sao_paulo/bouerbon/fachada.png",
+        images: ["hotel/sao_paulo/bouerbon/fachada.png", "hotel/sao_paulo/bouerbon/lobby-bar.png", "hotel/sao_paulo/bouerbon/piscina.png", "hotel/sao_paulo/bouerbon/quarto.png", "hotel/sao_paulo/bouerbon/recepcao.png"],
         nomeLocal: 'Bourbon Convention',
         localizacao: 'São paulo, Ibirapuera ',
         localizacaoCompleta: 'Av. Ibirapuera, 2927 - Ibirapuera, São Paulo CEP: 04029-200',
         informacaoGeral: ' 3 km do Parque Ibirapuera',
         tipoQuarto: 'Quarto Duplo Master',
         quartos: [{
-            image: "public/assets/hotel/sao_paulo/bouerbon/fachada.png",
-            imageQuarto: "public/assets/hotel/sao_paulo/bouerbon/quarto.png",
+            image: "hotel/sao_paulo/bouerbon/fachada.png",
+            imageQuarto: "hotel/sao_paulo/bouerbon/quarto.png",
             nomeLocal: 'Bourbon Convention',
             localizacao: 'São paulo, Ibirapuera',
             tipoQuarto: 'Suite',
@@ -442,8 +435,8 @@ export const saoPauloAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/sao_paulo/bouerbon/fachada.png",
-            imageQuarto: "public/assets/hotel/sao_paulo/bouerbon/quarto.png",
+            image: "hotel/sao_paulo/bouerbon/fachada.png",
+            imageQuarto: "hotel/sao_paulo/bouerbon/quarto.png",
             nomeLocal: 'Bourbon Convention',
             localizacao: 'ão paulo, Ibirapuera',
             tipoQuarto: 'king',
@@ -456,23 +449,23 @@ export const saoPauloAccommodations = [
         camas: '1 cama de casal',
         avaliacao: '6,9',
         tempoCapacidade: '3 noite, 2 adultos',
-        informacoesAdicionais: [ 'Acesso Wi-Fi gratuito','Não aceita animais de estimação', ' frigobar', 'Estacionamento','Recepção disponível 24 horas', 'Piscina', 'Cofre', 'Sala para Bagagem'],
+        informacoesAdicionais: ['Acesso Wi-Fi gratuito', 'Não aceita animais de estimação', ' frigobar', 'Estacionamento', 'Recepção disponível 24 horas', 'Piscina', 'Cofre', 'Sala para Bagagem'],
         valor: 1400,
         identificador: 1,
-        geoLocalizacao: ['-23.607644595637087, -46.6665670846586']
+        geoLocalizacao: ['-23.607644595637087', '-46.6665670846586']
     },
     // ------------- 2 hotel
     {
-        image: "public/assets/hotel/sao_paulo/slaviero/fachada.png",
-        images: ["public/assets/hotel/sao_paulo/slaviero/fachada.png", "public/assets/hotel/sao_paulo/slaviero/lobby-bar.png", "public/assets/hotel/sao_paulo/slaviero/recepcao.png", "public/assets/hotel/sao_paulo/slaviero/piscina.png", "public/assets/hotel/sao_paulo/slaviero/quarto.png"],
+        image: "hotel/sao_paulo/slaviero/fachada.png",
+        images: ["hotel/sao_paulo/slaviero/fachada.png", "hotel/sao_paulo/slaviero/lobby-bar.png", "hotel/sao_paulo/slaviero/recepcao.png", "hotel/sao_paulo/slaviero/piscina.png", "hotel/sao_paulo/slaviero/quarto.png"],
         nomeLocal: 'Bourbon Convention',
         localizacao: 'República, São Paulo',
         localizacaoCompleta: 'R. Araújo, 141 - República, São Paulo, CEP 01220-020, Brasil',
         informacaoGeral: 'Localizado centro da cidade',
         tipoQuarto: 'Apartamento Completo',
         quartos: [{
-            image: "public/assets/hotel/sao_paulo/slaviero/fachada.png",
-            imageQuarto: "public/assets/hotel/sao_paulo/slaviero/quarto.png",
+            image: "hotel/sao_paulo/slaviero/fachada.png",
+            imageQuarto: "hotel/sao_paulo/slaviero/quarto.png",
             nomeLocal: 'Bourbon Convention',
             localizacao: 'República, São Paulo',
             tipoQuarto: 'Standard',
@@ -481,8 +474,8 @@ export const saoPauloAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/sao_paulo/slaviero/fachada.png",
-            imageQuarto: "public/assets/hotel/sao_paulo/slaviero/quarto.png",
+            image: "hotel/sao_paulo/slaviero/fachada.png",
+            imageQuarto: "hotel/sao_paulo/slaviero/quarto.png",
             nomeLocal: 'Bourbon Convention',
             localizacao: 'República, São Paulo',
             tipoQuarto: 'Suíte',
@@ -498,25 +491,26 @@ export const saoPauloAccommodations = [
         camas: '1 cama de casal',
         avaliacao: '6,6',
         tempoCapacidade: '1 noite, 2 adultos',
-        informacoesAdicionais: ['Não aceita animais de estimação', 'É proibido fumar na propriedade', 'Acesso Wi-Fi gratuito', 'Loja de conveniência','Ar Condicionado', 'Spa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Sauna', 'Sala para Bagagem', 'Sala de jogos'],
+        informacoesAdicionais: ['Não aceita animais de estimação', 'É proibido fumar na propriedade', 'Acesso Wi-Fi gratuito', 'Loja de conveniência', 'Ar Condicionado', 'Spa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Sauna', 'Sala para Bagagem', 'Sala de jogos'],
         valor: 800,
         identificador: 2,
-        geoLocalizacao: ['-23.544337334798374, -46.6445234']
+        geoLocalizacao: ['-23.544337334798374', '-46.6445234']
     }
 ]
+
 // PERNAMBUCO
 export const pernambucoAccommodations = [
     {
-        image: "public/assets/hotel/pernanmbuco/fity-hotel/fity-fachada.png",
-        images: ["public/assets/hotel/pernambuco/fity-hotel/fity-fachada.png", "public/assets/hotel/pernambuco/fity-hotel/banheiro.png", "public/assets/hotel/pernambuco/fity-hotel/fity-cafe.png", "public/assets/hotel/pernambuco/fity-hotel/quarto1.png", "public/assets/hotel/pernambuco/fity-hotel/quarto2.png"],
+        image: "hotel/pernanmbuco/fity-hotel/fity-fachada.png",
+        images: ["hotel/pernambuco/fity-hotel/fity-fachada.png", "hotel/pernambuco/fity-hotel/banheiro.png", "hotel/pernambuco/fity-hotel/fity-cafe.png", "hotel/pernambuco/fity-hotel/quarto1.png", "hotel/pernambuco/fity-hotel/quarto2.png"],
         nomeLocal: 'Fity Hotel',
         localizacao: 'Recife, Pernambuco',
         localizacaoCompleta: 'Rua Dhalia, 67, Boa Viagem, Recife, CEP 51020-290, Brasil',
         informacaoGeral: 'Localização excelente',
         tipoQuarto: 'Quarto Casal',
         quartos: [{
-            image: "public/assets/hotel/pernambuco/fity-hotel/fity-fachada.png",
-            imageQuarto: "public/assets/hotel/pernambuco/fity-hotel/quarto1.png",
+            image: "hotel/pernambuco/fity-hotel/fity-fachada.png",
+            imageQuarto: "hotel/pernambuco/fity-hotel/quarto1.png",
             nomeLocal: 'Fity Hotel',
             localizacao: 'Recife, Pernambuco',
             tipoQuarto: 'Casal',
@@ -525,9 +519,9 @@ export const pernambucoAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/pernambuco/fity-hotel/fity-fachada.png",
+            image: "hotel/pernambuco/fity-hotel/fity-fachada.png",
             nomeLocal: 'Fity Hotel',
-            imageQuarto: "public/assets/hotel/pernambuco/fity-hotel/quarto2.png",
+            imageQuarto: "hotel/pernambuco/fity-hotel/quarto2.png",
             localizacao: 'Recife, Pernambuco',
             tipoQuarto: 'Quarto familia',
             capacidade: '4 Adultos',
@@ -542,19 +536,19 @@ export const pernambucoAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 200,
         identificador: 1,
-        geoLocalizacao: ['-8.119170627135135, -34.8976746']
+        geoLocalizacao: ['-8.119170627135135', '-34.8976746']
     },
     {
-        image: "public/assets/hotel/pernambuco/park-hotel/park-fachada.png",
-        images: ["public/assets/hotel/pernambuco/park-hotel/park-fachada.png", "public/assets/hotel/pernambuco/park-hotel/park-comida.png", "public/assets/hotel/pernambuco/park-hotel/park-vista.png", "public/assets/hotel/pernambuco/park-hotel/quarto1.png", "public/assets/hotel/pernambuco/park-hotel/quarto2.png"],
+        image: "hotel/pernambuco/park-hotel/park-fachada.png",
+        images: ["hotel/pernambuco/park-hotel/park-fachada.png", "hotel/pernambuco/park-hotel/park-comida.png", "hotel/pernambuco/park-hotel/park-vista.png", "hotel/pernambuco/park-hotel/quarto1.png", "hotel/pernambuco/park-hotel/quarto2.png"],
         nomeLocal: 'Park Hotel',
         localizacao: 'Recife, Pernambuco',
         localizacaoCompleta: 'Rua dos Navegantes, 09, Boa Viagem, Recife, CEP 51021-010, Brasil ',
         informacaoGeral: 'A 100 metros da praia',
         tipoQuarto: 'Standart',
         quartos: [{
-            image: "public/assets/hotel/pernambuco/park-hotel/park-fachada.png",
-            imageQuarto: "public/assets/hotel/pernambuco/park-hotel/quarto2.png",
+            image: "hotel/pernambuco/park-hotel/park-fachada.png",
+            imageQuarto: "hotel/pernambuco/park-hotel/quarto2.png",
             nomeLocal: 'Park Hotel',
             localizacao: 'Recife, Pernambuco',
             tipoQuarto: 'Casal',
@@ -563,8 +557,8 @@ export const pernambucoAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/pernambuco/park-hotel/.png",
-            imageQuarto: "public/assets/hotel/pernambuco/park-hotel/quarto2.png",
+            image: "hotel/pernambuco/park-hotel/.png",
+            imageQuarto: "hotel/pernambuco/park-hotel/quarto2.png",
             nomeLocal: 'Park Hotel',
             localizacao: 'Recife, Pernambuco',
             tipoQuarto: 'Familia',
@@ -580,23 +574,23 @@ export const pernambucoAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 250,
         identificador: 2,
-        geoLocalizacao: ['-8.130578153703562, -34.9005108']
+        geoLocalizacao: ['-8.130578153703562', '-34.9005108']
     }
 ]
 
 // RONDONIA 
 export const rondoniaAccommodations = [
     {
-        image: "public/assets/hotel/rondonia/oscar-hotel/oscar-fachada.png",
-        images: ["public/assets/hotel/rondonia/oscar-hotel/oscar-fachada.png", "public/assets/hotel/rondonia/oscar-hotel/banheiro.png", "public/assets/hotel/rondonia/oscar-hotel/oscar-quarto1.png", "public/assets/hotel/rondonia/oscar-hotel/piscina.png", "public/assets/hotel/rondonia/oscar-hotel/quarto2.png"],
+        image: "hotel/rondonia/oscar-hotel/oscar-fachada.png",
+        images: ["hotel/rondonia/oscar-hotel/oscar-fachada.png", "hotel/rondonia/oscar-hotel/banheiro.png", "hotel/rondonia/oscar-hotel/oscar-quarto1.png", "hotel/rondonia/oscar-hotel/piscina.png", "hotel/rondonia/oscar-hotel/quarto2.png"],
         nomeLocal: 'Oscar Hotel Executive',
         localizacao: 'Porto Velho, Rondonia',
         localizacaoCompleta: 'Av Sete De Setembro , 934, Porto Velho, CEP 78916-100, Brasil',
         informacaoGeral: 'Otima localização',
         tipoQuarto: 'Quarto Duplo Superior',
         quartos: [{
-            image: "public/assets/hotel/rondonia/oscar-hotel/oscar-fachada.png",
-            imageQuarto: "public/assets/hotel/rondonia/oscar-hotel/oscar-quarto1.png",
+            image: "hotel/rondonia/oscar-hotel/oscar-fachada.png",
+            imageQuarto: "hotel/rondonia/oscar-hotel/oscar-quarto1.png",
             nomeLocal: 'Oscar Hotel Executive',
             localizacao: 'Porto Velho, Rondonia',
             tipoQuarto: 'Duplo Superior',
@@ -605,9 +599,9 @@ export const rondoniaAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/rondonia/oscar-hotel/oscar-fachada.png",
+            image: "hotel/rondonia/oscar-hotel/oscar-fachada.png",
             nomeLocal: 'Oscar Hotel Executive',
-            imageQuarto: "public/assets/hotel/rondonia/oscar-hotel/quarto2.png",
+            imageQuarto: "hotel/rondonia/oscar-hotel/quarto2.png",
             localizacao: 'Porto Velho, Rondonia',
             tipoQuarto: 'Duplo Inferior',
             capacidade: '2 Adultos',
@@ -622,19 +616,19 @@ export const rondoniaAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 200,
         identificador: 1,
-        geoLocalizacao: ['-8.763398400214427, -63.901516469312725']
+        geoLocalizacao: ['-8.763398400214427', '-63.901516469312725']
     },
     {
-        image: "public/assets/hotel/rondonia/pousada-raizes/pousada.png",
-        images: ["public/assets/hotel/rondonia/pousada-raizes/pousada.png", "public/assets/hotel/rondonia/pousada-raizes/jogos.png", "public/assets/hotel/rondonia/pousada-raizes/piscina.png", "public/assets/hotel/rondonia/pousada-raizes/quarto.png", "public/assets/hotel/rondonia/pousada-raizes/quarto2.png"],
+        image: "hotel/rondonia/pousada-raizes/pousada.png",
+        images: ["hotel/rondonia/pousada-raizes/pousada.png", "hotel/rondonia/pousada-raizes/jogos.png", "hotel/rondonia/pousada-raizes/piscina.png", "hotel/rondonia/pousada-raizes/quarto.png", "hotel/rondonia/pousada-raizes/quarto2.png"],
         nomeLocal: 'Pousada Nossas Raízes',
         localizacao: 'Porto Velho, Rondonia',
         localizacaoCompleta: '913 Rua Major Amarante, Porto Velho, CEP 76801-182, Brasil ',
         informacaoGeral: 'Localização Excelente',
         tipoQuarto: 'Standart',
         quartos: [{
-            image: "public/assets/hotel/rondonia/pousada-raizes/pousada.png",
-            imageQuarto: "public/assets/hotel/rondonia/pousada-raizes/quarto.png",
+            image: "hotel/rondonia/pousada-raizes/pousada.png",
+            imageQuarto: "hotel/rondonia/pousada-raizes/quarto.png",
             nomeLocal: 'Pousada Nossas Raizes',
             localizacao: 'Porto Velho, Rondonia',
             tipoQuarto: 'Standard casal ',
@@ -643,8 +637,8 @@ export const rondoniaAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/rondonia/pousada-raizes/pousada.png",
-            imageQuarto: "public/assets/hotel/rondonia/pousada-raizes/quarto2.png",
+            image: "hotel/rondonia/pousada-raizes/pousada.png",
+            imageQuarto: "hotel/rondonia/pousada-raizes/quarto2.png",
             nomeLocal: 'Pousada Nossas Raizes',
             localizacao: 'Porto Velho, Rondonia',
             tipoQuarto: 'Standart familia',
@@ -660,23 +654,23 @@ export const rondoniaAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 350,
         identificador: 1,
-        geoLocalizacao: ['-8.7556744115625, -63.9126818460309']
+        geoLocalizacao: ['-8.7556744115625', '-63.9126818460309']
     }
 ]
 
 // SERGIPE 
 export const sergipeAccommodations = [
     {
-        image: "public/assets/hotel/sergipe/dm-hotel/fachadadm.png",
-        images: ["public/assets/hotel/sergipe/dm-hotel/fachadadm.png", "public/assets/hotel/sergipe/dm-hotel/cafe.png", "public/assets/hotel/sergipe/dm-hotel/quarto1.png", "public/assets/hotel/sergipe/dm-hotel/quarto2.png", "public/assets/hotel/sergipe/dm-hotel/vista.png"],
+        image: "hotel/sergipe/dm-hotel/fachadadm.png",
+        images: ["hotel/sergipe/dm-hotel/fachadadm.png", "hotel/sergipe/dm-hotel/cafe.png", "hotel/sergipe/dm-hotel/quarto1.png", "hotel/sergipe/dm-hotel/quarto2.png", "hotel/sergipe/dm-hotel/vista.png"],
         nomeLocal: 'DM Hotel',
         localizacao: 'Propriá, Sergipe',
         localizacaoCompleta: 'Avenida Prefeito Nelson Melo, 1150 Centro, Propriá, CEP 49900-000, Brasil ',
         informacaoGeral: 'Localização excelente',
         tipoQuarto: 'Quarto Duplo Standart',
         quartos: [{
-            image: "public/assets/hotel/sergipe/dm-hotel/fachadadm.png",
-            imageQuarto: "public/assets/hotel/sergipe/dm-hotel/quarto1.png",
+            image: "hotel/sergipe/dm-hotel/fachadadm.png",
+            imageQuarto: "hotel/sergipe/dm-hotel/quarto1.png",
             nomeLocal: 'DM Hotel',
             localizacao: 'Propriá, Sergipe',
             tipoQuarto: 'Standard',
@@ -685,9 +679,9 @@ export const sergipeAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/sergipe/dm-hotel/fachadadm.png",
+            image: "hotel/sergipe/dm-hotel/fachadadm.png",
             nomeLocal: 'DM Hotel',
-            imageQuarto: "public/assets/hotel/sergipe/dm-hotel/quarto2.png",
+            imageQuarto: "hotel/sergipe/dm-hotel/quarto2.png",
             localizacao: 'Propriá, Sergipe',
             tipoQuarto: 'Standart familia',
             capacidade: '4 Adultos',
@@ -702,19 +696,19 @@ export const sergipeAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 402,
         identificador: 1,
-        geoLocalizacao: ['-10.209326505380426, -36.831936361374545']
+        geoLocalizacao: ['-10.209326505380426', '-36.831936361374545']
     },
     {
-        image: "public/assets/hotel/sergipe/hotel-barreto/fachada.png",
-        images: ["public/assets/hotel/sergipe/hotel-barreto/fachada.png", "public/assets/hotel/sergipe/hotel-barreto/banheiro.png", "public/assets/hotel/sergipe/hotel-barreto/comida.png", "public/assets/hotel/sergipe/hotel-barreto/quarto1.png", "public/assets/hotel/sergipe/hotel-barreto/quarto2.png"],
+        image: "hotel/sergipe/hotel-barreto/fachada.png",
+        images: ["hotel/sergipe/hotel-barreto/fachada.png", "hotel/sergipe/hotel-barreto/banheiro.png", "hotel/sergipe/hotel-barreto/comida.png", "hotel/sergipe/hotel-barreto/quarto1.png", "hotel/sergipe/hotel-barreto/quarto2.png"],
         nomeLocal: 'Hotel Barreto',
         localizacao: 'Nossa Senhora da Gloria, Sergipe',
         localizacaoCompleta: 'Av. Manuel Venâncio Cunha - 785, Nossa Senhora da Glória, CEP 49680-000, Brasi',
         informacaoGeral: 'Otima localização',
         tipoQuarto: 'Quarto Completo',
         quartos: [{
-            image: "public/assets/hotel/sergipe/hotel-barreto/fachada.png",
-            imageQuarto: "public/assets/hotel/sergipe/hotel-barreto/banheiro.png",
+            image: "hotel/sergipe/hotel-barreto/fachada.png",
+            imageQuarto: "hotel/sergipe/hotel-barreto/banheiro.png",
             nomeLocal: 'Hotel Barreto',
             localizacao: 'Nossa Senhora da Gloria, Sergipe',
             tipoQuarto: 'Quarto completo',
@@ -723,8 +717,8 @@ export const sergipeAccommodations = [
             adicional: 'Café da Manhã',
             id: 1
         }, {
-            image: "public/assets/hotel/sergipe/hotel-barreto/fachada.png",
-            imageQuarto: "public/assets/hotel/sergipe/hotel-barreto/quarto1.png",
+            image: "hotel/sergipe/hotel-barreto/fachada.png",
+            imageQuarto: "hotel/sergipe/hotel-barreto/quarto1.png",
             nomeLocal: 'Hotel Barreto',
             localizacao: 'Nossa Senhora da Gloria, Sergipe',
             tipoQuarto: 'Quarto camas separadas',
@@ -740,6 +734,6 @@ export const sergipeAccommodations = [
         informacoesAdicionais: ['Animais de estimação permitidos', 'Acesso Wi-Fi gratuito', 'Ar Condicionado', 'Casa de banho privativa', 'Recepção disponível 24 horas', 'Cartão de acesso', 'Cofre', 'Sala para Bagagem'],
         valor: 209,
         identificador: 1,
-        geoLocalizacao: ['-10.217532979156925, -37.4277624']
+        geoLocalizacao: ['-10.217532979156925', '-37.4277624']
     }
 ]

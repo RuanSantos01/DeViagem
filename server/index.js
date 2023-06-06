@@ -26,7 +26,17 @@ import States from "./models/States.js";
 
 // TESTE
 import { users, code } from "./data/index.js";
-import { riodejaneiroAccommodations } from "./data/accommodationData.js";
+import {
+    riodejaneiroAccommodations,
+    minasgeraisAccommodations,
+    alagoasAccommodations,
+    bahiaAccommodations,
+    paranaAccommodations,
+    saoPauloAccommodations,
+    pernambucoAccommodations,
+    rondoniaAccommodations,
+    sergipeAccommodations
+} from "./data/accommodationData.js";
 import { packagesData } from "./data/packagesData.js";
 import { estados } from "./data/state.js";
 
@@ -76,7 +86,15 @@ mongoose.connect(process.env.MONGO_URL, {
 }).then(() => {
     app.listen(PORT, () => console.log(`Server on port: ${PORT}`))
 
-    // Accommodation.insertMany(riodejaneiroAccommodations);
+    // Accommodation.insertMany(riodejaneiroAccommodations,
+    //     minasgeraisAccommodations,
+    //     alagoasAccommodations,
+    //     bahiaAccommodations,
+    //     paranaAccommodations,
+    //     saoPauloAccommodations,
+    //     pernambucoAccommodations,
+    //     rondoniaAccommodations,
+    //     sergipeAccommodations);
     // States.insertMany(estados)
     // Packages.insertMany(packagesData);
 }).catch((err) => {

@@ -1,4 +1,5 @@
-import {riodejaneiroAccommodations,
+import {
+    riodejaneiroAccommodations,
     alagoasAccommodations,
     bahiaAccommodations,
     minasgeraisAccommodations,
@@ -6,8 +7,9 @@ import {riodejaneiroAccommodations,
     pernambucoAccommodations,
     rondoniaAccommodations,
     saoPauloAccommodations,
-    sergipeAccommodations, } from "./accommodationData.js";
-    import mongoose from "mongoose";
+    sergipeAccommodations,
+} from "./accommodationData.js";
+import mongoose from "mongoose";
 
 const rioId = new mongoose.Types.ObjectId;
 const rioId2 = new mongoose.Types.ObjectId;
@@ -38,36 +40,32 @@ export const packagesData = [
         destino: 'Rio de Janeiro',
         valorPassagem: 902,
         pessoas: 2,
-        imagem: 'assets/packages/rio-de-janeiro/1.png',
-        imagens: ['assets/packages/rio-de-janeiro/1.png', 'assets/packages/rio-de-janeiro/2.png', 'assets/packages/rio-de-janeiro/3.png', 'assets/packages/rio-de-janeiro/4.png', 'assets/packages/rio-de-janeiro/5.png'],
+        imagem: 'packages/rio-de-janeiro/1.png',
+        imagens: ['packages/rio-de-janeiro/1.png', 'packages/rio-de-janeiro/2.png', 'packages/rio-de-janeiro/3.png', 'packages/rio-de-janeiro/4.png', 'packages/rio-de-janeiro/5.png'],
         hospedagem: riodejaneiroAccommodations[0],
         vagas: 20,
         vagasRestantes: 16
     },
     {
         _id: rioId2,
-<<<<<<< HEAD
         operador: "Ruan Christian",
         destino: 'Rio de Janeiro',
-=======
-        destino: 'Buzios',
->>>>>>> update-packages
         valorPassagem: 709,
         pessoas: 2,
-        imagem: 'assets/packages/rio-de-janeiro/buzios/3.png',
-        imagens: ['assets/packages/rio-de-janeiro/buzios/1.png', 'assets/packages/rio-de-janeiro/buzios/2.png', 'assets/packages/rio-de-janeiro/buzios/3.png', 'assets/packages/rio-de-janeiro/buzios/4.png', 'assets/packages/rio-de-janeiro/buzios/5.png'],
+        imagem: 'packages/rio-de-janeiro/buzios/3.png',
+        imagens: ['packages/rio-de-janeiro/buzios/1.png', 'packages/rio-de-janeiro/buzios/2.png', 'packages/rio-de-janeiro/buzios/3.png', 'packages/rio-de-janeiro/buzios/4.png', 'packages/rio-de-janeiro/buzios/5.png'],
         hospedagem: riodejaneiroAccommodations[1],
         vagas: 20,
         vagasRestantes: 12
     },
-     // Alagoas
-     {
+    // Alagoas
+    {
         _id: alagoasId,
         destino: 'Maceio ',
         valorPassagem: 600,
         pessoas: 3,
-        imagem: 'assets/packages/alagoas/maceio/1.png',
-        imagens: ['assets/packages/alagoas/maceio/1.png', 'assets/packages/alagoas/maceio/2.png', 'assets/packages/alagoas/maceio/3.png', 'assets/packages/alagoas/maceio/4.png', 'assets/packages/alagoas/maceio/5.png'],
+        imagem: 'packages/alagoas/maceio/1.png',
+        imagens: ['packages/alagoas/maceio/1.png', 'packages/alagoas/maceio/2.png', 'packages/alagoas/maceio/3.png', 'packages/alagoas/maceio/4.png', 'packages/alagoas/maceio/5.png'],
         hospedagem: alagoasAccommodations[0],
         vagas: 15,
     },
@@ -76,8 +74,8 @@ export const packagesData = [
         destino: 'Maragogi',
         valorPassagem: 800,
         pessoas: 3,
-        imagem: 'assets/packages/rio-de-janeiro/maragogi/3.png',
-        imagens: ['assets/packages/rio-de-janeiro/maragogi/1.png', 'assets/packages/rio-de-janeiro/maragogi/2.png', 'assets/packages/rio-de-janeiro/maragogi/3.png', 'assets/packages/rio-de-janeiro/maragogi/4.png', 'assets/packages/rio-de-janeiro/maragogi/5.png'],
+        imagem: 'packages/alagoas/maragogi/3.png',
+        imagens: ['packages/alagoas/maragogi/1.png', 'packages/alagoas/maragogi/2.png', 'packages/alagoas/maragogi/3.png', 'packages/alagoas/maragogi/4.png', 'packages/alagoas/maragogi/5.png'],
         hospedagem: alagoasAccommodations[1],
         vagas: 15,
     },
@@ -87,8 +85,8 @@ export const packagesData = [
         destino: 'Porto Seguro',
         valorPassagem: 1050,
         pessoas: 3,
-        imagem: 'assets/packages/bahia/porto_seguro/1.png',
-        imagens: ['assets/packages/bahia/porto_seguro/1.png', 'assets/packages/bahia/porto_seguro/2.png', 'assets/packages/bahia/porto_seguro/3.png', 'assets/packages/bahia/porto_seguro/4.png', 'assets/packages/bahia/porto_seguro/5.png'],
+        imagem: 'packages/bahia/porto_seguro/1.png',
+        imagens: ['packages/bahia/porto_seguro/1.png', 'packages/bahia/porto_seguro/2.png', 'packages/bahia/porto_seguro/3.png', 'packages/bahia/porto_seguro/4.png', 'packages/bahia/porto_seguro/5.png'],
         hospedagem: bahiaAccommodations[0],
         vagas: 10,
     },
@@ -97,19 +95,19 @@ export const packagesData = [
         destino: 'Salvador',
         valorPassagem: 1200,
         pessoas: 3,
-        imagem: 'assets/packages/bahia/salvador/3.png',
-        imagens: ['assets/packages/bahia/salvador/1.png', 'assets/packages/bahia/salvador/2.png', 'assets/packages/bahia/salvador/3.png', 'assets/packages/bahia/salvador/4.png', 'assets/packages/bahia/salvador/5.png'],
+        imagem: 'packages/bahia/salvador/3.png',
+        imagens: ['packages/bahia/salvador/1.png', 'packages/bahia/salvador/2.png', 'packages/bahia/salvador/3.png', 'packages/bahia/salvador/4.png', 'packages/bahia/salvador/5.png'],
         hospedagem: bahiaAccommodations[1],
         vagas: 10,
     },
-   //Minas Gerais
-   {
+    //Minas Gerais
+    {
         _id: minasId,
         destino: 'Monte Verde',
         valorPassagem: 500,
         pessoas: 1,
-        imagem: 'assets/packages/minas-gerais/monte-verde/3.png',
-        imagens: ['assets/packages/minas-gerais/monte-verde/1.png', 'assets/packages/minas-gerais/monte-verde/2.png', 'assets/packages/minas-gerais/monte-verde/3.png', 'assets/packages/minas-gerais/monte-verde/4.png', 'assets/packages/minas-gerais/monte-verde/5.png'],
+        imagem: 'packages/minas-gerais/monte-verde/3.png',
+        imagens: ['packages/minas-gerais/monte-verde/1.png', 'packages/minas-gerais/monte-verde/2.png', 'packages/minas-gerais/monte-verde/3.png', 'packages/minas-gerais/monte-verde/4.png', 'packages/minas-gerais/monte-verde/5.png'],
         hospedagem: minasgeraisAccommodations[0],
         vagas: 30,
     },
@@ -118,19 +116,19 @@ export const packagesData = [
         destino: 'Ouro Preto',
         valorPassagem: 400,
         pessoas: 1,
-        imagem: 'assets/packages/minas-gerais/ouro-preto/3.png',
-        imagens: ['assets/packages/minas-gerais/ouro-preto/1.png', 'assets/packages/minas-gerais/ouro-preto/2.png', 'assets/packages/minas-gerais/ouro-preto/3.png', 'assets/packages/minas-gerais/ouro-preto/4.png', 'assets/packages/minas-gerais/ouro-preto/5.png'],
+        imagem: 'packages/minas-gerais/ouro-preto/3.png',
+        imagens: ['packages/minas-gerais/ouro-preto/1.png', 'packages/minas-gerais/ouro-preto/2.png', 'packages/minas-gerais/ouro-preto/3.png', 'packages/minas-gerais/ouro-preto/4.png', 'packages/minas-gerais/ouro-preto/5.png'],
         hospedagem: minasgeraisAccommodations[1],
         vagas: 30,
     },
-      //parana
-   {
+    //parana
+    {
         _id: paranaId,
         destino: 'Curitiba',
         valorPassagem: 800,
         pessoas: 4,
-        imagem: 'assets/packages/parana/curitiba/5.png',
-        imagens: ['assets/packages/parana/curitiba/1.png', 'assets/packages/parana/curitiba/2.png', 'assets/packages/parana/curitiba/3.png', 'assets/packages/parana/curitiba/4.png', 'assets/packages/parana/curitiba/5.png'],
+        imagem: 'packages/parana/curitiba/5.png',
+        imagens: ['packages/parana/curitiba/1.png', 'packages/parana/curitiba/2.png', 'packages/parana/curitiba/3.png', 'packages/parana/curitiba/4.png', 'packages/parana/curitiba/5.png'],
         hospedagem: paranaAccommodations[0],
         vagas: 18,
     },
@@ -139,8 +137,8 @@ export const packagesData = [
         destino: 'Foz Iguaçu',
         valorPassagem: 1465,
         pessoas: 4,
-        imagem: 'assets/packages/parana/foz-iguacu/3.png',
-        imagens: ['assets/packages/parana/foz-iguacu/1.png', 'assets/packages/parana/foz-iguacu/2.png', 'assets/packages/parana/foz-iguacu/3.png', 'assets/packages/parana/foz-iguacu/4.png', 'assets/packages/parana/foz-iguacu/5.png'],
+        imagem: 'packages/parana/foz-iguacu/3.png',
+        imagens: ['packages/parana/foz-iguacu/1.png', 'packages/parana/foz-iguacu/2.png', 'packages/parana/foz-iguacu/3.png', 'packages/parana/foz-iguacu/4.png', 'packages/parana/foz-iguacu/5.png'],
         hospedagem: paranaAccommodations[1],
         vagas: 18,
     },
@@ -150,8 +148,8 @@ export const packagesData = [
         destino: 'Olinda',
         valorPassagem: 450,
         pessoas: 2,
-        imagem: 'assets/packages/pernambuco/olinda/1.png',
-        imagens: ['assets/packages/pernambuco/olinda/1.png', 'assets/packages/pernambuco/olinda/2.png', 'assets/packages/pernambuco/olinda/3.png', 'assets/packages/pernambuco/olinda/4.png', 'assets/packages/pernambuco/olinda/5.png'],
+        imagem: 'packages/pernambuco/olinda/1.png',
+        imagens: ['packages/pernambuco/olinda/1.png', 'packages/pernambuco/olinda/2.png', 'packages/pernambuco/olinda/3.png', 'packages/pernambuco/olinda/4.png', 'packages/pernambuco/olinda/5.png'],
         hospedagem: pernambucoAccommodations[0],
         vagas: 25,
     },
@@ -160,19 +158,19 @@ export const packagesData = [
         destino: 'Recife',
         valorPassagem: 550,
         pessoas: 2,
-        imagem: 'assets/packages/pernambuco/recife/4.png',
-        imagens: ['assets/packages/pernambuco/recife/1.png', 'assets/packages/pernambuco/recife/2.png', 'assets/packages/pernambuco/recife/3.png', 'assets/packages/pernambuco/recife/4.png', 'assets/packages/pernambuco/recife/5.png'],
+        imagem: 'packages/pernambuco/recife/4.png',
+        imagens: ['packages/pernambuco/recife/1.png', 'packages/pernambuco/recife/2.png', 'packages/pernambuco/recife/3.png', 'packages/pernambuco/recife/4.png', 'packages/pernambuco/recife/5.png'],
         hospedagem: pernambucoAccommodations[1],
         vagas: 12,
     },
-       //Rondonia
-       {
+    //Rondonia
+    {
         _id: rondoniaId,
         destino: 'Ji Parana',
         valorPassagem: 980,
         pessoas: 2,
-        imagem: 'assets/packages/rondonia/ji_parana/4.png',
-        imagens: ['assets/packages/rondonia/ji_parana/1.png', 'assets/packages/rondonia/ji_parana/2.png', 'assets/packages/rondonia/ji_parana/3.png', 'assets/packages/rondonia/ji_parana/4.png'],
+        imagem: 'packages/rondonia/ji_parana/4.png',
+        imagens: ['packages/rondonia/ji_parana/1.png', 'packages/rondonia/ji_parana/2.png', 'packages/rondonia/ji_parana/3.png', 'packages/rondonia/ji_parana/4.png'],
         hospedagem: rondoniaAccommodations[0],
         vagas: 25,
     },
@@ -181,19 +179,19 @@ export const packagesData = [
         destino: 'Porto Velho',
         valorPassagem: 620,
         pessoas: 2,
-        imagem: 'assets/packages/rondonia/porto_velho/1.png',
-        imagens: ['assets/packages/rondonia/porto_velho/1.png', 'assets/packages/rondonia/porto_velho/2.png', 'assets/packages/rondonia/porto_velho/3.png', 'assets/packages/rondonia/porto_velho/4.png', 'assets/packages/rondonia/porto_velho/5.png'],
+        imagem: 'packages/rondonia/porto_velho/1.png',
+        imagens: ['packages/rondonia/porto_velho/1.png', 'packages/rondonia/porto_velho/2.png', 'packages/rondonia/porto_velho/3.png', 'packages/rondonia/porto_velho/4.png', 'packages/rondonia/porto_velho/5.png'],
         hospedagem: rondoniaAccommodations[1],
         vagas: 25,
     },
-       //São paulo
-       {
+    //São paulo
+    {
         _id: sao_pauloId,
         destino: 'São Paulo',
         valorPassagem: 570,
         pessoas: 3,
-        imagem: 'assets/packages/sao_paulo/2.png',
-        imagens: ['assets/packages/sao_paulo/1.png', 'assets/packages/sao_paulo/2.png', 'assets/packages/sao_paulo/3.png', 'assets/packages/sao_paulo/4.png', 'assets/packages/sao_paulo/5.png'],
+        imagem: 'packages/sao-paulo/2.png',
+        imagens: ['packages/sao-paulo/1.png', 'packages/sao-paulo/2.png', 'packages/sao-paulo/3.png', 'packages/sao-paulo/4.png', 'packages/sao-paulo/5.png'],
         hospedagem: saoPauloAccommodations[0],
         vagas: 10,
     },
@@ -202,19 +200,19 @@ export const packagesData = [
         destino: 'Campos Jordão',
         valorPassagem: 800,
         pessoas: 3,
-        imagem: 'assets/packages/sao_paulo/campos_jordao/2.png',
-        imagens: ['assets/packages/sao_paulo/campos_jordao/1.png', 'assets/packages/sao_paulo/campos_jordao/2.png', 'assets/packages/sao_paulo/campos_jordao/3.png', 'assets/packages/sao_paulo/campos_jordao/4.png', 'assets/packages/sao_paulo/campos_jordao/5.png'],
+        imagem: 'packages/sao-paulo/campos_jordao/2.png',
+        imagens: ['packages/sao-paulo/campos_jordao/1.png', 'packages/sao-paulo/campos_jordao/2.png', 'packages/sao-paulo/campos_jordao/3.png', 'packages/sao-paulo/campos_jordao/4.png', 'packages/sao-paulo/campos_jordao/5.png'],
         hospedagem: saoPauloAccommodations[1],
         vagas: 10,
     },
-       //Sergipe
-       {
+    //Sergipe
+    {
         _id: sergipeId,
         destino: 'Aracaju',
         valorPassagem: 1000,
         pessoas: 2,
-        imagem: 'assets/packages/sergipe/aracaju/1.png',
-        imagens: ['assets/packages/sergipe/aracaju/1.png', 'assets/packages/sergipe/aracaju/2.png', 'assets/packages/sergipe/aracaju/3.png', 'assets/packages/sergipe/aracaju/4.png', 'assets/packages/sergipe/aracaju/5.png'],
+        imagem: 'packages/sergipe/aracaju/1.png',
+        imagens: ['packages/sergipe/aracaju/1.png', 'packages/sergipe/aracaju/2.png', 'packages/sergipe/aracaju/3.png', 'packages/sergipe/aracaju/4.png', 'packages/sergipe/aracaju/5.png'],
         hospedagem: sergipeAccommodations[0],
         vagas: 17,
     },
@@ -223,10 +221,10 @@ export const packagesData = [
         destino: 'São Cristovão',
         valorPassagem: 850,
         pessoas: 2,
-        imagem: 'assets/packages/sergipe/sao_cristovao/3.png',
-        imagens: ['assets/packages/sergipe/sao_cristovao/1.png', 'assets/packages/sergipe/sao_cristovao/2.png', 'assets/packages/sergipe/sao_cristovao/3.png', 'assets/packages/sergipe/sao_cristovao/4.png'],
+        imagem: 'packages/sergipe/sao_cristovao/3.png',
+        imagens: ['packages/sergipe/sao_cristovao/1.png', 'packages/sergipe/sao_cristovao/2.png', 'packages/sergipe/sao_cristovao/3.png', 'packages/sergipe/sao_cristovao/4.png'],
         hospedagem: sergipeAccommodations[1],
         vagas: 28,
     },
-    
+
 ]
