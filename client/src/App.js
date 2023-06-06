@@ -20,6 +20,8 @@ import CompletePaymentPage from "scenes/paymentPage/completePaymentPage";
 import FinalCompletePaymentePage from "scenes/paymentPage/finalCompletePaymentePage";
 import ActivitesPage from "scenes/acitivitiesPage";
 import { useSelector } from "react-redux";
+import ProductsPage from "scenes/enterprisePage/ProductsPage";
+import NewProductPage from "scenes/enterprisePage/newProductPage";
 
 function App() {
 
@@ -42,6 +44,8 @@ function App() {
             <Route path="/packages/cart/checkout/completePayment/success" element={<FinalCompletePaymentePage />} />
 
             <Route path="/profile" element={isAuth ? <ActivitesPage /> : <HomePage />} />
+            <Route path="/products" element={isAuth ? <ProductsPage /> : <HomePage />} />
+            <Route path="/products/newProduct" element={isAuth ? <NewProductPage /> : <HomePage />} />
 
             <Route path="/cart" element={<CartPage />} />
             <Route path="/accommodation" element={<AccommodationPage />} />

@@ -6,6 +6,22 @@ import sgMail from "@sendgrid/mail";
 import User from "../models/User.js";
 import SentCode from "../models/SentCode.js";
 
+// GET USER
+export const getUser = async (req, res) => {
+    try {
+
+        const { cpf } = req.params;
+
+        const user = await User.findOne({ cpf: cpf })
+        if (!user) return res.status(404).json({ msg: 'Usuário não encontrado' })
+
+        res.status(200).json({ user })
+
+    } catch (err) {
+        res.status(500).json({ msg: err })
+    }
+}
+
 // REGISTER USER
 export const register = async (req, res) => {
     try {
@@ -15,7 +31,8 @@ export const register = async (req, res) => {
             password,
             phone,
             birthDate,
-            gender
+            gender,
+            cpf
         } = req.body;
 
         const user = await User.findOne({ email: email })
@@ -31,6 +48,7 @@ export const register = async (req, res) => {
             birthDate,
             gender,
             accessLevel: "basic",
+            cpf,
             activities: [],
             validation: false,
             password: passwordHash
@@ -132,6 +150,31 @@ export const updateUserData = async (req, res) => {
                 fullName,
                 email,
                 phone
+            }
+        }
+
+        await User.updateOne(filter, update)
+
+        res.status(200).json({ msg: 'Dados do usuário atualizados com sucesso.' })
+    } catch (err) {
+        res.status(500).json({ msg: err })
+    }
+
+}
+
+// UPDATE USER DATA
+export const updateUserAcesslevel = async (req, res) => {
+    try {
+        const {
+            accessLevel,
+            cpf
+        } = req.body;
+
+        const filter = { cpf }
+
+        const update = {
+            $set: {
+                accessLevel
             }
         }
 

@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 
 const PackagesSchema = new mongoose.Schema(
     {
+        operador: {
+            type: String
+        },
         destino: {
             type: String,
             required: true

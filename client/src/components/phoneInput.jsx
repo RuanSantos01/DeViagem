@@ -1,9 +1,10 @@
-import { TextField } from '@mui/material';
+import { TextField, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import InputMask from 'react-input-mask';
 
 const PhoneInput = ({ handleChange, value }) => {
     const [mask, setMask] = useState("(99) 99999-9999");
+    const isNonMobile = useMediaQuery("(min-width:700px)");
 
     return (
         <InputMask
@@ -23,7 +24,7 @@ const PhoneInput = ({ handleChange, value }) => {
         >
             {(inputProps) => (
                 <TextField
-                    fullWidth
+                    sx={{ width: isNonMobile ? '100%' : '50%' }}
                     label="Celular"
                     {...inputProps}
                 />

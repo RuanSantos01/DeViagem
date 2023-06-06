@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import React from 'react'
 import { useSelector } from 'react-redux';
 import Navbar from 'scenes/navbar';
@@ -15,7 +15,6 @@ import PeopleIcon from '@mui/icons-material/People';
 const FinalCompletePaymentePage = () => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const isNonMobile = useMediaQuery("(min-width:600px)");
 
     const paymentInformations = useSelector((state) => state.paymentInformations);
     const { cartInformations } = paymentInformations;

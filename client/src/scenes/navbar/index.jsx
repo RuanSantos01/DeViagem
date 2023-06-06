@@ -64,6 +64,10 @@ const Navbar = () => {
     navigate('/profile')
   }
 
+  const handleEnterprise = () => {
+    navigate('/products')
+  }
+
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={background} sx={{ width: '100%' }} boxShadow="0px 2px 2px rgba(0,0,0,0.3)">
       <FlexBetween gap="1.75rem" >
@@ -109,6 +113,9 @@ const Navbar = () => {
               <Typography>{userName}</Typography>
             </MenuItem>
             <MenuItem onClick={() => handleButtonAcitivities()}>Minha conta</MenuItem>
+            {user.accessLevel === 'enterprise' && (
+              <MenuItem onClick={() => handleEnterprise()}>Produtos</MenuItem>
+            )}
             <MenuItem onClick={() => logout()}>Sair</MenuItem>
           </Select>
         </FormControl>

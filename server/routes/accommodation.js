@@ -1,9 +1,11 @@
 import express from "express";
-import { accommodations } from "../controllers/accommodation.js";
+import { accommodations, getAccommodationByDestiny, registerAccommodation } from "../controllers/accommodation.js";
 
 const router = express.Router();
 
 router.get("/", accommodations)
 router.post("/:id")
+router.post("/register", registerAccommodation)
+router.post("/getByDestiny", getAccommodationByDestiny)
 
 export default router;

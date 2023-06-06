@@ -76,7 +76,7 @@ mongoose.connect(process.env.MONGO_URL, {
 }).then(() => {
     app.listen(PORT, () => console.log(`Server on port: ${PORT}`))
 
-    // Accommodation.insertMany(accommodations);
+    // Accommodation.insertMany(riodejaneiroAccommodations);
     // States.insertMany(estados)
     // Packages.insertMany(packagesData);
 }).catch((err) => {

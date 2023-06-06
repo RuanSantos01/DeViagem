@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import backgroundImgLogin from 'assets/background-login-cadastro.png';
 import backgroundImgRegistro from 'assets/background-cadastro.png';
 import FlexBetween from 'components/FlexBetween';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,10 +19,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateField } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import ReactInputMask from 'react-input-mask';
 
 
 const registerSchema = yup.object().shape({
   fullName: yup.string().required("required"),
+  cpf: yup.string().required("required"),
   email: yup.string().email("Email Inválido").required("required"),
   password: yup.string().required("required"),
   confirmPassword: yup.string().oneOf([yup.ref('password'), null], "Senhas não coincidem").required("required"),
@@ -38,6 +40,7 @@ const loginSchema = yup.object().shape({
 
 const initialValuesRegister = {
   fullName: "",
+  cpf: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -70,6 +73,17 @@ const backgroundStyleRegistro = {
 };
 
 const phoneMask = ['(', /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+
+const CpfMask = (props) => {
+  return (
+    <ReactInputMask
+      {...props}
+      mask="999.999.999-99"
+      placeholderChar={'\u2000'}
+      maskChar={null}
+    />
+  );
+};
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -293,6 +307,19 @@ const LoginPage = () => {
                             style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
                           }}
                         />
+
+                        <FormControl sx={{ width: '100%' }} variant="filled">
+                          <InputLabel htmlFor="outlined-adornment-password" sx={{ color: blueColor, fontWeight: "bold" }}>CPF/CNPJ</InputLabel>
+                          <OutlinedInput
+                            value={values.cpf}
+                            type='text'
+                            inputComponent={CpfMask}
+                            onChange={(value) => setFieldValue('cpf', value.target.value.replace(/\D/g, ''))}
+                            sx={{
+                              backgroundColor: "white", color: blueColor,
+                            }}
+                          />
+                        </FormControl>
 
                         <FormControl variant='filled'>
                           <InputLabel sx={{ color: blueColor, fontWeight: "bold", fontSize: "1rem" }}>Sexo</InputLabel>

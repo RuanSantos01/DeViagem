@@ -2,12 +2,11 @@ import mongoose from "mongoose";
 
 const AccommodationSchema = new mongoose.Schema(
     {
-        identificador: {
-            type: Number,
-            required: true
-        },
         nomeLocal: {
             type: String,
+        },
+        destino: {
+            type: String
         },
         image: {
             type: String,

@@ -10,6 +10,7 @@ const barcelonaId = new mongoose.Types.ObjectId;
 export const packagesData = [
     {
         _id: rioId,
+        operador: "Ruan Christian",
         destino: 'Rio de Janeiro',
         valorPassagem: 902,
         pessoas: 2,
@@ -17,9 +18,11 @@ export const packagesData = [
         imagens: ['/packages/rio-de-janeiro/1.png', '/packages/rio-de-janeiro/2.png', '/packages/rio-de-janeiro/3.png', '/packages/rio-de-janeiro/4.png', '/packages/rio-de-janeiro/5.png'],
         hospedagem: riodejaneiroAccommodations[0],
         vagas: 20,
+        vagasRestantes: 16
     },
     {
         _id: rioId2,
+        operador: "Ruan Christian",
         destino: 'Rio de Janeiro',
         valorPassagem: 709,
         pessoas: 2,
@@ -27,6 +30,7 @@ export const packagesData = [
         imagens: ['/packages/rio-de-janeiro/1.png', '/packages/rio-de-janeiro/2.png', '/packages/rio-de-janeiro/3.png', '/packages/rio-de-janeiro/4.png', '/packages/rio-de-janeiro/5.png'],
         hospedagem: riodejaneiroAccommodations[1],
         vagas: 20,
+        vagasRestantes: 12
     },
     {
         _id: londresId,

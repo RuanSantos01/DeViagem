@@ -8,6 +8,9 @@ const UserSchema = new mongoose.Schema(
             min: 2,
             max: 50
         },
+        cpf: {
+            type: String,
+        },
         email: {
             type: String,
             required: true,
@@ -43,9 +46,12 @@ const UserSchema = new mongoose.Schema(
         },
         validation: {
             type: Boolean
+        },
+        packages: {
+            type: Array
         }
     },
-    {timestamps: true}
+    { timestamps: true }
 );
 
 const User = mongoose.model("user", UserSchema);

@@ -3,6 +3,7 @@ export const riodejaneiroAccommodations = [
         image: "windson/background-hotel-windson.png",
         images: ["windson/background-hotel-windson.png", "windson/alimentos.png", "windson/area.png", "windson/piscina.png", "windson/quarto.png"],
         nomeLocal: 'Windson Plaza Copacabana',
+        destino: 'Rio de Janeiro',
         localizacao: 'Copacabana, Rio de Janeiro',
         localizacaoCompleta: 'Avenida Princesa Isabel 263 Copacabana, Rio de Janeiro, Estado do Rio de Janeiro 22011-011 Brasil',
         informacaoGeral: 'A 350 metros da praia',
@@ -40,6 +41,7 @@ export const riodejaneiroAccommodations = [
     {
         image: "novotel/background-hotel-novotel.png",
         images: ["novotel/background-hotel-novotel.png", "novotel/alimentos.png", "novotel/lobby-bar.png", "novotel/piscina.png", "novotel/quarto.png"],
+        destino: 'Rio de Janeiro',
         nomeLocal: 'Novotel RJ Botafogo',
         localizacao: 'Botafogo, Rio de Janeiro',
         localizacaoCompleta: 'Praia De Botafogo 330 Botafogo, Botafogo, Rio de Janeiro, CEP 22250040, Brasil',
