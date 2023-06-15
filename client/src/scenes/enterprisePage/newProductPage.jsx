@@ -9,6 +9,29 @@ import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import StarRating from "widgets/StarRating";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+const quillModules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'align': [] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'color': [] }],
+        ['link', 'image'],
+        ['clean']
+    ]
+};
+
+const quillFormats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike',
+    'align',
+    'size',
+    'color',
+    'link', 'image'
+];
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -40,7 +63,7 @@ function a11yProps(index) {
 const NewProductPage = () => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const isNonMobile = useMediaQuery("(min-width:650px)");
+    const isNonMobile = useMediaQuery("(min-width:1260px)");
 
     const navigate = useNavigate();
     const handleVoltar = () => {
@@ -257,14 +280,21 @@ const NewProductPage = () => {
         }
     }
 
+    const [text, setText] = useState('');
+
+    const handleTextChange = (value) => {
+        setText(value);
+        formikAccomodations.setFieldValue('descricao', value)
+    };
+
     return (
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#DCE0E6' }}>
             <Navbar />
 
-            <Box sx={{ width: '80%', backgroundColor: 'white', minHeight: '90vh', boxShadow: '0px 0px 4px rgba(0,0,0,0.5)' }}>
+            <Box sx={{ width: '100%', backgroundColor: 'white', minHeight: '90vh', boxShadow: '0px 0px 4px rgba(0,0,0,0.5)' }}>
 
                 <Box sx={{ padding: '30px', width: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: isNonMobile ? 'row' : 'column-reverse' }}>
-                    <Typography sx={{ fontSize: isNonMobile ? '2.7rem' : '1.5rem', color: blueColor, fontWeight: 'bold' }}>Inclua novo produto</Typography>
+                    <Typography sx={{ fontSize: isNonMobile ? '2.3rem' : '1.5rem', color: blueColor, fontWeight: 'bold' }}>Inclua um novo produto</Typography>
                     {isNonMobile && (
                         <Button onClick={() => handleVoltar()} sx={{ border: `1px solid ${blueColor}`, color: 'white', backgroundColor: blueColor, fontWeight: 'bold', width: isNonMobile ? '150px' : '100%' }}>Voltar</Button>
                     )}
@@ -273,23 +303,25 @@ const NewProductPage = () => {
                     width: '100%', border: `1px solid ${blueColor}`
                 }} />
 
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', display: 'flex', justifyContent: 'center' }}>
-                        <Tabs value={value} onChange={handleChange} >
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: isNonMobile ? 'row' : 'column', height: '100%' }}>
+                    <Box sx={{ borderBottom: isNonMobile ? 0 : 1, borderRight: isNonMobile ? 1 : 0, borderColor: 'divider', width: isNonMobile ? '250px' : '100%', display: 'flex', justifyContent: 'center', height: '100%' }}>
+                        <Tabs value={value} onChange={handleChange} orientation={isNonMobile ? "vertical" : 'horizontal'} sx={{ width: isNonMobile ? '250px' : '100%', boxShadow: isNonMobile ? '0px 2px 2px rgba(0.0.0.0,4)' : '' }}>
                             <Tab label="Pacote" {...a11yProps(0)} sx={{ fontWeight: 'bold', color: blueColor, fontSize: '1.2rem' }} />
                             <Tab label="Hospedagem" {...a11yProps(1)} sx={{ fontWeight: 'bold', color: blueColor, fontSize: '1.2rem' }} />
                             <Tab label="Roteiro" {...a11yProps(2)} sx={{ fontWeight: 'bold', color: blueColor, fontSize: '1.2rem' }} />
                         </Tabs>
                     </Box>
 
+
                     {/* PACOTE */}
                     <TabPanel value={value} index={0}>
                         <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexWrap: 'wrap', gap: '1.2rem', justifyContent: 'space-between' }}>
-
                             <Typography sx={{ width: '100%', color: blueColor, fontWeight: 'bold', fontSize: '1.5rem', textAlign: isNonMobile ? 'start' : 'center' }}>Cadastro de pacote</Typography>
                             <hr style={{ width: '100%' }} />
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, width: '100%' }}>Pacote novo chegando...</Typography>
 
                             <FormControl variant="outlined" sx={{ width: isNonMobile ? '32%' : '100%' }}>
+
                                 <InputLabel sx={{ color: blueColor, fontWeight: 'bold', fontSize: '1rem' }}>Pra onde vai?</InputLabel>
                                 <Select
                                     value={estado}
@@ -301,18 +333,6 @@ const NewProductPage = () => {
                                     ))}
                                 </Select>
                             </FormControl>
-
-                            <TextField
-                                label="Valor base"
-                                variant="outlined"
-                                type="number"
-                                onChange={(e) => formik.setFieldValue('valorPassagem', e.target.value)}
-                                sx={{ width: isNonMobile ? '32%' : '100%' }}
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                InputLabelProps={{
-                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
-                                }}
-                            />
 
                             <TextField
                                 label="Pacote para quantas pessoas?"
@@ -339,7 +359,8 @@ const NewProductPage = () => {
                                 }}
                             />
 
-                            <Box sx={{ width: isNonMobile ? '32%' : '100%' }}>
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Capricha nas imagens do destino selecionado!!</Typography>
+                            <Box sx={{ width: '100%' }}>
                                 <Dropzone
                                     acceptedFiles=".jpg,.jpeg,.png"
                                     multiple={false}
@@ -352,11 +373,11 @@ const NewProductPage = () => {
                                     {({ getRootProps, getInputProps }) => (
                                         <Box
                                             {...getRootProps()}
-                                            sx={{ paddingLeft: '12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
+                                            sx={{ padding: '0 12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
                                         >
                                             <input {...getInputProps()} />
                                             {!packageImage ? (
-                                                <p>Imagem principal</p>
+                                                <p style={{ border: '2px dashed #C4C4C4', padding: "1rem" }}>Imagem principal</p>
                                             ) : (
                                                 <FlexBetween height='51px'>
                                                     <Typography>{packageImage.name}</Typography>
@@ -368,7 +389,7 @@ const NewProductPage = () => {
                                 </Dropzone>
                             </Box>
 
-                            <Box sx={{ width: isNonMobile ? '32%' : '100%' }}>
+                            <Box sx={{ width: '100%' }}>
                                 <Dropzone
                                     acceptedFiles=".jpg,.jpeg,.png"
                                     multiple={true}
@@ -381,11 +402,11 @@ const NewProductPage = () => {
                                     {({ getRootProps, getInputProps }) => (
                                         <Box
                                             {...getRootProps()}
-                                            sx={{ paddingLeft: '12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
+                                            sx={{ padding: '0 12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
                                         >
                                             <input {...getInputProps()} />
                                             {!packageImages ? (
-                                                <p>Imagens sobre o pacote</p>
+                                                <p style={{ border: '2px dashed #C4C4C4', padding: "1rem" }}>Imagens sobre o pacote</p>
                                             ) : (
                                                 <FlexBetween height='51px'>
                                                     {packageImages.map((pack) => (
@@ -398,6 +419,20 @@ const NewProductPage = () => {
                                     )}
                                 </Dropzone>
                             </Box>
+
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Valor apenas do pacote, de hospedagem será acrescentado depois!!</Typography>
+                            <TextField
+                                label="Valor base"
+                                variant="outlined"
+                                type="number"
+                                onChange={(e) => formik.setFieldValue('valorPassagem', e.target.value)}
+                                sx={{ width: '100%' }}
+                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                InputLabelProps={{
+                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
+                                }}
+                            />
+
 
                             {accommodations && (
                                 <Box sx={{ width: '100%' }}>
@@ -453,10 +488,11 @@ const NewProductPage = () => {
                     {/* HOSPEDAGEM */}
                     <TabPanel value={value} index={1}>
                         <form onSubmit={formikAccomodations.handleSubmit} style={{ display: 'flex', flexWrap: 'wrap', gap: '1.2rem', justifyContent: 'space-between' }}>
-                            <Typography sx={{ width: '100%', color: blueColor, fontWeight: 'bold', fontSize: '1.5rem' }}>Sobre a hospedagem...</Typography>
+                            <Typography sx={{ width: '100%', color: blueColor, fontWeight: 'bold', fontSize: '1.5rem', textAlign: isNonMobile ? 'start' : 'center' }}>Sobre a hospedagem...</Typography>
                             <hr style={{ width: '100%' }} />
 
-                            <FormControl variant="outlined" sx={{ width: isNonMobile ? '32%' : '100%' }}>
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, width: '100%' }}>Vamos começar... Primeiro diga onde fica</Typography>
+                            <FormControl variant="outlined" sx={{ width: '100%' }}>
                                 <InputLabel sx={{ color: blueColor, fontWeight: 'bold', fontSize: "1rem" }}>Destino</InputLabel>
                                 <Select
                                     value={estado}
@@ -468,6 +504,7 @@ const NewProductPage = () => {
                                 </Select>
                             </FormControl>
 
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, width: '100%', marginTop: '20px' }}>Agora me diga algumas informações sobre sua hospedagem</Typography>
                             <TextField
                                 label="Razão Social"
                                 variant="outlined"
@@ -477,66 +514,6 @@ const NewProductPage = () => {
                                     style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
                                 }}
                             />
-
-                            <Box sx={{ width: isNonMobile ? '32%' : '100%' }}>
-                                <Dropzone
-                                    acceptedFiles=".jpg,.jpeg,.png"
-                                    multiple={false}
-                                    onDrop={(acceptedFiles) => {
-                                        formikAccomodations.setFieldValue("image", acceptedFiles[0]);
-                                        setImage(acceptedFiles[0])
-                                    }
-                                    }
-                                >
-                                    {({ getRootProps, getInputProps }) => (
-                                        <Box
-                                            {...getRootProps()}
-                                            sx={{ paddingLeft: '12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
-                                        >
-                                            <input {...getInputProps()} />
-                                            {!image ? (
-                                                <p>Imagem principal</p>
-                                            ) : (
-                                                <FlexBetween height='51px'>
-                                                    <Typography>{image.name}</Typography>
-                                                    <EditOutlinedIcon sx={{ marginRight: '12px' }} />
-                                                </FlexBetween>
-                                            )}
-                                        </Box>
-                                    )}
-                                </Dropzone>
-                            </Box>
-
-                            <Box sx={{ width: isNonMobile ? '32%' : '100%' }}>
-                                <Dropzone
-                                    acceptedFiles=".jpg,.jpeg,.png"
-                                    multiple={true}
-                                    onDrop={(acceptedFiles) => {
-                                        formikAccomodations.setFieldValue("images", acceptedFiles);
-                                        setImages(acceptedFiles)
-                                    }
-                                    }
-                                >
-                                    {({ getRootProps, getInputProps }) => (
-                                        <Box
-                                            {...getRootProps()}
-                                            sx={{ paddingLeft: '12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
-                                        >
-                                            <input {...getInputProps()} />
-                                            {!images ? (
-                                                <p>Imagens</p>
-                                            ) : (
-                                                <FlexBetween height='51px'>
-                                                    {images && images.map((i) => (
-                                                        <Typography>{i.name}</Typography>
-                                                    ))}
-                                                    <EditOutlinedIcon sx={{ marginRight: '12px' }} />
-                                                </FlexBetween>
-                                            )}
-                                        </Box>
-                                    )}
-                                </Dropzone>
-                            </Box>
 
                             <TextField
                                 label="Cidade, Estado ou Município"
@@ -558,6 +535,21 @@ const NewProductPage = () => {
                                 }}
                             />
 
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Sua hora de mostrar o por que sua hospedagem é a melhor!!</Typography>
+                            <Box sx={{ width: '100%', border: '1px solid #c4c4c4', padding: '10px', borderRadius: '4px' }}>
+                                <Typography sx={{ color: blueColor, fontWeight: "bold", fontSize: "1rem", marginBottom: '10px' }}>Descrição</Typography>
+                                <div className="mobile-editor-wrapper">
+                                    <ReactQuill
+                                        style={{ borderRadius: '4px' }}
+                                        value={text}
+                                        onChange={handleTextChange}
+                                        modules={quillModules}
+                                        formats={quillFormats}
+                                    />
+                                </div>
+                            </Box>
+
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Agora só mais algumas informações úteis</Typography>
                             <TextField
                                 label="Informação Geral"
                                 variant="outlined"
@@ -598,58 +590,13 @@ const NewProductPage = () => {
                                 }}
                             />
 
-                            <TextField
-                                label="Descrição"
-                                variant="outlined"
-                                onChange={(e) => formikAccomodations.setFieldValue('descricao', e.target.value)}
-                                placeholder="Informe um texto sobre sua hospedagem"
-                                sx={{ width: isNonMobile ? '32%' : '100%' }}
-                                InputLabelProps={{
-                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
-                                }}
-                            />
-
-                            <TextField
-                                label="Valor base"
-                                variant="outlined"
-                                onChange={(e) => formikAccomodations.setFieldValue('valor', e.target.value)}
-                                sx={{ width: isNonMobile ? '32%' : '100%' }}
-                                InputLabelProps={{
-                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
-                                }}
-                            />
-
-                            <TextField
-                                name="latitude"
-                                label="Latitude"
-                                value={latitude}
-                                onChange={handleInputChange}
-                                sx={{ width: isNonMobile ? '32%' : '100%' }}
-                                variant="outlined"
-                                InputLabelProps={{
-                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
-                                }}
-                            />
-
-                            <TextField
-                                name="longitude"
-                                label="Longitude"
-                                value={longitude}
-                                onChange={handleInputChange}
-                                variant="outlined"
-                                sx={{ width: isNonMobile ? '32%' : '100%' }}
-                                InputLabelProps={{
-                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
-                                }}
-                            />
-
                             <Autocomplete
                                 multiple
                                 value={formikAccomodations.values.informacoesAdicionais}
                                 onChange={(event, value) => {
                                     formikAccomodations.setFieldValue('informacoesAdicionais', value);
                                 }}
-                                sx={{ width: isNonMobile ? '32%' : '100%' }}
+                                sx={{ width: isNonMobile ? '66%' : '100%' }}
                                 options={options}
                                 getOptionLabel={(option) => option}
                                 renderTags={(value, getTagProps) =>
@@ -674,13 +621,114 @@ const NewProductPage = () => {
                                 )}
                             />
 
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Capricha no valor!!</Typography>
+                            <TextField
+                                label="Valor base"
+                                variant="outlined"
+                                onChange={(e) => formikAccomodations.setFieldValue('valor', e.target.value)}
+                                sx={{ width: isNonMobile ? '32%' : '100%' }}
+                                InputLabelProps={{
+                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
+                                }}
+                            />
+
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Coloque a Geolocalização exata!!</Typography>
+                            <TextField
+                                name="latitude"
+                                label="Latitude"
+                                value={latitude}
+                                onChange={handleInputChange}
+                                sx={{ width: isNonMobile ? '49%' : '100%' }}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
+                                }}
+                            />
+
+                            <TextField
+                                multiline
+                                name="longitude"
+                                label="Longitude"
+                                value={longitude}
+                                onChange={handleInputChange}
+                                variant="outlined"
+                                sx={{ width: isNonMobile ? '49%' : '100%' }}
+                                InputLabelProps={{
+                                    style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
+                                }}
+                            />
+
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Agora vamos cadastrar imagens da sua hospedagem</Typography>
+                            <Box sx={{ width: '100%' }}>
+                                <Dropzone
+                                    acceptedFiles=".jpg,.jpeg,.png"
+                                    multiple={false}
+                                    onDrop={(acceptedFiles) => {
+                                        formikAccomodations.setFieldValue("image", acceptedFiles[0]);
+                                        setImage(acceptedFiles[0])
+                                    }
+                                    }
+                                >
+                                    {({ getRootProps, getInputProps }) => (
+                                        <Box
+                                            {...getRootProps()}
+                                            sx={{ padding: '0px 12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
+                                        >
+                                            <input {...getInputProps()} />
+                                            {!image ? (
+                                                <p style={{ border: '2px dashed #C4C4C4', padding: "1rem" }}>Imagem principal</p>
+                                            ) : (
+                                                <FlexBetween height='50px'>
+                                                    <Typography>{image.name}</Typography>
+                                                    <EditOutlinedIcon sx={{ marginRight: '12px' }} />
+                                                </FlexBetween>
+                                            )}
+                                        </Box>
+                                    )}
+                                </Dropzone>
+                                <Typography sx={{ color: 'grey', fontSize: '0.9rem' }}>Tamanho máximo permitido 1mb</Typography>
+                            </Box>
+
+                            <Box sx={{ width: '100%' }}>
+                                <Dropzone
+                                    acceptedFiles=".jpg,.jpeg,.png"
+                                    multiple={true}
+                                    onDrop={(acceptedFiles) => {
+                                        formikAccomodations.setFieldValue("images", acceptedFiles);
+                                        setImages(acceptedFiles)
+                                    }
+                                    }
+                                >
+                                    {({ getRootProps, getInputProps }) => (
+                                        <Box
+                                            {...getRootProps()}
+                                            sx={{ padding: '0px 12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
+                                        >
+                                            <input {...getInputProps()} />
+                                            {!images ? (
+                                                <p style={{ border: '2px dashed #C4C4C4', padding: "1rem" }}>Imagens</p>
+                                            ) : (
+                                                <FlexBetween height='51px'>
+                                                    {images && images.map((i) => (
+                                                        <Typography>{i.name}</Typography>
+                                                    ))}
+                                                    <EditOutlinedIcon sx={{ marginRight: '12px' }} />
+                                                </FlexBetween>
+                                            )}
+                                        </Box>
+                                    )}
+                                </Dropzone>
+                                <Typography sx={{ color: 'grey', fontSize: '0.9rem' }}>É permitido até 15 imagens</Typography>
+                            </Box>
+
+
                             <Typography sx={{ width: '100%', color: blueColor, fontWeight: 'bold', fontSize: '1.5rem', marginTop: '20px' }}>Sobre os quartos...</Typography>
                             <hr style={{ width: '100%' }} />
 
-
+                            <Typography sx={{ fontSize: '1rem', color: blueColor, width: '100%' }}>Lembre de colocar imagens que detalham bem o quarto!!</Typography>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.2rem', justifyContent: 'space-between', width: '100%' }}>
 
-                                <Box sx={{ width: isNonMobile ? '32%' : '100%' }}>
+                                <Box sx={{ width: '100%' }}>
                                     <Dropzone
                                         acceptedFiles=".jpg,.jpeg,.png"
                                         multiple={true}
@@ -692,11 +740,11 @@ const NewProductPage = () => {
                                         {({ getRootProps, getInputProps }) => (
                                             <Box
                                                 {...getRootProps()}
-                                                sx={{ paddingLeft: '12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
+                                                sx={{ padding: '0px 12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
                                             >
                                                 <input {...getInputProps()} />
                                                 {!imageHotel ? (
-                                                    <p>Imagem principal</p>
+                                                    <p style={{ border: '2px dashed #C4C4C4', padding: "1rem" }}>Imagem principal</p>
                                                 ) : (
                                                     <FlexBetween height='51px'>
                                                         {imageHotel && imageHotel.map((i) => (
@@ -708,9 +756,10 @@ const NewProductPage = () => {
                                             </Box>
                                         )}
                                     </Dropzone>
+                                    <Typography sx={{ color: 'grey', fontSize: '0.9rem' }}>Tamanho máximo permitido até 1mb</Typography>
                                 </Box>
 
-                                <Box sx={{ width: isNonMobile ? '32%' : '100%' }}>
+                                <Box sx={{ width: '100%' }}>
                                     <Dropzone
                                         acceptedFiles=".jpg,.jpeg,.png"
                                         multiple={false}
@@ -723,11 +772,11 @@ const NewProductPage = () => {
                                         {({ getRootProps, getInputProps }) => (
                                             <Box
                                                 {...getRootProps()}
-                                                sx={{ paddingLeft: '12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
+                                                sx={{ padding: '0px 12px', border: `1px solid #C4C4C4`, borderRadius: '5px', color: blueColor, fontWeight: "bold", fontSize: "1rem", "&:hover": { cursor: "pointer" } }}
                                             >
                                                 <input {...getInputProps()} />
                                                 {!imagesHotel ? (
-                                                    <p>Imagens do quarto</p>
+                                                    <p style={{ border: '2px dashed #C4C4C4', padding: "1rem" }}>Imagens do quarto</p>
                                                 ) : (
                                                     <FlexBetween height='51px'>
                                                         <Typography>{imagesHotel.name}</Typography>
@@ -737,13 +786,15 @@ const NewProductPage = () => {
                                             </Box>
                                         )}
                                     </Dropzone>
+                                    <Typography sx={{ color: 'grey', fontSize: '0.9rem' }}>É permitido até 10 imagens</Typography>
                                 </Box>
 
+                                <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Duplo básico, duplo, duplo vista a mar lateral, duplo vista a mar, familiar, duplo básico de uso individual, familiar vista a mar e suite....</Typography>
                                 <TextField
-                                    name="localizacao"
-                                    label="Localizacao"
-                                    value={formikAccomodations.values.localizacao}
-                                    onChange={(e) => formikAccomodations.setFieldValue('localizacao', e.target.value)}
+                                    name="tipoQuarto"
+                                    label="Tipo de Quarto"
+                                    value={formikAccomodations.values.quartos.tipoQuarto}
+                                    onChange={(e) => formikAccomodations.setFieldValue('quartos.tipoQuarto', e.target.value)}
                                     variant="outlined"
                                     sx={{ width: isNonMobile ? '32%' : '100%' }}
                                     InputLabelProps={{
@@ -752,10 +803,10 @@ const NewProductPage = () => {
                                 />
 
                                 <TextField
-                                    name="tipoQuarto"
-                                    label="Tipo de Quarto"
-                                    value={formikAccomodations.values.quartos.tipoQuarto}
-                                    onChange={(e) => formikAccomodations.setFieldValue('quartos.tipoQuarto', e.target.value)}
+                                    name="adicionais"
+                                    label="Adicionais"
+                                    value={formikAccomodations.values.quartos.adicional}
+                                    onChange={(e) => formikAccomodations.setFieldValue('quartos.adicional', e.target.value)}
                                     variant="outlined"
                                     sx={{ width: isNonMobile ? '32%' : '100%' }}
                                     InputLabelProps={{
@@ -775,6 +826,7 @@ const NewProductPage = () => {
                                     }}
                                 />
 
+                                <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Lembra que aqui é só sobre o quarto</Typography>
                                 <TextField
                                     name="valor"
                                     label="Valor"
@@ -787,17 +839,7 @@ const NewProductPage = () => {
                                     }}
                                 />
 
-                                <TextField
-                                    name="adicionais"
-                                    label="Adicionais"
-                                    value={formikAccomodations.values.quartos.adicional}
-                                    onChange={(e) => formikAccomodations.setFieldValue('quartos.adicional', e.target.value)}
-                                    variant="outlined"
-                                    sx={{ width: isNonMobile ? '32%' : '100%' }}
-                                    InputLabelProps={{
-                                        style: { color: blueColor, fontWeight: "bold", fontSize: "1rem" }
-                                    }}
-                                />
+                                <Typography sx={{ fontSize: '1rem', color: blueColor, marginTop: '20px', width: '100%' }}>Pronto!! Agora é só clicar para cadastrar que sua hospedagem será incluída no nosso banco de dados!!</Typography>
 
                             </div>
 

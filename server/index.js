@@ -39,6 +39,8 @@ import {
 } from "./data/accommodationData.js";
 import { packagesData } from "./data/packagesData.js";
 import { estados } from "./data/state.js";
+import { registerAccommodation } from "./controllers/accommodation.js";
+import { insertPackages } from "./controllers/packages.js";
 
 
 // CONFIGURATIONS
@@ -67,7 +69,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // ROUTES WITH FILES
-// app.post("/auth", upload.single("picture"), component)  <- EXEMPLO
+// app.post("/auth", upload.array, component)  <- EXEMPLO
+app.post("/accommodations/register", upload.array('image'), upload.single('imageQuarto'), registerAccommodation)
+app.post('/packages/insertPackage', upload.array('imagem'), upload.single('imagens'), insertPackages);
 
 // ROUTER WITH TOKEN
 // app.post("/teste", verifyToken, component) <- EXEMPLO
@@ -86,15 +90,7 @@ mongoose.connect(process.env.MONGO_URL, {
 }).then(() => {
     app.listen(PORT, () => console.log(`Server on port: ${PORT}`))
 
-    // Accommodation.insertMany(riodejaneiroAccommodations,
-    //     minasgeraisAccommodations,
-    //     alagoasAccommodations,
-    //     bahiaAccommodations,
-    //     paranaAccommodations,
-    //     saoPauloAccommodations,
-    //     pernambucoAccommodations,
-    //     rondoniaAccommodations,
-    //     sergipeAccommodations);
+    // Accommodation.insertMany(riodejaneiroAccommodations);
     // States.insertMany(estados)
     // Packages.insertMany(packagesData);
 }).catch((err) => {

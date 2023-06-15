@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.get("/", accommodations)
 router.post("/:id")
-router.post("/register", registerAccommodation)
 router.post("/getByDestiny", getAccommodationByDestiny)
 
 export default router;
