@@ -11,11 +11,12 @@ import InfoIcon from '@mui/icons-material/Info';
 import BedroomParentIcon from '@mui/icons-material/BedroomParent';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import PeopleIcon from '@mui/icons-material/People';
+import PersonIcon from '@mui/icons-material/Person';
 
 const FinalPage = () => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const isNonMobile = useMediaQuery("(min-width:600px)");
+    const isNonMobile = useMediaQuery("(min-width:1100px)");
 
     const cart = useSelector((state) => state.cart);
     const paymentInformations = useSelector((state) => state.paymentInformations);
@@ -48,9 +49,11 @@ const FinalPage = () => {
             <Navbar />
 
             <Box sx={{ borderRadius: '10px', width: isNonMobile ? '65%' : '100%', padding: '30px', backgroundColor: 'white', height: '100%', minHeight: '90vh', margin: '10px', boxShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
-                <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: isNonMobile ? '40px' : '24px' }}>Sua reserva foi efetuada com sucesso.</Typography>
-                <Typography sx={{ color: blueColor, fontSize: isNonMobile ? '20px' : '15px' }}>Um email foi enviado para você contendo todas as informações.</Typography>
-
+                {paymentInformations.listaCpfPendente.length > 1 ? (
+                    <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: isNonMobile ? '35px' : '24px' }}>Apenas todos os integrantes finalizarem seu pagamento, a reserva será efetuada com sucesso!</Typography>
+                ) : (
+                    <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: isNonMobile ? '40px' : '24px' }}>Sua reserva foi efetuada com sucesso.</Typography>
+                )}
 
                 {formValues.qtdPagantes > 1 && (
                     <Box>
@@ -128,6 +131,7 @@ const FinalPage = () => {
                             )}
 
 
+
                         </Box>
 
                         {isNonMobile && (
@@ -193,6 +197,17 @@ const FinalPage = () => {
                     </Box>
 
                 </Box>
+
+                {paymentInformations.listaCpfPendente.length >= 1 && (
+                    <Box sx={{ width: '100%', height: 'auto', border: `2px solid ${blueColor}`, padding: '10px', marginTop: '10px', borderRadius: '10px' }}>
+                        <Typography sx={{ color: blueColor, fontSize: '1rem', fontWeight: 'bold' }}>CPF(s) informado(s) que ainda não realizaram o pagamento: </Typography>
+                        <Box sx={{ display: 'flex', gap: '0.6rem', flexDirection: 'column' }}>
+                            {paymentInformations.listaCpfPendente.map((item) => (
+                                <Typography sx={{ display: 'flex', gap: '0.25rem', color: blueColor, alignItems: 'center' }}><PersonIcon />{item.cpf} - {item.nome}</Typography>
+                            ))}
+                        </Box>
+                    </Box>
+                )}
 
                 <Link to="/home">
                     <Button sx={{ width: '100%', height: '50px', backgroundColor: blueColor, textAlign: 'center', marginTop: '20px', color: 'white', border: `1px solid ${blueColor}`, '&:hover': { color: blueColor } }}>Voltar para o menu</Button>

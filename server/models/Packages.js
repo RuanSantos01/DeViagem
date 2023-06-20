@@ -9,13 +9,15 @@ const PackagesSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        cem: {
+            type: String
+        },
         valorPassagem: {
             type: Number,
             required: true
         },
         imagem: {
             type: String,
-            required: true
         },
         imagens: {
             type: Array,
@@ -28,6 +30,12 @@ const PackagesSchema = new mongoose.Schema(
         },
         pessoas: {
             type: Number
+        },
+        dataInicio: {
+            type: String
+        },
+        dataFim: {
+            type: String
         }
     },
     { timestamps: true }

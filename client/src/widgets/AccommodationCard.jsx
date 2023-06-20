@@ -50,7 +50,7 @@ const AccommodationCard = (props) => {
                     <Box>
                         <Typography sx={{ fontSize: '18px' }}>{tempoCapacidade}</Typography>
                         {diffDays && (
-                            <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>R$ {valor * diffDays}</Typography>
+                            <Typography sx={{ fontWeight: 'bold', fontSize: '30px', fontFamily: 'Arial' }}>R$ {valor * diffDays}</Typography>
                         )}
                     </Box>
 

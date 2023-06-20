@@ -5,9 +5,10 @@ import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { setPackage } from 'state';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const CardPackage = (props) => {
-    const { imagem, destino, valorPassagem, hospedagem } = props.package;
+    const { imagem, valorPassagem, hospedagem, dataInicio, dataFim, cem } = props.package;
 
     const imageBanner = {
         backgroundImage: `url(http://localhost:3001/assets/${imagem})`,
@@ -34,25 +35,26 @@ const CardPackage = (props) => {
     }
 
     return (
-        <Box sx={{ width: '90%', height: 'auto', display: 'flex', flexDirection: 'column', borderRadius: '10px', marginTop: '10px', gap: '1rem', padding: '10px', color: blueColor, backgroundColor: 'white', boxShadow: '2px 2px 2px rgba(0,0,0,0.3)' }}>
+        <Box sx={{ width: '90%', height: 'auto', display: 'flex', justifyContent: 'space-between', flexDirection: 'column', borderRadius: '10px', marginTop: '10px', gap: '1rem', padding: '10px', color: blueColor, backgroundColor: 'white', boxShadow: '2px 2px 2px rgba(0,0,0,0.3)' }}>
             <Box sx={imageBanner} />
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
                 <Typography sx={{ fontSize: '20px' }}>Pacote para </Typography>
-                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{destino}</Typography>
+                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cem}</Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: '0.3rem', justifyContent: 'center', flexDirection: 'column' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                     <Typography sx={{ fontSize: '17px', fontWeight: 'bold' }}>a partir de </Typography>
-                    <Typography sx={{ color: '#567ebb', fontWeight: 'bold', fontSize: '17px', textDecoration: 'line-through', fontStyle: 'italic' }}>R${valorPassagem + 152},00</Typography>
+                    <Typography sx={{ color: '#567ebb', fontWeight: 'bold', fontSize: '17px', textDecoration: 'line-through', fontStyle: 'italic' }}>R${((valorPassagem + hospedagem.valor) * 1.1).toFixed(2)}</Typography>
                 </Box>
-                <Typography sx={{ fontSize: '25px', fontWeight: 'bold', color: '#FF4500' }}>R${valorPassagem},00</Typography>
+                <Typography sx={{ fontSize: '25px', fontWeight: 'bold', color: '#FF4500' }}>R${valorPassagem + hospedagem.valor},00</Typography>
+                <hr style={{ width: '100%' }} />
             </Box>
-            <hr style={{ width: '100%' }} />
             <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><BedIcon />Hospedagem - {hospedagem.nomeLocal}</Typography>
             <Link to="/reserveAccommodation" state={{ hospedagem }}>
                 <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>Mais informações sobre a hospedagem</Typography>
             </Link>
             <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AirplaneTicketIcon />Voo ida e volta</Typography>
+            <Typography sx={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><CalendarMonthIcon /> Pacote disponível do dia {new Date(dataInicio).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })} até o dia {new Date(dataFim).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}</Typography>
             <Button onClick={() => handleButton()} sx={{ backgroundColor: blueColor, color: 'white', border: `1px solid ${blueColor}`, '&:hover': { color: blueColor } }}>Comprar</Button>
         </Box>
     )

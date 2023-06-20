@@ -12,7 +12,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 const DateRangeCalendar = (props) => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const isNonMobile = useMediaQuery("(min-width:650px)");
+    const isNonMobile = useMediaQuery("(min-width:1200px)");
     const [range, setRange] = useState([
         {
             startDate: undefined,

@@ -1,14 +1,14 @@
-import { Box, Button, InputAdornment, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography, useMediaQuery, useTheme } from '@mui/material';
+import React, { useEffect, useState } from 'react'
 import Navbar from 'scenes/navbar';
 import * as yup from "yup";
 import { Formik, useFormik } from 'formik';
 import ClassPick from 'components/ClassPick';
 
 // IMAGENS
-import bannerHome from 'assets/banner.png';
+import bannerHome2 from 'assets/background-home2.png';
 import bannerPlanejamento from 'assets/background-planejamento.png';
-import bannerRoteiros from 'assets/background-roteiros.png';
+import bannerRoteiros2 from 'assets/background-roteiros2.png';
 
 // import { autocomplete } from 'air-port-codes-node';
 import Carousel from 'widgets/Carousel';
@@ -23,13 +23,12 @@ import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 import WorkIcon from '@mui/icons-material/Work';
 
 // AIRPORT
-import { autocomplete } from 'air-port-codes-node';
 import { useDispatch } from 'react-redux';
 import { setSearch } from 'state';
 import { useNavigate } from 'react-router-dom';
 
 const imagemStyle = {
-  backgroundImage: `url(${bannerHome})`,
+  backgroundImage: `url(${bannerHome2})`,
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
@@ -55,7 +54,7 @@ const validationValues = yup.object().shape({
 const HomePage = () => {
   const theme = useTheme();
   const blueColor = theme.palette.background.blue;
-  const isNonMobile = useMediaQuery("(min-width:650px)");
+  const isNonMobile = useMediaQuery("(min-width:1200px)");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,38 +70,29 @@ const HomePage = () => {
   };
 
   const imagemRoteiros = {
-    backgroundImage: `url(${bannerRoteiros})`,
+    backgroundImage: `url(${bannerRoteiros2})`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: isNonMobile ? 'left' : '-35px 0px',
+    backgroundPosition: 'center',
     backgroundSize: 'cover',
     width: isNonMobile ? '45%' : '90%',
     height: '300px',
     borderRadius: '40px'
   };
 
-  // TO
-  const [termSelectedTo, setTermSelectedTo] = useState("");
-  const [suggestionsTo, setSuggestionsTo] = useState([]);
-  const [searchTermTo, setSearchTermTo] = useState("");
-  const [openTo, setOpenTo] = useState(false);
-
-  // FROM
-  const [termSelectedFrom, setTermSelectedFrom] = useState("");
-  const [suggestionsFrom, setSuggestionsFrom] = useState([]);
-  const [searchTermFrom, setSearchTermFrom] = useState("");
-  const [openFrom, setOpenFrom] = useState(false);
-
   // CALENDAR
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
-  // CLASSPICK
-  const refOne = useRef(null);
-  const apca = autocomplete({
-    key: '04af77382e',
-    secret: 'c87049e666f922c',
-    limit: 15
-  });
+  // DE PARA 
+  const [states, setStates] = useState([])
+  async function fetchStates() {
+    const response = await fetch('http://localhost:3001/states/states', {
+      method: 'GET',
+    });
+    const data = await response.json();
+    setStates(data.estados);
+  }
+
 
   const formik = useFormik({
     initialValues: {
@@ -110,80 +100,25 @@ const HomePage = () => {
       para: '',
       ida: '',
       volta: '',
-      classe: {}
+      classe: {
+        numAdults: [1],
+        numChildren: [0],
+        numRooms: 1
+      }
     },
     onSubmit: values => {
       if (
         formik.values.de === '' |
         formik.values.para === '' |
         formik.values.ida === '' |
-        formik.values.volta === '' |
-        Object.keys(formik.values.classe).length === 0) {
+        formik.values.volta === '') {
         alert('Preencha todos os campos')
       } else {
         dispatch(setSearch({ search: values }))
+        navigate('/resultfilter')
       }
     }
   });
-
-  const handleAirportInputChangeTo = async (event) => {
-    const term = event.target.value;
-    setSearchTermTo(term);
-
-    if (term.length >= 3) {
-      setOpenTo(true)
-      apca.request(term);
-      apca.onSuccess = (data) => {
-        setSuggestionsTo(data.airports)
-      }
-      apca.onError = (data) => {
-        console.log('onError', data.message);
-      };
-
-    } else {
-      setSuggestionsTo([]);
-    }
-  };
-  const handleAirportInputChangeFrom = async (event) => {
-    const term = event.target.value;
-    setSearchTermFrom(term);
-
-    if (term.length >= 3) {
-      setOpenFrom(true)
-      apca.request(term);
-      apca.onSuccess = (data) => {
-        setSuggestionsFrom(data.airports)
-      }
-      apca.onError = (data) => {
-        console.log('onError', data.message);
-      };
-
-    } else {
-      setSuggestionsFrom([]);
-    }
-  };
-
-  const handleTermSelectedTo = (airport) => {
-    setTermSelectedTo(`${airport.iata} - ${airport.name}`)
-    formik.setFieldValue('para', `${airport.iata} - ${airport.name}`)
-    setOpenTo(false)
-  };
-  const handleTermSelectedFrom = (airport) => {
-    setTermSelectedFrom(`${airport.iata} - ${airport.name}`)
-    formik.setFieldValue('de', `${airport.iata} - ${airport.name}`)
-    setOpenFrom(false)
-  };
-
-  const hideOnClickOutsideTo = (e) => {
-    if (refOne.current && !refOne.current.contains(e.target)) {
-      setOpenTo(false)
-    }
-  };
-  const hideOnClickOutsideFrom = (e) => {
-    if (refOne.current && !refOne.current.contains(e.target)) {
-      setOpenFrom(false)
-    }
-  };
 
   const handleStartDate = (newStartDate) => {
     setStartDate(newStartDate)
@@ -199,8 +134,7 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    document.addEventListener("click", hideOnClickOutsideTo, true)
-    document.addEventListener("click", hideOnClickOutsideFrom, true)
+    fetchStates();
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -233,7 +167,8 @@ const HomePage = () => {
                     justifyContent: "space-evenly"
                   }}>
 
-                  <Box sx={{
+
+                  <FormControl variant="filled" sx={{
                     position: 'relative',
                     display: 'flex',
                     top: '-35px',
@@ -241,65 +176,30 @@ const HomePage = () => {
                     color: 'black',
                     fontSize: '1rem',
                   }}>
-                    <TextField
-                      label={isNonMobile ? 'De' : ''}
-                      value={termSelectedFrom ? termSelectedFrom : searchTermFrom}
-                      name="de"
-                      variant="filled"
-                      onChange={handleAirportInputChangeFrom}
-                      InputProps={{
-                        style: { backgroundColor: "white", borderRadius: "4px", fontWeight: 600 },
-                        placeholder: 'País, Cidade ou aeroporto',
-                        startAdornment: isNonMobile ? (
-                          <InputAdornment sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            paddingRight: '10px'
-                          }}><FlightTakeoffIcon sx={{ color: 'black' }} /></InputAdornment>
-                        ) : (<></>)
-                      }}
-                      InputLabelProps={{
-                        style: { color: blueColor, fontWeight: "bold", fontSize: "1rem", marginLeft: '30px' }
-                      }}
-                    />
-
-
-                    {searchTermFrom.length >= 3 && openFrom && (
-                      <Box sx={{
-                        position: 'absolute',
-                        width: '150%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        top: '40px',
-                        zIndex: '999',
-                      }}>
-                        <ul style={{
+                    <InputLabel sx={{
+                      color: blueColor, fontWeight: 'bold', display: 'flex',
+                      justifyContent: 'center',
+                      gap: '0.5rem'
+                    }}> <FlightTakeoffIcon sx={{ color: 'black' }} />Origem</InputLabel>
+                    <Select
+                      value={formik.values.de}
+                      onChange={(e) => formik.setFieldValue('de', e.target.value)}
+                      sx={{ backgroundColor: "white", borderRadius: "4px", fontWeight: 600, width: '200px', '&:hover': { backgroundColor: 'white' } }}
+                      SelectDisplayProps={{
+                        style: {
                           backgroundColor: 'white',
-                          borderRadius: '4px',
-                          listStyle: 'none',
-                          padding: '1rem',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '1rem'
-                        }}>
-                          {suggestionsFrom.map((airport) => (
-                            <li
-                              key={airport.icao}
-                              onClick={() => {
-                                handleTermSelectedFrom(airport);
-                              }}
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <LocalAirportIcon sx={{ color: 'black' }} />
-                              {airport.iata} - {airport.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </Box>
-                    )}
-                  </Box>
+                          borderRadius: '4px'
+                        }
+                      }}
+                    >
+                      {states && states.map((estado, i) => (
+                        <MenuItem key={i} value={estado.nome}>{estado.nome}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
-                  <Box sx={{
+
+                  <FormControl variant="filled" sx={{
                     position: 'relative',
                     display: 'flex',
                     top: '-35px',
@@ -307,62 +207,27 @@ const HomePage = () => {
                     color: 'black',
                     fontSize: '1rem',
                   }}>
-
-                    <TextField
-                      label={isNonMobile ? 'Para' : ''}
-                      value={termSelectedTo ? termSelectedTo : searchTermTo}
-                      type="De"
-                      variant="filled"
-                      onChange={handleAirportInputChangeTo}
-                      InputProps={{
-                        style: { backgroundColor: "white", borderRadius: "4px", fontWeight: 600 },
-                        placeholder: 'País, Cidade ou aeroporto',
-                        startAdornment: isNonMobile ? (
-                          <InputAdornment sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            paddingRight: '10px'
-                          }}><FlightLandIcon sx={{ color: 'black' }} /></InputAdornment>
-                        ) : (<></>)
-                      }}
-                      InputLabelProps={{
-                        style: { color: blueColor, fontWeight: "bold", fontSize: "1rem", marginLeft: '30px' }
-                      }}
-                    />
-
-                    {searchTermTo.length >= 3 && openTo && (
-                      <Box sx={{
-                        position: 'absolute',
-                        width: '150%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        top: '40px',
-                        zIndex: '999',
-                      }}>
-                        <ul style={{
+                    <InputLabel sx={{
+                      color: blueColor, fontWeight: 'bold', display: 'flex',
+                      justifyContent: 'center',
+                      gap: '0.5rem'
+                    }}> <FlightLandIcon sx={{ color: 'black' }} />Destino</InputLabel>
+                    <Select
+                      value={formik.values.para}
+                      onChange={(e) => formik.setFieldValue('para', e.target.value)}
+                      sx={{ backgroundColor: "white", borderRadius: "4px", fontWeight: 600, width: '200px', '&:hover': { backgroundColor: 'white' } }}
+                      SelectDisplayProps={{
+                        style: {
                           backgroundColor: 'white',
-                          borderRadius: '4px',
-                          listStyle: 'none',
-                          padding: '1rem',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '1rem'
-                        }}>
-                          {suggestionsTo.map((airport) => (
-                            <li
-                              key={airport.icao}
-                              onClick={() => handleTermSelectedTo(airport)}
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <LocalAirportIcon sx={{ color: 'black' }} />
-                              {airport.iata} - {airport.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </Box>
-                    )}
-
-                  </Box>
+                          borderRadius: '4px'
+                        }
+                      }}
+                    >
+                      {states && states.map((estado, i) => (
+                        <MenuItem key={i} value={estado.nome}>{estado.nome}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
                   <DateRangeCalendar startDate={handleStartDate} endDate={handleEndDate} filter={true} />
 
@@ -394,135 +259,65 @@ const HomePage = () => {
                     justifyContent: "space-evenly"
                   }}>
 
-                  <Box sx={{
+                  <FormControl variant="filled" sx={{
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
                     color: 'black',
+                    width: '100%',
                     fontSize: '1rem',
-                    width: '100%'
                   }}>
-                    <TextField
-                      sx={{ width: '100%' }}
-                      label='De'
-                      value={termSelectedFrom ? termSelectedFrom : searchTermFrom}
-                      name="de"
-                      variant="filled"
-                      onChange={handleAirportInputChangeFrom}
-                      InputProps={{
-                        style: { backgroundColor: "white", borderRadius: "4px", fontWeight: 600 },
-                        placeholder: 'País, Cidade ou aeroporto',
-                        startAdornment: isNonMobile ? (
-                          <InputAdornment sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            paddingRight: '10px'
-                          }}><FlightTakeoffIcon sx={{ color: 'black' }} /></InputAdornment>
-                        ) : (<></>)
-                      }}
-                      InputLabelProps={{
-                        style: { color: blueColor, fontWeight: "bold", fontSize: "1rem", marginLeft: isNonMobile ? '30px' : '' }
-                      }}
-                    />
-
-                    {searchTermFrom.length >= 3 && openFrom && (
-                      <Box sx={{
-                        position: 'absolute',
-                        width: '150%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        top: '40px',
-                        zIndex: '999',
-                      }}>
-                        <ul style={{
+                    <InputLabel sx={{
+                      color: blueColor, fontWeight: 'bold', display: 'flex',
+                      justifyContent: 'center',
+                      gap: '0.5rem'
+                    }}> <FlightTakeoffIcon sx={{ color: 'black' }} />Origem</InputLabel>
+                    <Select
+                      value={formik.values.de}
+                      onChange={(e) => formik.setFieldValue('de', e.target.value)}
+                      sx={{ backgroundColor: "white", borderRadius: "4px", fontWeight: 600, width: '100%', '&:hover': { backgroundColor: 'white' } }}
+                      SelectDisplayProps={{
+                        style: {
                           backgroundColor: 'white',
-                          borderRadius: '4px',
-                          listStyle: 'none',
-                          padding: '1rem',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '1rem'
-                        }}>
-                          {suggestionsFrom.map((airport) => (
-                            <li
-                              key={airport.icao}
-                              onClick={() => {
-                                handleTermSelectedFrom(airport);
-                              }}
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <LocalAirportIcon sx={{ color: 'black' }} />
-                              {airport.iata} - {airport.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </Box>
-                    )}
-                  </Box>
+                          borderRadius: '4px'
+                        }
+                      }}
+                    >
+                      {states && states.map((estado, i) => (
+                        <MenuItem key={i} value={estado.nome}>{estado.nome}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
-                  <Box sx={{
+                  <FormControl variant="filled" sx={{
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
                     color: 'black',
+                    width: '100%',
                     fontSize: '1rem',
-                    width: '100%'
                   }}>
-                    <TextField
-                      sx={{ width: '100%' }}
-                      label='Para'
-                      value={termSelectedTo ? termSelectedTo : searchTermTo}
-                      type="De"
-                      variant="filled"
-                      onChange={handleAirportInputChangeTo}
-                      InputProps={{
-                        style: { backgroundColor: "white", borderRadius: "4px", fontWeight: 600 },
-                        placeholder: 'País, Cidade ou aeroporto',
-                        startAdornment: isNonMobile ? (
-                          <InputAdornment sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            paddingRight: '10px'
-                          }}><FlightLandIcon sx={{ color: 'black' }} /></InputAdornment>
-                        ) : (<></>)
-                      }}
-                      InputLabelProps={{
-                        style: { color: blueColor, fontWeight: "bold", fontSize: "1rem", marginLeft: isNonMobile ? '30px' : '' }
-                      }}
-                    />
-                    {searchTermTo.length >= 3 && openTo && (
-                      <Box sx={{
-                        position: 'absolute',
-                        width: '150%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        top: '40px',
-                        zIndex: '999',
-                      }}>
-                        <ul style={{
+                    <InputLabel sx={{
+                      color: blueColor, fontWeight: 'bold', display: 'flex',
+                      justifyContent: 'center',
+                      gap: '0.5rem'
+                    }}> <FlightLandIcon sx={{ color: 'black' }} />Destino</InputLabel>
+                    <Select
+                      value={formik.values.para}
+                      onChange={(e) => formik.setFieldValue('para', e.target.value)}
+                      sx={{ backgroundColor: "white", borderRadius: "4px", fontWeight: 600, width: '100%', '&:hover': { backgroundColor: 'white' } }}
+                      SelectDisplayProps={{
+                        style: {
                           backgroundColor: 'white',
-                          borderRadius: '4px',
-                          listStyle: 'none',
-                          padding: '1rem',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '1rem'
-                        }}>
-                          {suggestionsTo.map((airport) => (
-                            <li
-                              key={airport.icao}
-                              onClick={() => handleTermSelectedTo(airport)}
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <LocalAirportIcon sx={{ color: 'black' }} />
-                              {airport.iata} - {airport.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </Box>
-                    )}
-
-                  </Box>
+                          borderRadius: '4px'
+                        }
+                      }}
+                    >
+                      {states && states.map((estado, i) => (
+                        <MenuItem key={i} value={estado.nome}>{estado.nome}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
                   <DateRangeCalendar startDate={handleStartDate} endDate={handleEndDate} filter={true} />
 

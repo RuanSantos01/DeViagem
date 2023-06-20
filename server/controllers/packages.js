@@ -28,18 +28,21 @@ export const paidPackages = async (req, res) => {
 }
 
 export const insertPaidPackages = async (req, res) => {
-    const {
-        codigo,
-        formValues,
-        cartInformations,
-        listaCpfPago,
-        listaCpfPendente,
-        valorPago,
-        valorTotal } = req.body;
 
     try {
 
+        const {
+            cpf,
+            codigo,
+            formValues,
+            cartInformations,
+            listaCpfPago,
+            listaCpfPendente,
+            valorPago,
+            valorTotal } = req.body;
+
         const newPaidPackage = new PaidPackages({
+            cpf,
             codigo,
             formValues,
             cartInformations,
@@ -50,10 +53,10 @@ export const insertPaidPackages = async (req, res) => {
         })
         await newPaidPackage.save();
 
-        const cpfPagante1 = listaCpfPago[0].replace(/\D/g, '');
+        const cpfNoMask = cpf.replace(/\D/g, '');
 
-        const filter = { cpf: cpfPagante1 }
-        const user = User.findOne(filter);
+        const filter = { cpf: cpfNoMask }
+        const user = await User.findOne(filter);
 
         const activities = user.activities ? [...user.activities, newPaidPackage] : [newPaidPackage];
         const update = {
@@ -102,13 +105,14 @@ export const updatePaidPackages = async (req, res) => {
 
 export const insertPackagesToAccount = async (req, res) => {
     try {
-        const { cpf, accommodation } = req.body;
+        const { cpf, pack } = req.body;
         const user = await User.findOne({ cpf })
         const userPackages = user.packages;
-
+        const dest = pack.destino.replace(/\s/g, '');
+        const newPack = { ...pack, imagem: `packages/${dest}/${pack.imagem.path}` }
         const update = {
             $set: {
-                packages: [...userPackages, accommodation]
+                packages: [...userPackages, newPack]
             }
         }
 
@@ -149,32 +153,39 @@ export const insertPackages = async (req, res) => {
         const {
             operador,
             destino,
+            cem,
             valorPassagem,
             pessoas,
             imagem,
-            imagens,
             hospedagem,
             vagas,
+            dataInicio,
+            dataFim,
             vagasRestantes
         } = req.body;
+
+        const dest = destino.replace(/\s/g, '');
 
         const newPackage = new Packages({
             operador,
             destino,
+            cem,
             valorPassagem,
             pessoas,
-            imagem,
-            imagens,
-            hospedagem,
+            imagem: `packages/${dest}/${imagem}`,
+            hospedagem: JSON.parse(hospedagem),
             vagas,
+            dataInicio,
+            dataFim,
             vagasRestantes
         })
 
-        const response = await newPackage.save();
+        await newPackage.save();
 
-        res.status(201).json(response)
+        res.status(201).json({ msg: 'sucesso' })
 
     } catch (err) {
+        console.error('Não foi possível cadastrar o pacote : ', err)
         res.status(500).json({ msg: err })
     }
 }

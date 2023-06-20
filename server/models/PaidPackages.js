@@ -5,6 +5,7 @@ const PaidPackagesSchema = new mongoose.Schema(
         formValues: {
             type: Object,
         },
+        cpf: String,
         cartInformations: {
             type: Object,
         },

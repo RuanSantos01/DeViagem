@@ -10,6 +10,7 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import { verifyToken } from "./middleware/auth.js";
+import fs from 'fs';
 
 // ROUTES
 import authRoutes from "./routes/auth.js";
@@ -58,6 +59,7 @@ app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 // FILE STORAGE 
+// FILE STORAGE 
 const storage = multer.diskStorage({
     destination: function (req, res, cb) {
         cb(null, "public/assets")
@@ -68,10 +70,39 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+const storagePackages = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const destino = req.body.destino;
+        const newDestino = destino.replace(/\s/g, '');
+        const destinationFolder = `public/assets/packages/${newDestino}`;
+        fs.access(destinationFolder, (error) => {
+            if (error) {
+                fs.mkdir(destinationFolder, { recursive: true }, (err) => {
+                    if (err) {
+                        console.log('Erro ao criar pasta:', err);
+                        cb(err);
+                    } else {
+                        cb(null, destinationFolder);
+                    }
+                });
+            } else {
+                cb(null, destinationFolder);
+            }
+        });
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+
+const uploadPackages = multer({ storage: storagePackages, limits: { fileSize: 10 * 1024 * 1024 } });
+
 // ROUTES WITH FILES
 // app.post("/auth", upload.array, component)  <- EXEMPLO
-app.post("/accommodations/register", upload.array('image'), upload.single('imageQuarto'), registerAccommodation)
-app.post('/packages/insertPackage', upload.array('imagem'), upload.single('imagens'), insertPackages);
+app.post("/accommodations/register", upload.array('image', 10), upload.single('imageQuarto'), registerAccommodation)
+
+const cpUpload = uploadPackages.fields([{ name: 'imagemMulter', maxCount: 1 }, { name: 'imagensMulter', maxCount: 10 }])
+app.post('/packages/insertPackage', cpUpload, insertPackages);
 
 // ROUTER WITH TOKEN
 // app.post("/teste", verifyToken, component) <- EXEMPLO

@@ -1,7 +1,7 @@
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, Tab, Tabs, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from 'scenes/navbar';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -61,6 +61,23 @@ const ActivitesPage = () => {
     const dispatch = useDispatch();
 
     const user = useSelector((state) => state.user);
+
+    const [userFetch, setUserFetch] = useState();
+    const fetchUser = async (cpf) => {
+        const user = await fetch(`http://localhost:3001/auth/getUser/${cpf}`, {
+            method: 'GET'
+        })
+
+        const userResponse = await user.json();
+
+        if (user.ok && userResponse) {
+            setUserFetch(userResponse.user);
+        }
+    }
+
+    useEffect(() => {
+        fetchUser(user.cpf)
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const [value, setValue] = useState(0);
 
@@ -354,39 +371,42 @@ const ActivitesPage = () => {
 
                         <TabPanel value={value} index={2}>
                             <Typography sx={{ fontWeight: 'bold', fontSize: '30px', color: blueColor, padding: '10px' }}>Atividades realizadas no nosso sistema</Typography>
-                            {user.activities.map((atividade) => (
-                                <Box sx={{ width: '44vw', border: '1px solid grey', borderRadius: '10px', display: 'flex' }}>
-                                    <Box sx={{
-                                        backgroundImage: `url(http://localhost:3001/assets/${atividade.cartInformations.packages.imagem})`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        backgroundRepeat: 'no-repeat',
-                                        width: '40%',
-                                        height: '250px',
-                                        borderRadius: '10px'
-                                    }} />
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                {userFetch && userFetch.activities.map((atividade) => (
+                                    <Box sx={{ width: '44vw', border: '1px solid #C4C4C4', borderRadius: '10px', display: 'flex' }}>
+                                        <Box sx={{
+                                            backgroundImage: `url(http://localhost:3001/assets/${atividade.cartInformations.packages.imagem})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                            backgroundRepeat: 'no-repeat',
+                                            width: '40%',
+                                            height: '250px',
+                                            borderRadius: '10px'
+                                        }} />
 
-                                    <Box sx={{ padding: '10px', width: '60%', display: 'flex', flexDirection: 'column' }}>
-                                        <Typography sx={{ fontWeight: 'bold', fontSize: '1.25rem', color: blueColor }}>Pacote para {atividade.cartInformations.packages.destino}</Typography>
-                                        <Typography sx={{ fontWeight: 'bold', fontSize: '1rem', color: blueColor }}>Status: {atividade.listaCpfPendente.length === 0 ? "Reservado" : "Pendente de Pagamento"}</Typography>
-                                        <Box sx={{ display: 'flex', alignItems: 'end', height: '100%' }}>
-                                            <Box sx={{ width: '70%' }}>
-                                                <Box>
-                                                    <Typography sx={{ fontSize: '16px' }}>Check-in</Typography>
-                                                    <Typography sx={{ fontSize: '16px', fontWeight: 'bold', color: blueColor }}>até {moment(atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].dataIda + ' ' + atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].horaIda, 'DD [de] MMMM [às] HH:mm').add(6, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
+                                        <Box sx={{ padding: '10px', width: '60%', display: 'flex', flexDirection: 'column' }}>
+                                            <Typography sx={{ fontWeight: 'bold', fontSize: '1.25rem', color: blueColor }}>Pacote para {atividade.cartInformations.packages.destino}</Typography>
+                                            <Typography sx={{ fontWeight: 'bold', fontSize: '1rem', color: blueColor }}>Status: {atividade.listaCpfPendente.length === 0 ? "Reservado" : "Pendente de Pagamento"}</Typography>
+                                            <Box sx={{ display: 'flex', alignItems: 'end', height: '100%' }}>
+                                                <Box sx={{ width: '70%' }}>
+                                                    <Box>
+                                                        <Typography sx={{ fontSize: '16px' }}>Check-in</Typography>
+                                                        <Typography sx={{ fontSize: '16px', fontWeight: 'bold', color: blueColor }}>até {moment(atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].dataIda + ' ' + atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].horaIda, 'DD [de] MMMM [às] HH:mm').add(6, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
+                                                    </Box>
+                                                    <Box>
+                                                        <Typography sx={{ fontSize: '16px' }}>Check-out</Typography>
+                                                        <Typography sx={{ fontSize: '16px', fontWeight: "bold", color: blueColor }}>até {moment(atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].dataVolta + ' ' + atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].horaVolta, 'DD [de] MMMM [às] HH:mm').subtract(1, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
+                                                    </Box>
                                                 </Box>
-                                                <Box>
-                                                    <Typography sx={{ fontSize: '16px' }}>Check-out</Typography>
-                                                    <Typography sx={{ fontSize: '16px', fontWeight: "bold", color: blueColor }}>até {moment(atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].dataVolta + ' ' + atividade.cartInformations.estado.dias[atividade.cartInformations.selectedDate].horaVolta, 'DD [de] MMMM [às] HH:mm').subtract(1, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
-                                                </Box>
+
+                                                <Button onClick={() => handleClickButton(atividade)} sx={{ border: `1px solid ${blueColor}`, width: '30%', color: 'white', backgroundColor: blueColor, "&:hover": { backgroundColor: 'white', color: blueColor } }}>Ver mais detalhes</Button>
                                             </Box>
 
-                                            <Button onClick={() => handleClickButton(atividade)} sx={{ border: `1px solid ${blueColor}`, width: '30%', color: 'white', backgroundColor: blueColor, "&:hover": { backgroundColor: 'white', color: blueColor } }}>Ver mais detalhes</Button>
                                         </Box>
-
                                     </Box>
-                                </Box>
-                            ))}
+                                ))}
+                            </Box>
+
                         </TabPanel>
 
                         <TabPanel value={value} index={3} style={{ width: '75%' }}>
@@ -498,7 +518,6 @@ const ActivitesPage = () => {
                         <Typography sx={{ fontWeight: 'bold', fontSize: '30px', color: blueColor, padding: '10px' }}>Atualize sua senha</Typography>
                         <form onSubmit={formikPassword.handleSubmit} style={{ width: '200%', height: '100%', padding: '10px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
-
                             <FormControl sx={{ width: '50%' }} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Digite sua senha</InputLabel>
                                 <OutlinedInput
@@ -567,7 +586,7 @@ const ActivitesPage = () => {
 
                     <TabPanel value={value} index={2}>
                         <Typography sx={{ fontWeight: 'bold', fontSize: '30px', color: blueColor, padding: '10px' }}>Atividades realizadas no nosso sistema.</Typography>
-                        {user.activities.map((atividade) => (
+                        {userFetch && userFetch.activities.map((atividade) => (
                             <Box sx={{ width: '100%', border: '1px solid grey', borderRadius: '10px', display: 'flex', flexDirection: 'column' }}>
                                 <Box sx={{
                                     backgroundImage: `url(http://localhost:3001/assets/${atividade.cartInformations.packages.imagem})`,

@@ -8,7 +8,7 @@ import { setPackage } from 'state';
 const Card = (props) => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const { destino, item, imagem, valor } = props;
+    const { item, imagem, valor, cem } = props;
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const Card = (props) => {
                 <Box style={imagemStyle}></Box>
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '80%' }}>
-                    <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: '20px' }}>{destino}</Typography>
+                    <Typography sx={{ fontWeight: 'bold', color: blueColor, fontSize: '20px' }}>{cem}</Typography>
                     <Typography sx={{ color: blueColor }}>Operado por <strong>aviadora interna</strong></Typography>
                 </Box>
             </Box>

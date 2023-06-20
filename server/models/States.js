@@ -5,6 +5,9 @@ const StatesSchema = new mongoose.Schema(
         nome: {
             type: String,
         },
+        aeroporto: {
+            type: Object
+        },
         lat: {
             type: Number,
         },

@@ -22,6 +22,7 @@ import ActivitesPage from "scenes/acitivitiesPage";
 import { useSelector } from "react-redux";
 import ProductsPage from "scenes/enterprisePage/ProductsPage";
 import NewProductPage from "scenes/enterprisePage/newProductPage";
+import SearchPage from "scenes/searchPage";
 
 function App() {
 
@@ -37,6 +38,9 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/packages" element={<PackagePage />} />
+
+            <Route path="/resultfilter" element={<SearchPage />} />
+
             <Route path="/packages/cart" element={<PackageCartPage />} />
             <Route path="/packages/cart/checkout" element={<PaymentPage />} />
             <Route path="/packages/cart/checkout/success" element={<FinalPage />} />

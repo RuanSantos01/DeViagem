@@ -41,14 +41,14 @@ export default function Carousel() {
             {isNonMobile ? (
                 <>
                     {packages.slice(currentIndex, currentIndex + 3).map((item, index) => (
-                        <Card key={index} destino={item.destino} item={item} imagem={item.imagem} valor={item.valorPassagem}></Card>
+                        <Card key={index} destino={item.destino} item={item} imagem={item.imagem} cem={item.cem} valor={item.valorPassagem}></Card>
                     ))}
                 </>
 
             ) : (
                 <>
                     {packages.slice(currentIndex, currentIndex + 1).map((item, index) => (
-                        <Card key={index} destino={item.destino} item={item} imagem={item.imagem} valor={item.valorPassagem}></Card>
+                        <Card key={index} destino={item.destino} item={item} imagem={item.imagem} cem={item.cem} valor={item.valorPassagem}></Card>
                     ))}
                 </>
             )}

@@ -37,8 +37,11 @@ const ProductsPage = () => {
             method: 'GET',
         })
 
-        if (response.status === 200) {
-            const packages = await response.json();
+        const packages = await response.json();
+        console.log(`url(http://localhost:3001/assets${packages[0].imagem})`)
+
+        if (response.ok && packages) {
+            console.log(packages)
             setPackages(packages);
             const seriesData = packages.map((p) => parseInt(p.vagas));
             const seriesData2 = packages.map((p) => parseInt(p.vagasRestantes));
@@ -150,7 +153,7 @@ const ProductsPage = () => {
                             {packages && packages.map((p) => (
                                 <Box sx={{ width: isNonMobile ? '100%' : '96%', border: '1px solid #DCE0E6', borderRadius: '10px', display: 'flex', flexDirection: isNonMobile ? 'row' : 'column' }}>
                                     <Box sx={{
-                                        backgroundImage: `url(http://localhost:3001/assets${p.imagem})`,
+                                        backgroundImage: `url(http://localhost:3001/assets/${p.imagem})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
@@ -177,7 +180,7 @@ const ProductsPage = () => {
                                     />
 
                                     <Box sx={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}>
-                                        <Button onClick={() => handleClickInf(p)} sx={{ height: isNonMobile ? '15%' : '20%', alignSelf: 'end', width: isNonMobile ? '' : '100%', margin: '20px', border: `1px solid ${blueColor}`, color: 'white', backgroundColor: blueColor, padding: '3px 30px', fontWeight: 'bold', '&:hover': { backgroundColor: 'white', color: blueColor } }}>Ver mais detalhes</Button>
+                                        <Button onClick={() => handleClickInf(p)} sx={{ height: isNonMobile ? '15%' : '20%', alignSelf: 'end', width: isNonMobile ? '' : '100%', margin: '20px', border: `1px solid ${blueColor}`, color: 'white', backgroundColor: blueColor, padding: '24px 100px', fontWeight: 'bold', '&:hover': { backgroundColor: 'white', color: blueColor } }}>Ver mais detalhes</Button>
                                     </Box>
 
                                 </Box>

@@ -50,8 +50,9 @@ const Navbar = () => {
       }
     )
 
-    if (response.ok && response.body !== null) {
-      const redemptionCode = await response.json();
+    const redemptionCode = await response.json();
+    console.log(redemptionCode)
+    if (response.ok && redemptionCode) {
       dispatch(setCart({ cart: redemptionCode }))
       navigate('/packages/cart/checkout/completePayment')
     } else {

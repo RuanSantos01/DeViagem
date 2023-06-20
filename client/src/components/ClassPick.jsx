@@ -8,8 +8,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 const ClassPick = (props) => {
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
-    const isNonMobile = useMediaQuery("(min-width:650px)");
-    const isNonMobile2 = useMediaQuery("(min-width:900px)");
+    const isNonMobile = useMediaQuery("(min-width:1200px)");
     const refOne = useRef(null);
     const [open, setOpen] = useState('');
 
@@ -160,7 +159,7 @@ const ClassPick = (props) => {
                 sx={{
                     position: 'absolute',
                     width: isNonMobile ? '200%' : '100%',
-                    left: isNonMobile2 && isNonMobile ? '50%' : '50%',
+                    left: isNonMobile ? '50%' : '50%',
                     transform: 'translateX(-50%)',
                     top: '55px',
                     zIndex: '999'

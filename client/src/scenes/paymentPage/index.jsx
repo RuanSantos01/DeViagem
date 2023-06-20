@@ -15,7 +15,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import BedIcon from '@mui/icons-material/Bed';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
-import { setFaseFlow, setPaymentInformation } from "state";
+import { setFaseFlow, setPaymentInformation, setUser } from "state";
+import moment from "moment";
 
 const PaymentPage = () => {
     const theme = useTheme();
@@ -24,6 +25,11 @@ const PaymentPage = () => {
     const [pagantes, setPagantes] = useState();
 
     const cartInformations = useSelector((state) => state.cart);
+    const dataIda = moment(cartInformations.selectedDate.dataIda).format('DD [de] MMMM');
+    const horaIda = moment(cartInformations.selectedDate.dataIda).format('HH:mm');
+    const dataVolta = moment(cartInformations.selectedDate.dataVolta).format('DD [de] MMMM');
+    const horaVolta = moment(cartInformations.selectedDate.dataVolta).format('HH:mm');
+
     const user = useSelector((state) => state.user);
 
     const qtdPessoas = cartInformations.packages.pessoas;
@@ -59,7 +65,6 @@ const PaymentPage = () => {
             }
         );
 
-        console.log(response);
         if (response.status !== 201) {
             return false;
         } else {
@@ -116,6 +121,7 @@ const PaymentPage = () => {
         onSubmit: values => {
             if (isFormValidated) {
                 let objFinal = {
+                    cpf: user.cpf,
                     formValues: values,
                     cartInformations,
                     codigo: gerarCodigo(),
@@ -129,6 +135,13 @@ const PaymentPage = () => {
                     const pagante = { cpf: values[`cpfPagante${i + 1}`], nome: values[`nomePagante${i + 1}`] }
                     objFinal.listaCpfPendente.push(pagante);
                 }
+
+                const newUser = {
+                    ...user,
+                    activities: [...user.activities, objFinal]
+                }
+
+                dispatch(setUser({ user: newUser }));
 
                 const req = insertPaidPackage(objFinal);
                 if (req) {
@@ -244,7 +257,7 @@ const PaymentPage = () => {
 
         return <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {listaViajantes.map((viajante) => (
-                <Box>
+                <Box sx={{ display: 'flex', gap: '1rem' }}>
                     <TextField
                         sx={{ width: '100%' }}
                         label={`Cpf do pagante Nº ${viajante + 2}`}
@@ -269,12 +282,31 @@ const PaymentPage = () => {
                             <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
                         )
                     }
+
+                    <TextField
+                        sx={{ width: '100%' }}
+                        label={`Nome do pagante Nº ${viajante + 2}`}
+                        name="nome"
+                        onChange={(e) => formik.setFieldValue(`nomePagante${viajante + 1}`, e.target.value)}
+                        InputProps={{
+                            style: { backgroundColor: "white", borderRadius: "4px" }
+                        }}
+                        InputLabelProps={{
+                            style: { color: blueColor, fontWeight: "200", fontSize: "1rem" }
+                        }}
+                    />
+                    {
+                        formik.touched[`nomePagante${viajante + 1}`] && !formik.values[`nomePagante${viajante + 1}`] && (
+                            <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
+                        )
+                    }
                 </Box>
             ))}
         </Box>
     }
 
     useEffect(() => {
+        console.log(cartInformations)
         fillFormikValues()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -612,7 +644,6 @@ const PaymentPage = () => {
                             {formik.touched.emailTitular && !formik.values.emailTitular && (
                                 <Typography sx={{ color: 'red' }}>Por favor, preencha este campo</Typography>
                             )}
-                            <Typography sx={{ textAlign: 'justify' }}>Será enviado as informações da viagem para este email</Typography>
                         </Box>
 
                         {!user && (
@@ -643,12 +674,12 @@ const PaymentPage = () => {
 
                         <Box sx={{ display: 'flex', marginTop: '14px' }}>
                             <Box sx={{ width: '50%' }}>
-                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><LoginIcon />Check-in</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataIda}</Typography>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><LoginIcon />Check-in até</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{moment(dataIda + ' ' + horaIda, 'DD [de] MMMM [às] HH:mm').add(6, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
                             </Box>
                             <Box sx={{ width: '50%' }}>
-                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><LogoutIcon />Check-out</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataVolta}</Typography>
+                                <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><LogoutIcon />Check-out até</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{moment(dataVolta + ' ' + horaVolta, 'DD [de] MMMM [às] HH:mm').add(6, 'hours').format('DD [de] MMMM [às] HH:mm')}</Typography>
                             </Box>
                         </Box>
 
@@ -659,7 +690,7 @@ const PaymentPage = () => {
                             </Box>
                             <Box sx={{ width: '50%' }}>
                                 <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><BedIcon />Estadia</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].diffdays} diárias</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.selectedDate.diffDays} diárias</Typography>
                             </Box>
                         </Box>
 
@@ -677,11 +708,11 @@ const PaymentPage = () => {
                         <Box sx={{ display: 'flex', marginTop: '14px' }}>
                             <Box sx={{ width: '50%' }}>
                                 <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><CalendarMonthIcon />Data de ida</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataIda}</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{dataIda}</Typography>
                             </Box>
                             <Box sx={{ width: '50%' }}>
                                 <Typography sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><CalendarMonthIcon />Data de volta</Typography>
-                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{cartInformations.estado.dias[cartInformations.selectedDate].dataVolta}</Typography>
+                                <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{dataVolta}</Typography>
                             </Box>
                         </Box>
                     </Box>

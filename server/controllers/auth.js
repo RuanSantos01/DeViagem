@@ -221,6 +221,56 @@ export const updateUserPassword = async (req, res) => {
         res.status(500).json({ msg: err })
     }
 
+}
+
+// FORGOT PASSWORD
+export const forgotPassword = async (req, res) => {
+    try {
+
+        const { email } = req.body;
+
+        const user = await User.findOne({ email })
+        if (!user) res.status(404).json({ msg: 'Usuário não encontrado!' })
+
+        const code = generateCode();
+        sendEmail(email, code);
+
+        const newSentCode = new SentCode({
+            email,
+            code,
+            validation: false
+        })
+        await newSentCode.save();
+
+        res.status(201).json({ msg: "Código enviado por email." })
+
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+// NEW PASSWORD
+export const newPassword = async (req, res) => {
+    try {
+        const { password, email } = req.body;
+
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        const update = {
+            $set: {
+                password: passwordHash
+            }
+        };
+
+        const filter = { email };
+        await User.updateOne(filter, update);
+
+        res.status(200).json({ msg: 'Senha alterada com sucesso!' });
+
+    } catch (err) {
+        res.status(500).json({ msg: err })
+    }
 
 }
 
