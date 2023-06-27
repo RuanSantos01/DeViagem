@@ -86,12 +86,14 @@ export const getTravels = async (req, res) => {
             }
         })
 
+        console.log(trips)
+
         const tripsResponse = trips.data.data;
 
         res.status(200).json(tripsResponse);
 
     } catch (err) {
-        console.error('Erro ao obter viagens da Amadeus API:', err.data);
+        console.error('Erro ao obter viagens da Amadeus API:', err);
         res.status(500).json(err)
     }
 }

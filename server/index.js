@@ -17,6 +17,7 @@ import authRoutes from "./routes/auth.js";
 import accommodationRoutes from "./routes/accommodation.js";
 import packagesRoutes from "./routes/packages.js";
 import stateRoutes from "./routes/states.js";
+import scriptsRoutes from "./routes/scripts.js";
 
 // MODELS
 import Accommodation from "./models/Accommodation.js";
@@ -42,6 +43,8 @@ import { packagesData } from "./data/packagesData.js";
 import { estados } from "./data/state.js";
 import { registerAccommodation } from "./controllers/accommodation.js";
 import { insertPackages } from "./controllers/packages.js";
+import { scripsData } from "./data/scripsData.js";
+import Scripts from "./models/Scripts.js";
 
 
 // CONFIGURATIONS
@@ -56,9 +59,8 @@ app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+app.use("/assets", express.static(path.join(__dirname, "./public/assets")));
 
-// FILE STORAGE 
 // FILE STORAGE 
 const storage = multer.diskStorage({
     destination: function (req, res, cb) {
@@ -112,6 +114,7 @@ app.use("/auth", authRoutes);
 app.use("/accommodations", accommodationRoutes);
 app.use("/packages", packagesRoutes);
 app.use("/states", stateRoutes);
+app.use("/scripts", scriptsRoutes);
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;
@@ -121,6 +124,7 @@ mongoose.connect(process.env.MONGO_URL, {
 }).then(() => {
     app.listen(PORT, () => console.log(`Server on port: ${PORT}`))
 
+    // Scripts.insertMany(scripsData)
     // Accommodation.insertMany(riodejaneiroAccommodations);
     // States.insertMany(estados)
     // Packages.insertMany(packagesData);

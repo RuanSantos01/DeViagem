@@ -8,6 +8,8 @@ import StarRating from "widgets/StarRating";
 
 const ReserveAccommodation = () => {
     const { state } = useLocation();
+    console.log(state)
+
     const theme = useTheme();
     const blueColor = theme.palette.background.blue;
     const card = state.hospedagem;

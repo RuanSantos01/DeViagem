@@ -6,6 +6,8 @@ import Navbar from "scenes/navbar";
 
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { setSearch } from "state";
+import { useDispatch } from "react-redux";
 
 const PackagePage = () => {
     const theme = useTheme();
@@ -27,8 +29,11 @@ const PackagePage = () => {
         setPackages(data.packages);
     }
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         fetchData();
+        dispatch(setSearch({ search: null }))
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {

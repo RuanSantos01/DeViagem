@@ -38,10 +38,8 @@ const ProductsPage = () => {
         })
 
         const packages = await response.json();
-        console.log(`url(http://localhost:3001/assets${packages[0].imagem})`)
 
         if (response.ok && packages) {
-            console.log(packages)
             setPackages(packages);
             const seriesData = packages.map((p) => parseInt(p.vagas));
             const seriesData2 = packages.map((p) => parseInt(p.vagasRestantes));
